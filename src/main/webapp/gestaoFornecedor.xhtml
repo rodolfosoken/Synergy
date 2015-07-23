@@ -8,15 +8,19 @@
 	<meta charset="UTF-8" />
 	<title>teste</title>
 </h:head>
+
+<h1>Fornecedores</h1>
+<p:messages id="mensagens"/>
 <h:body>
 	<f:metadata>
 		<f:viewAction action="#{gestaoFornecedorBean.consultar}" />
 	</f:metadata>
 
+<h:form>
+
 	<p:dataTable value="#{gestaoFornecedorBean.todosFornecedores}"
 		var="fornecedor" emptyMessage="Nenhuma tarefa cadastrada." rows="10"
-		style="margin-top: 10px" id="tarefas-table"
-		rowKey="#{fornecedor.nome}">
+		id="tarefas-table">
 
 		<p:column headerText="CNPJ" sortBy="#{fornecedor.cnpj}">
 			<h:outputText value="#{fornecedor.cnpj}" />
@@ -39,5 +43,9 @@
 		</p:column>
 
 	</p:dataTable>
+	
+	
+	
+	</h:form>
 </h:body>
 </html>
