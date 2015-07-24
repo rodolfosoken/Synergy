@@ -39,7 +39,13 @@ public class FornecedorMaterial extends Fornecedor implements java.io.Serializab
 	@ManyToMany(fetch = FetchType.LAZY)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) })
+=======
+	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
+			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
+			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) })
+>>>>>>> parent of 789e1e2... Bug corrigido, fornecedor centralizado
 =======
 	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
 			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
