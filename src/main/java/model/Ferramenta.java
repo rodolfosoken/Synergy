@@ -1,6 +1,6 @@
-package br.com.synergy.model;
+package model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 24/07/2015 07:24:43 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -202,12 +202,9 @@ public class Ferramenta implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "montagem_has_ferramenta", catalog = "sistema_gestao", 
-	joinColumns = {	
+	@JoinTable(name = "montagem_has_ferramenta", catalog = "sistema_gestao", joinColumns = {
 			@JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false),
-			@JoinColumn(name = "ferramenta_cotacao_ferramenta_idcotacao", nullable = false, updatable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false),
-			@JoinColumn(name = "montagem_conjunto_idconjunto", nullable = false, updatable = false)})
+			@JoinColumn(name = "ferramenta_cotacao_ferramenta_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false) })
 	public Set<Montagem> getMontagems() {
 		return this.montagems;
 	}

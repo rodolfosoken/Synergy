@@ -1,6 +1,6 @@
-package br.com.synergy.model;
+package model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 24/07/2015 07:24:43 by Hibernate Tools 4.3.1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -11,9 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,8 +28,6 @@ public class CotacaoMaterial implements java.io.Serializable {
 	private Date data;
 	private Set<FornecimentoMaterial> fornecimentoMaterials = new HashSet<FornecimentoMaterial>(
 			0);
-	private Set<FornecedorMaterial> fornecedorMaterials = new HashSet<FornecedorMaterial>(
-			0);
 	private Set<Material> materials = new HashSet<Material>(0);
 
 	public CotacaoMaterial() {
@@ -40,11 +35,10 @@ public class CotacaoMaterial implements java.io.Serializable {
 
 	public CotacaoMaterial(String responsavel, Date data,
 			Set<FornecimentoMaterial> fornecimentoMaterials,
-			Set<FornecedorMaterial> fornecedorMaterials, Set<Material> materials) {
+			Set<Material> materials) {
 		this.responsavel = responsavel;
 		this.data = data;
 		this.fornecimentoMaterials = fornecimentoMaterials;
-		this.fornecedorMaterials = fornecedorMaterials;
 		this.materials = materials;
 	}
 
@@ -86,17 +80,6 @@ public class CotacaoMaterial implements java.io.Serializable {
 	public void setFornecimentoMaterials(
 			Set<FornecimentoMaterial> fornecimentoMaterials) {
 		this.fornecimentoMaterials = fornecimentoMaterials;
-	}
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_material_has_fornecedor_material", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "fornecedor_material_idfornecedor_material", nullable = false, updatable = false) })
-	public Set<FornecedorMaterial> getFornecedorMaterials() {
-		return this.fornecedorMaterials;
-	}
-
-	public void setFornecedorMaterials(
-			Set<FornecedorMaterial> fornecedorMaterials) {
-		this.fornecedorMaterials = fornecedorMaterials;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoMaterial")

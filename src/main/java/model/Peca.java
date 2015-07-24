@@ -1,6 +1,6 @@
-package br.com.synergy.model;
+package model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 24/07/2015 07:24:43 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -119,9 +119,7 @@ public class Peca implements java.io.Serializable {
 	@JoinTable(name = "montagem_has_peca", catalog = "sistema_gestao", joinColumns = {
 			@JoinColumn(name = "peca_idpeca", nullable = false, updatable = false),
 			@JoinColumn(name = "peca_material_idmaterial", nullable = false, updatable = false),
-			@JoinColumn(name = "peca_material_cotacao_material_idcotacao", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false),
-			@JoinColumn(name = "montagem_conjunto_idconjunto", nullable = false, updatable = false)})
+			@JoinColumn(name = "peca_material_cotacao_material_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false) })
 	public Set<Montagem> getMontagems() {
 		return this.montagems;
 	}
