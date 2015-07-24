@@ -7,7 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.synergy.model.Fornecedor;
+import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.repository.FornecedorFerramentaDAO;
 import br.com.synergy.util.FacesMessages;
 
@@ -19,12 +19,12 @@ public class GestaoFornecedorBean implements Serializable {
 	@Inject
 	private FacesMessages messages;
 	
-	private List<Fornecedor> todosFornecedores;
+	private List<FornecedorFerramenta> todosFornecedores;
 	
 	public void consultar() {
 	todosFornecedores = dao.todos();
 	}
-	public List<Fornecedor> getTodosFornecedores() {
+	public List<FornecedorFerramenta> getTodosFornecedores() {
 		return todosFornecedores;
 	}
 }

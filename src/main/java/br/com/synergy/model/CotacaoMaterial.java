@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 24/07/2015 10:47:50 by Hibernate Tools 4.3.1
+// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -31,7 +31,8 @@ public class CotacaoMaterial implements java.io.Serializable {
 	private Date data;
 	private Set<FornecimentoMaterial> fornecimentoMaterials = new HashSet<FornecimentoMaterial>(
 			0);
-	private Set<Fornecedor> fornecedors = new HashSet<Fornecedor>(0);
+	private Set<FornecedorMaterial> fornecedorMaterials = new HashSet<FornecedorMaterial>(
+			0);
 	private Set<Material> materials = new HashSet<Material>(0);
 
 	public CotacaoMaterial() {
@@ -39,11 +40,11 @@ public class CotacaoMaterial implements java.io.Serializable {
 
 	public CotacaoMaterial(String responsavel, Date data,
 			Set<FornecimentoMaterial> fornecimentoMaterials,
-			Set<Fornecedor> fornecedors, Set<Material> materials) {
+			Set<FornecedorMaterial> fornecedorMaterials, Set<Material> materials) {
 		this.responsavel = responsavel;
 		this.data = data;
 		this.fornecimentoMaterials = fornecimentoMaterials;
-		this.fornecedors = fornecedors;
+		this.fornecedorMaterials = fornecedorMaterials;
 		this.materials = materials;
 	}
 
@@ -87,17 +88,17 @@ public class CotacaoMaterial implements java.io.Serializable {
 		this.fornecimentoMaterials = fornecimentoMaterials;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = { 
-			@JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { 
-			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
-			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false)})
-	public Set<Fornecedor> getFornecedors() {
-		return this.fornecedors;
+	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
+			@JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
+			@JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false)})
+	public Set<FornecedorMaterial> getFornecedorMaterials() {
+		return this.fornecedorMaterials;
 	}
 
-	public void setFornecedors(Set<Fornecedor> fornecedors) {
-		this.fornecedors = fornecedors;
+	public void setFornecedorMaterials(
+			Set<FornecedorMaterial> fornecedorMaterials) {
+		this.fornecedorMaterials = fornecedorMaterials;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoMaterial")
