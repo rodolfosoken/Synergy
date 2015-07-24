@@ -18,7 +18,12 @@ import javax.persistence.ManyToMany;
 @Entity
 @DiscriminatorValue("FERRAMENTA")
 <<<<<<< HEAD
+<<<<<<< HEAD
 public class FornecedorFerramenta extends Fornecedor implements java.io.Serializable {
+=======
+public class FornecedorFerramenta extends Fornecedor implements
+		java.io.Serializable {
+>>>>>>> parent of 789e1e2... Bug corrigido, fornecedor centralizado
 =======
 public class FornecedorFerramenta extends Fornecedor implements
 		java.io.Serializable {
@@ -29,8 +34,12 @@ public class FornecedorFerramenta extends Fornecedor implements
 	 */
 	private static final long serialVersionUID = 1L;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private Set<CotacaoFerramenta> cotacaoFerramentas = new HashSet<CotacaoFerramenta>(
 			0);
+=======
+	private Set<CotacaoFerramenta> cotacaoFerramentas = new HashSet<CotacaoFerramenta>(0);
+>>>>>>> parent of 789e1e2... Bug corrigido, fornecedor centralizado
 =======
 	private Set<CotacaoFerramenta> cotacaoFerramentas = new HashSet<CotacaoFerramenta>(0);
 >>>>>>> parent of 789e1e2... Bug corrigido, fornecedor centralizado
@@ -43,14 +52,20 @@ public class FornecedorFerramenta extends Fornecedor implements
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "cotacao_ferramenta_has_fornecedor", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false) })
 =======
+=======
+>>>>>>> parent of 789e1e2... Bug corrigido, fornecedor centralizado
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "cotacao_ferramenta_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
 			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
 			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false) })
+<<<<<<< HEAD
+>>>>>>> parent of 789e1e2... Bug corrigido, fornecedor centralizado
+=======
 >>>>>>> parent of 789e1e2... Bug corrigido, fornecedor centralizado
 	public Set<CotacaoFerramenta> getCotacaoFerramentas() {
 		return this.cotacaoFerramentas;
