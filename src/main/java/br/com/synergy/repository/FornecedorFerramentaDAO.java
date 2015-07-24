@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 
 import org.primefaces.component.message.Message;
 
-import br.com.synergy.model.FornecedorFerramenta;
+import br.com.synergy.model.Fornecedor;
 
 
 public class FornecedorFerramentaDAO implements Serializable {
@@ -20,10 +20,10 @@ public class FornecedorFerramentaDAO implements Serializable {
 	//@Inject
 	private Message mensagem;
 	
-	public List<FornecedorFerramenta> todos() {
-		return entityManager.createQuery("from FornecedorFerramenta", FornecedorFerramenta.class).getResultList();
+	public List<Fornecedor> todos() {
+		return entityManager.createQuery("from Fornecedor", Fornecedor.class).getResultList();
 	}
-	public void persist(FornecedorFerramenta transientInstance) {
+	public void persist(Fornecedor transientInstance) {
 
 		try {
 			entityManager.persist(transientInstance);
@@ -34,7 +34,7 @@ public class FornecedorFerramentaDAO implements Serializable {
 		}
 	}
 
-	public void remove(FornecedorFerramenta persistentInstance) {
+	public void remove(Fornecedor persistentInstance) {
 
 		try {
 			entityManager.remove(persistentInstance);
@@ -45,10 +45,10 @@ public class FornecedorFerramentaDAO implements Serializable {
 		}
 	}
 
-	public FornecedorFerramenta merge(FornecedorFerramenta detachedInstance) {
+	public Fornecedor merge(Fornecedor detachedInstance) {
 
 		try {
-			FornecedorFerramenta result = entityManager.merge(detachedInstance);
+			Fornecedor result = entityManager.merge(detachedInstance);
 
 			return result;
 		} catch (RuntimeException re) {
@@ -57,11 +57,11 @@ public class FornecedorFerramentaDAO implements Serializable {
 		}
 	}
 
-	public FornecedorFerramenta findById(String id) {
+	public Fornecedor findById(String id) {
 	
 		try {
-			FornecedorFerramenta instance = entityManager.find(
-					FornecedorFerramenta.class, id);
+			Fornecedor instance = entityManager.find(
+					Fornecedor.class, id);
 	
 			return instance;
 		} catch (RuntimeException re) {
