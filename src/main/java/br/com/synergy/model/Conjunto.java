@@ -23,6 +23,8 @@ import javax.persistence.Table;
 @Table(name = "conjunto", catalog = "sistema_gestao")
 public class Conjunto implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private Long idconjunto;
 	private String pnLess;
 	private String desc;
