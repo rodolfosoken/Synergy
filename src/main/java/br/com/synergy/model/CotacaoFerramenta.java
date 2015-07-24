@@ -1,6 +1,6 @@
-package model;
+package br.com.synergy.model;
 
-// Generated 24/07/2015 07:24:43 by Hibernate Tools 4.3.1
+// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -11,6 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +29,8 @@ public class CotacaoFerramenta implements java.io.Serializable {
 	private Long idcotacao;
 	private Date data;
 	private String responsavel;
+	private Set<FornecedorFerramenta> fornecedorFerramentas = new HashSet<FornecedorFerramenta>(
+			0);
 	private Set<Ferramenta> ferramentas = new HashSet<Ferramenta>(0);
 	private Set<FornecimentoFerramenta> fornecimentoFerramentas = new HashSet<FornecimentoFerramenta>(
 			0);
@@ -34,10 +39,12 @@ public class CotacaoFerramenta implements java.io.Serializable {
 	}
 
 	public CotacaoFerramenta(Date data, String responsavel,
+			Set<FornecedorFerramenta> fornecedorFerramentas,
 			Set<Ferramenta> ferramentas,
 			Set<FornecimentoFerramenta> fornecimentoFerramentas) {
 		this.data = data;
 		this.responsavel = responsavel;
+		this.fornecedorFerramentas = fornecedorFerramentas;
 		this.ferramentas = ferramentas;
 		this.fornecimentoFerramentas = fornecimentoFerramentas;
 	}
@@ -70,6 +77,17 @@ public class CotacaoFerramenta implements java.io.Serializable {
 
 	public void setResponsavel(String responsavel) {
 		this.responsavel = responsavel;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "cotacao_ferramenta_has_fornecedor_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "fornecedor_ferramenta_idfornecedor_ferramentacol", nullable = false, updatable = false) })
+	public Set<FornecedorFerramenta> getFornecedorFerramentas() {
+		return this.fornecedorFerramentas;
+	}
+
+	public void setFornecedorFerramentas(
+			Set<FornecedorFerramenta> fornecedorFerramentas) {
+		this.fornecedorFerramentas = fornecedorFerramentas;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta")
