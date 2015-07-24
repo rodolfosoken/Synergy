@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-name="conjunto"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="cotacao_ferramenta"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="cotacao_ferramenta_has_fornecedor"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="cotacao_material"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="cotacao_material_has_fornecedor"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="cotacao_peca"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="cotacao_peca_has_fornecedor"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="cotacao_peca_has_peca"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="endereco"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="ferramenta"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="fornecedor"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="fornecimento_ferramenta"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="fornecimento_material"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="fornecimento_peca"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="material"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="montagem"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="montagem_has_ferramenta"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="montagem_has_peca"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="peca" match-catalog="sistema_gestao"></table-filter>
+	<table-filter match-name="pfmea" match-catalog="sistema_gestao"></table-filter>
+	<table-filter match-name="projeto" match-catalog="sistema_gestao"></table-filter>
+	<table-filter match-name="projeto_has_conjunto"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="risk_assesment"
+		match-catalog="sistema_gestao">
+	</table-filter>
+</hibernate-reverse-engineering>

@@ -80,7 +80,8 @@ public class CotacaoFerramenta implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_ferramenta_has_fornecedor_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "fornecedor_ferramenta_idfornecedor_ferramentacol", nullable = false, updatable = false) })
+	@JoinTable(name = "cotacao_ferramenta_has_fornecedor", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false), @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false) }, 
+	inverseJoinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false), @JoinColumn(name = "cotacao_ferramenta_idferramenta", nullable = false, updatable = false) })
 	public Set<FornecedorFerramenta> getFornecedorFerramentas() {
 		return this.fornecedorFerramentas;
 	}
