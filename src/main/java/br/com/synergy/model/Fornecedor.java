@@ -2,18 +2,17 @@ package br.com.synergy.model;
 
 // Generated 24/07/2015 10:47:50 by Hibernate Tools 4.3.1
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,8 +22,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "fornecedor", catalog = "sistema_gestao")
-public class Fornecedor implements java.io.Serializable {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="TIPO_FORNECEDOR", discriminatorType=DiscriminatorType.STRING)
+public abstract class Fornecedor implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FornecedorId id;
 	private Endereco endereco;
 	private String cnpj;
@@ -37,47 +42,19 @@ public class Fornecedor implements java.io.Serializable {
 	private String telefone;
 	private String site;
 	private String complemento;
-	private String tipoFornecedor;
-	private Set<CotacaoFerramenta> cotacaoFerramentas = new HashSet<CotacaoFerramenta>(
-			0);
-	private Set<CotacaoMaterial> cotacaoMaterials = new HashSet<CotacaoMaterial>(
-			0);
-	private Set<CotacaoPeca> cotacaoPecas = new HashSet<CotacaoPeca>(0);
+//	private String tipoFornecedor;
+//	private Set<CotacaoFerramenta> cotacaoFerramentas = new HashSet<CotacaoFerramenta>(
+//			0);
+//	private Set<CotacaoMaterial> cotacaoMaterials = new HashSet<CotacaoMaterial>(
+//			0);
+//	private Set<CotacaoPeca> cotacaoPecas = new HashSet<CotacaoPeca>(0);
 
 	public Fornecedor() {
 	}
 
-	public Fornecedor(FornecedorId id, Endereco endereco, String cnpj,
-			String tipoFornecedor) {
-		this.id = id;
-		this.endereco = endereco;
-		this.cnpj = cnpj;
-		this.tipoFornecedor = tipoFornecedor;
-	}
 
-	public Fornecedor(FornecedorId id, Endereco endereco, String cnpj,
-			String nome, String contato, String email, String linkSharepoint,
-			String obs, String celular, String telefone, String site,
-			String complemento, String tipoFornecedor,
-			Set<CotacaoFerramenta> cotacaoFerramentas,
-			Set<CotacaoMaterial> cotacaoMaterials, Set<CotacaoPeca> cotacaoPecas) {
-		this.id = id;
-		this.endereco = endereco;
-		this.cnpj = cnpj;
-		this.nome = nome;
-		this.contato = contato;
-		this.email = email;
-		this.linkSharepoint = linkSharepoint;
-		this.obs = obs;
-		this.celular = celular;
-		this.telefone = telefone;
-		this.site = site;
-		this.complemento = complemento;
-		this.tipoFornecedor = tipoFornecedor;
-		this.cotacaoFerramentas = cotacaoFerramentas;
-		this.cotacaoMaterials = cotacaoMaterials;
-		this.cotacaoPecas = cotacaoPecas;
-	}
+
+	
 
 	@EmbeddedId
 	@AttributeOverrides({
@@ -191,49 +168,49 @@ public class Fornecedor implements java.io.Serializable {
 		this.complemento = complemento;
 	}
 
-	@Column(name = "TIPO_FORNECEDOR", nullable = false, length = 45)
-	public String getTipoFornecedor() {
-		return this.tipoFornecedor;
-	}
+//	@Column(name = "TIPO_FORNECEDOR", nullable = false, length = 45)
+//	public String getTipoFornecedor() {
+//		return this.tipoFornecedor;
+//	}
 
-	public void setTipoFornecedor(String tipoFornecedor) {
-		this.tipoFornecedor = tipoFornecedor;
-	}
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_ferramenta_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
-			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
-			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false) })
-	public Set<CotacaoFerramenta> getCotacaoFerramentas() {
-		return this.cotacaoFerramentas;
-	}
-
-	public void setCotacaoFerramentas(Set<CotacaoFerramenta> cotacaoFerramentas) {
-		this.cotacaoFerramentas = cotacaoFerramentas;
-	}
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
-			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
-			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) })
-	public Set<CotacaoMaterial> getCotacaoMaterials() {
-		return this.cotacaoMaterials;
-	}
-
-	public void setCotacaoMaterials(Set<CotacaoMaterial> cotacaoMaterials) {
-		this.cotacaoMaterials = cotacaoMaterials;
-	}
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_peca_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
-			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
-			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) })
-	public Set<CotacaoPeca> getCotacaoPecas() {
-		return this.cotacaoPecas;
-	}
-
-	public void setCotacaoPecas(Set<CotacaoPeca> cotacaoPecas) {
-		this.cotacaoPecas = cotacaoPecas;
-	}
+//	public void setTipoFornecedor(String tipoFornecedor) {
+//		this.tipoFornecedor = tipoFornecedor;
+//	}
+//
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@JoinTable(name = "cotacao_ferramenta_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
+//			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
+//			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false) })
+//	public Set<CotacaoFerramenta> getCotacaoFerramentas() {
+//		return this.cotacaoFerramentas;
+//	}
+//
+//	public void setCotacaoFerramentas(Set<CotacaoFerramenta> cotacaoFerramentas) {
+//		this.cotacaoFerramentas = cotacaoFerramentas;
+//	}
+//
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
+//			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
+//			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) })
+//	public Set<CotacaoMaterial> getCotacaoMaterials() {
+//		return this.cotacaoMaterials;
+//	}
+//
+//	public void setCotacaoMaterials(Set<CotacaoMaterial> cotacaoMaterials) {
+//		this.cotacaoMaterials = cotacaoMaterials;
+//	}
+//
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@JoinTable(name = "cotacao_peca_has_fornecedor", catalog = "sistema_gestao", joinColumns = {
+//			@JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
+//			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) })
+//	public Set<CotacaoPeca> getCotacaoPecas() {
+//		return this.cotacaoPecas;
+//	}
+//
+//	public void setCotacaoPecas(Set<CotacaoPeca> cotacaoPecas) {
+//		this.cotacaoPecas = cotacaoPecas;
+//	}
 
 }

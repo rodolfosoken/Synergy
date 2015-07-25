@@ -10,42 +10,43 @@
 </h:head>
 
 <h1>Fornecedores</h1>
-<p:messages id="mensagens"/>
+<p:messages id="mensagens" />
 <h:body>
 	<f:metadata>
 		<f:viewAction action="#{gestaoFornecedorBean.consultar}" />
 	</f:metadata>
 
-<h:form>
+	<h:form>
 
-	<p:dataTable value="#{gestaoFornecedorBean.todosFornecedores}"
-		var="fornecedor" emptyMessage="Nenhuma tarefa cadastrada." rows="10"
-		id="tarefas-table">
+		<p:dataTable value="#{gestaoFornecedorBean.todosFornecedores}"
+			var="fornecedor" emptyMessage="Nenhuma tarefa cadastrada." rows="10"
+			id="tarefas-table">
 
-		<p:column headerText="CNPJ" sortBy="#{fornecedor.cnpj}">
-			<h:outputText value="#{fornecedor.cnpj}" />
-		</p:column>
+			<p:column headerText="CNPJ" sortBy="#{fornecedor.cnpj}">
+				<h:outputText value="#{fornecedor.cnpj}" />
+			</p:column>
 
-		<p:column headerText="Nome da Empresa" sortBy="#{fornecedor.nome}">
-			<h:outputText value="#{fornecedor.nome}" />
-		</p:column>
+			<p:column headerText="Nome da Empresa" sortBy="#{fornecedor.nome}">
+				<h:outputText value="#{fornecedor.nome}" />
+			</p:column>
 
-		<p:column headerText="Contato" sortBy="#{fornecedor.contato}">
-			<h:outputText value="#{fornecedor.contato}" />
-		</p:column>
+			<p:column headerText="Contato" sortBy="#{fornecedor.contato}">
+				<h:outputText value="#{fornecedor.contato}" />
+			</p:column>
 
-		<p:column headerText="E-mail" sortBy="#{fornecedor.email}">
-			<h:outputText value="#{fornecedor.email}" />
-		</p:column>
+			<p:column headerText="E-mail" sortBy="#{fornecedor.email}">
+				<h:outputText value="#{fornecedor.email}" />
+			</p:column>
 
-		<p:column headerText="Link" sortBy="#{fornecedor.linkSharepoint}">
-			<h:outputText value="#{fornecedor.linkSharepoint}" />
-		</p:column>
+			<p:column headerText="Link" sortBy="#{fornecedor.linkSharepoint}">
+				<h:outputText value="#{fornecedor.linkSharepoint}" />
+			</p:column>
 
-	</p:dataTable>
-	
-	
-	
+
+		</p:dataTable>
+
+
+
 	</h:form>
 </h:body>
 </html>

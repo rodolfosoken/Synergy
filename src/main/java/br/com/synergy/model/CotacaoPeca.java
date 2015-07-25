@@ -30,8 +30,7 @@ public class CotacaoPeca implements java.io.Serializable {
 	private String responsavel;
 	private Date data;
 	private Set<Fornecedor> fornecedors = new HashSet<Fornecedor>(0);
-	private Set<FornecimentoPeca> fornecimentoPecas = new HashSet<FornecimentoPeca>(
-			0);
+	private Set<FornecimentoPeca> fornecimentoPecas = new HashSet<FornecimentoPeca>(0);
 	private Set<Peca> pecas = new HashSet<Peca>(0);
 
 	public CotacaoPeca() {
