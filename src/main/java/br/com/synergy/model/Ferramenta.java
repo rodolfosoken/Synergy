@@ -1,15 +1,15 @@
 package br.com.synergy.model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Table(name = "ferramenta", catalog = "sistema_gestao")
 public class Ferramenta implements java.io.Serializable {
 
-	private FerramentaId id;
+	private Long idferramenta;
 	private CotacaoFerramenta cotacaoFerramenta;
 	private String idEquipament;
 	private String nome;
@@ -42,19 +42,16 @@ public class Ferramenta implements java.io.Serializable {
 	public Ferramenta() {
 	}
 
-	public Ferramenta(FerramentaId id, CotacaoFerramenta cotacaoFerramenta,
-			String idEquipament) {
-		this.id = id;
+	public Ferramenta(CotacaoFerramenta cotacaoFerramenta, String idEquipament) {
 		this.cotacaoFerramenta = cotacaoFerramenta;
 		this.idEquipament = idEquipament;
 	}
 
-	public Ferramenta(FerramentaId id, CotacaoFerramenta cotacaoFerramenta,
-			String idEquipament, String nome, Double length, Double height,
-			Double width, Double partPerHour, String utilidade, Integer cycle,
+	public Ferramenta(CotacaoFerramenta cotacaoFerramenta, String idEquipament,
+			String nome, Double length, Double height, Double width,
+			Double partPerHour, String utilidade, Integer cycle,
 			Double areaStack, Double area, Integer maxStack, String desc,
 			Set<Montagem> montagems) {
-		this.id = id;
 		this.cotacaoFerramenta = cotacaoFerramenta;
 		this.idEquipament = idEquipament;
 		this.nome = nome;
@@ -71,20 +68,19 @@ public class Ferramenta implements java.io.Serializable {
 		this.montagems = montagems;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idferramenta", column = @Column(name = "idferramenta", nullable = false)),
-			@AttributeOverride(name = "cotacaoFerramentaIdcotacao", column = @Column(name = "cotacao_ferramenta_idcotacao", nullable = false)) })
-	public FerramentaId getId() {
-		return this.id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "idferramenta", unique = true, nullable = false)
+	public Long getIdferramenta() {
+		return this.idferramenta;
 	}
 
-	public void setId(FerramentaId id) {
-		this.id = id;
+	public void setIdferramenta(Long idferramenta) {
+		this.idferramenta = idferramenta;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false)
 	public CotacaoFerramenta getCotacaoFerramenta() {
 		return this.cotacaoFerramenta;
 	}
@@ -202,12 +198,7 @@ public class Ferramenta implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "montagem_has_ferramenta", catalog = "sistema_gestao", 
-	joinColumns = {	
-			@JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false),
-			@JoinColumn(name = "ferramenta_cotacao_ferramenta_idcotacao", nullable = false, updatable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false),
-			@JoinColumn(name = "montagem_conjunto_idconjunto", nullable = false, updatable = false)})
+	@JoinTable(name = "montagem_has_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false) })
 	public Set<Montagem> getMontagems() {
 		return this.montagems;
 	}

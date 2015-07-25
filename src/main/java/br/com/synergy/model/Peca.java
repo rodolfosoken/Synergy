@@ -1,17 +1,16 @@
 package br.com.synergy.model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -24,7 +23,7 @@ import javax.persistence.Table;
 @Table(name = "peca", catalog = "sistema_gestao")
 public class Peca implements java.io.Serializable {
 
-	private PecaId id;
+	private Long idpeca;
 	private Material material;
 	private String pnLess;
 	private String partName;
@@ -36,15 +35,13 @@ public class Peca implements java.io.Serializable {
 	public Peca() {
 	}
 
-	public Peca(PecaId id, Material material) {
-		this.id = id;
+	public Peca(Material material) {
 		this.material = material;
 	}
 
-	public Peca(PecaId id, Material material, String pnLess, String partName,
-			String desc, String upcFna, Set<Montagem> montagems,
+	public Peca(Material material, String pnLess, String partName, String desc,
+			String upcFna, Set<Montagem> montagems,
 			Set<CotacaoPeca> cotacaoPecas) {
-		this.id = id;
 		this.material = material;
 		this.pnLess = pnLess;
 		this.partName = partName;
@@ -54,23 +51,19 @@ public class Peca implements java.io.Serializable {
 		this.cotacaoPecas = cotacaoPecas;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idpeca", column = @Column(name = "idpeca", nullable = false)),
-			@AttributeOverride(name = "materialIdmaterial", column = @Column(name = "material_idmaterial", nullable = false)),
-			@AttributeOverride(name = "materialCotacaoMaterialIdcotacao", column = @Column(name = "material_cotacao_material_idcotacao", nullable = false)) })
-	public PecaId getId() {
-		return this.id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "idpeca", unique = true, nullable = false)
+	public Long getIdpeca() {
+		return this.idpeca;
 	}
 
-	public void setId(PecaId id) {
-		this.id = id;
+	public void setIdpeca(Long idpeca) {
+		this.idpeca = idpeca;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "material_idmaterial", referencedColumnName = "idmaterial", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "material_cotacao_material_idcotacao", referencedColumnName = "cotacao_material_idcotacao", nullable = false, insertable = false, updatable = false) })
+	@JoinColumn(name = "material_idmaterial", nullable = false)
 	public Material getMaterial() {
 		return this.material;
 	}
@@ -116,12 +109,7 @@ public class Peca implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "montagem_has_peca", catalog = "sistema_gestao", joinColumns = {
-			@JoinColumn(name = "peca_idpeca", nullable = false, updatable = false),
-			@JoinColumn(name = "peca_material_idmaterial", nullable = false, updatable = false),
-			@JoinColumn(name = "peca_material_cotacao_material_idcotacao", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false),
-			@JoinColumn(name = "montagem_conjunto_idconjunto", nullable = false, updatable = false)})
+	@JoinTable(name = "montagem_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false) })
 	public Set<Montagem> getMontagems() {
 		return this.montagems;
 	}
@@ -131,10 +119,7 @@ public class Peca implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_peca_has_peca", catalog = "sistema_gestao", joinColumns = {
-			@JoinColumn(name = "peca_idpeca", nullable = false, updatable = false),
-			@JoinColumn(name = "peca_material_idmaterial", nullable = false, updatable = false),
-			@JoinColumn(name = "peca_material_cotacao_material_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) })
+	@JoinTable(name = "cotacao_peca_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) })
 	public Set<CotacaoPeca> getCotacaoPecas() {
 		return this.cotacaoPecas;
 	}

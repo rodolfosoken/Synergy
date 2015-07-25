@@ -5,6 +5,7 @@
 	<table-filter match-name="conjunto"
 		match-catalog="sistema_gestao">
 	</table-filter>
+	<table-filter match-name="conta" match-catalog="sistema_gestao"></table-filter>
 	<table-filter match-name="cotacao_ferramenta"
 		match-catalog="sistema_gestao">
 	</table-filter>
@@ -24,9 +25,6 @@
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="cotacao_peca_has_peca"
-		match-catalog="sistema_gestao">
-	</table-filter>
-	<table-filter match-name="endereco"
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="ferramenta"
@@ -57,6 +55,7 @@
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="peca" match-catalog="sistema_gestao"></table-filter>
+	<table-filter match-name="pep" match-catalog="sistema_gestao"></table-filter>
 	<table-filter match-name="pfmea" match-catalog="sistema_gestao"></table-filter>
 	<table-filter match-name="projeto" match-catalog="sistema_gestao"></table-filter>
 	<table-filter match-name="projeto_has_conjunto"

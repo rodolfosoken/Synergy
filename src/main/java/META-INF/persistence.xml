@@ -2,32 +2,6 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="SynergyPU">
 				<provider>org.hibernate.ejb.HibernatePersistence</provider>
-				<class>br.com.synergy.model.Conjunto</class>
-				<class>br.com.synergy.model.CotacaoFerramenta</class>
-				<class>br.com.synergy.model.CotacaoMaterial</class>
-				<class>br.com.synergy.model.CotacaoPeca</class>
-				<class>br.com.synergy.model.Endereco</class>
-				<class>br.com.synergy.model.Ferramenta</class>
-				<class>br.com.synergy.model.FerramentaId</class>
-				<class>br.com.synergy.model.Fornecedor</class>
-				<class>br.com.synergy.model.FornecedorId</class>
-				<class>br.com.synergy.model.FornecimentoFerramenta</class>
-				<class>br.com.synergy.model.FornecimentoFerramentaId</class>
-				<class>br.com.synergy.model.FornecimentoMaterial</class>
-				<class>br.com.synergy.model.FornecimentoMaterialId</class>
-				<class>br.com.synergy.model.FornecimentoPeca</class>
-				<class>br.com.synergy.model.FornecimentoPecaId</class>
-				<class>br.com.synergy.model.Material</class>
-				<class>br.com.synergy.model.MaterialId</class>
-				<class>br.com.synergy.model.Montagem</class>
-				<class>br.com.synergy.model.MontagemId</class>
-				<class>br.com.synergy.model.Peca</class>
-				<class>br.com.synergy.model.PecaId</class>
-				<class>br.com.synergy.model.Pfmea</class>
-				<class>br.com.synergy.model.PfmeaId</class>
-				<class>br.com.synergy.model.Projeto</class>
-				<class>br.com.synergy.model.RiskAssesment</class>
-				<class>br.com.synergy.model.RiskAssesmentId</class>
 
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sistema_gestao" />

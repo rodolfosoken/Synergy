@@ -1,15 +1,16 @@
 package br.com.synergy.model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
 
 import java.util.Date;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,56 +23,65 @@ import javax.persistence.TemporalType;
 @Table(name = "fornecimento_peca", catalog = "sistema_gestao")
 public class FornecimentoPeca implements java.io.Serializable {
 
-	private FornecimentoPecaId id;
+	private Long idfornecimentoPeca;
 	private CotacaoPeca cotacaoPeca;
+	private Pep pep;
 	private Boolean okPrazo;
 	private Boolean okEspec;
 	private Boolean okVisita;
 	private Boolean okAssist;
 	private Date data;
-	private String pep;
 
 	public FornecimentoPeca() {
 	}
 
-	public FornecimentoPeca(FornecimentoPecaId id, CotacaoPeca cotacaoPeca) {
-		this.id = id;
+	public FornecimentoPeca(CotacaoPeca cotacaoPeca, Pep pep) {
 		this.cotacaoPeca = cotacaoPeca;
+		this.pep = pep;
 	}
 
-	public FornecimentoPeca(FornecimentoPecaId id, CotacaoPeca cotacaoPeca,
-			Boolean okPrazo, Boolean okEspec, Boolean okVisita,
-			Boolean okAssist, Date data, String pep) {
-		this.id = id;
+	public FornecimentoPeca(CotacaoPeca cotacaoPeca, Pep pep, Boolean okPrazo,
+			Boolean okEspec, Boolean okVisita, Boolean okAssist, Date data) {
 		this.cotacaoPeca = cotacaoPeca;
+		this.pep = pep;
 		this.okPrazo = okPrazo;
 		this.okEspec = okEspec;
 		this.okVisita = okVisita;
 		this.okAssist = okAssist;
 		this.data = data;
-		this.pep = pep;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idfornecimentoPeca", column = @Column(name = "idfornecimento_peca", nullable = false)),
-			@AttributeOverride(name = "cotacaoPecaIdcotacao", column = @Column(name = "cotacao_peca_idcotacao", nullable = false)) })
-	public FornecimentoPecaId getId() {
-		return this.id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "idfornecimento_peca", unique = true, nullable = false)
+	public Long getIdfornecimentoPeca() {
+		return this.idfornecimentoPeca;
 	}
 
-	public void setId(FornecimentoPecaId id) {
-		this.id = id;
+	public void setIdfornecimentoPeca(Long idfornecimentoPeca) {
+		this.idfornecimentoPeca = idfornecimentoPeca;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "cotacao_peca_idcotacao", nullable = false)
 	public CotacaoPeca getCotacaoPeca() {
 		return this.cotacaoPeca;
 	}
 
 	public void setCotacaoPeca(CotacaoPeca cotacaoPeca) {
 		this.cotacaoPeca = cotacaoPeca;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false),
+			@JoinColumn(name = "pep_Conta_idConta", referencedColumnName = "Conta_idConta", nullable = false) })
+	public Pep getPep() {
+		return this.pep;
+	}
+
+	public void setPep(Pep pep) {
+		this.pep = pep;
 	}
 
 	@Column(name = "ok_prazo")
@@ -118,15 +128,6 @@ public class FornecimentoPeca implements java.io.Serializable {
 
 	public void setData(Date data) {
 		this.data = data;
-	}
-
-	@Column(name = "pep")
-	public String getPep() {
-		return this.pep;
-	}
-
-	public void setPep(String pep) {
-		this.pep = pep;
 	}
 
 }

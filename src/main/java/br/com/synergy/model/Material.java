@@ -1,15 +1,15 @@
 package br.com.synergy.model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Table(name = "material", catalog = "sistema_gestao")
 public class Material implements java.io.Serializable {
 
-	private MaterialId id;
+	private Long idmaterial;
 	private CotacaoMaterial cotacaoMaterial;
 	private String materialEspc;
 	private String material;
@@ -32,16 +32,13 @@ public class Material implements java.io.Serializable {
 	public Material() {
 	}
 
-	public Material(MaterialId id, CotacaoMaterial cotacaoMaterial,
-			String materialEspc) {
-		this.id = id;
+	public Material(CotacaoMaterial cotacaoMaterial, String materialEspc) {
 		this.cotacaoMaterial = cotacaoMaterial;
 		this.materialEspc = materialEspc;
 	}
 
-	public Material(MaterialId id, CotacaoMaterial cotacaoMaterial,
-			String materialEspc, String material, String desc, Set<Peca> pecas) {
-		this.id = id;
+	public Material(CotacaoMaterial cotacaoMaterial, String materialEspc,
+			String material, String desc, Set<Peca> pecas) {
 		this.cotacaoMaterial = cotacaoMaterial;
 		this.materialEspc = materialEspc;
 		this.material = material;
@@ -49,20 +46,19 @@ public class Material implements java.io.Serializable {
 		this.pecas = pecas;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idmaterial", column = @Column(name = "idmaterial", nullable = false)),
-			@AttributeOverride(name = "cotacaoMaterialIdcotacao", column = @Column(name = "cotacao_material_idcotacao", nullable = false)) })
-	public MaterialId getId() {
-		return this.id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "idmaterial", unique = true, nullable = false)
+	public Long getIdmaterial() {
+		return this.idmaterial;
 	}
 
-	public void setId(MaterialId id) {
-		this.id = id;
+	public void setIdmaterial(Long idmaterial) {
+		this.idmaterial = idmaterial;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cotacao_material_idcotacao", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "cotacao_material_idcotacao", nullable = false)
 	public CotacaoMaterial getCotacaoMaterial() {
 		return this.cotacaoMaterial;
 	}

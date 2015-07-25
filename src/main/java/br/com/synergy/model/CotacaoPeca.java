@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 24/07/2015 10:47:50 by Hibernate Tools 4.3.1
+// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -30,7 +30,8 @@ public class CotacaoPeca implements java.io.Serializable {
 	private String responsavel;
 	private Date data;
 	private Set<Fornecedor> fornecedors = new HashSet<Fornecedor>(0);
-	private Set<FornecimentoPeca> fornecimentoPecas = new HashSet<FornecimentoPeca>(0);
+	private Set<FornecimentoPeca> fornecimentoPecas = new HashSet<FornecimentoPeca>(
+			0);
 	private Set<Peca> pecas = new HashSet<Peca>(0);
 
 	public CotacaoPeca() {
@@ -77,10 +78,7 @@ public class CotacaoPeca implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_peca_has_fornecedor", catalog = "sistema_gestao", 
-	joinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false),
-			@JoinColumn(name = "fornecedor_endereco_idendereco", nullable = false, updatable = false)  })
+	@JoinTable(name = "cotacao_peca_has_fornecedor", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false) })
 	public Set<Fornecedor> getFornecedors() {
 		return this.fornecedors;
 	}
@@ -99,11 +97,7 @@ public class CotacaoPeca implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_peca_has_peca", catalog = "sistema_gestao", 
-	joinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false),
-			@JoinColumn(name = "peca_material_idmaterial", nullable = false, updatable = false),
-			@JoinColumn(name = "peca_material_cotacao_material_idcotacao", nullable = false, updatable = false)})
+	@JoinTable(name = "cotacao_peca_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "cotacao_peca_idcotacao", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) })
 	public Set<Peca> getPecas() {
 		return this.pecas;
 	}

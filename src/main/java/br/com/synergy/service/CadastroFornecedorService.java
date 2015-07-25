@@ -17,9 +17,9 @@ public class CadastroFornecedorService implements Serializable {
 	private FornecedorFerramentaDAO dao;
 	
 	
+	
 	@Transactional
 	public void salvar(FornecedorFerramenta fornecedor){
-
 		dao.merge(fornecedor);
 	}
 	

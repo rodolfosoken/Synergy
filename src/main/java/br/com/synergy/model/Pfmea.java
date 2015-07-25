@@ -1,15 +1,14 @@
 package br.com.synergy.model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,7 +19,7 @@ import javax.persistence.Table;
 @Table(name = "pfmea", catalog = "sistema_gestao")
 public class Pfmea implements java.io.Serializable {
 
-	private PfmeaId id;
+	private Integer idPfmea;
 	private RiskAssesment riskAssesment;
 	private String responsavel;
 	private String link;
@@ -28,36 +27,29 @@ public class Pfmea implements java.io.Serializable {
 	public Pfmea() {
 	}
 
-	public Pfmea(PfmeaId id, RiskAssesment riskAssesment) {
-		this.id = id;
+	public Pfmea(RiskAssesment riskAssesment) {
 		this.riskAssesment = riskAssesment;
 	}
 
-	public Pfmea(PfmeaId id, RiskAssesment riskAssesment, String responsavel,
-			String link) {
-		this.id = id;
+	public Pfmea(RiskAssesment riskAssesment, String responsavel, String link) {
 		this.riskAssesment = riskAssesment;
 		this.responsavel = responsavel;
 		this.link = link;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idPfmea", column = @Column(name = "id_pfmea", nullable = false)),
-			@AttributeOverride(name = "riskAssesmentIdRiskAssesment", column = @Column(name = "risk_assesment_id_risk_assesment", nullable = false)),
-			@AttributeOverride(name = "riskAssesmentConjuntoIdconjunto", column = @Column(name = "risk_assesment_conjunto_idconjunto", nullable = false)) })
-	public PfmeaId getId() {
-		return this.id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_pfmea", unique = true, nullable = false)
+	public Integer getIdPfmea() {
+		return this.idPfmea;
 	}
 
-	public void setId(PfmeaId id) {
-		this.id = id;
+	public void setIdPfmea(Integer idPfmea) {
+		this.idPfmea = idPfmea;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-			@JoinColumn(name = "risk_assesment_id_risk_assesment", referencedColumnName = "id_risk_assesment", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "risk_assesment_conjunto_idconjunto", referencedColumnName = "conjunto_idconjunto", nullable = false, insertable = false, updatable = false) })
+	@JoinColumn(name = "risk_assesment_id_risk_assesment", nullable = false)
 	public RiskAssesment getRiskAssesment() {
 		return this.riskAssesment;
 	}

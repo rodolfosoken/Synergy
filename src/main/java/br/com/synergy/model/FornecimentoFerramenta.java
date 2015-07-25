@@ -1,15 +1,14 @@
 package br.com.synergy.model;
 
-// Generated 23/07/2015 04:16:30 by Hibernate Tools 4.3.1
+// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
 
 import java.util.Date;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,58 +21,68 @@ import javax.persistence.TemporalType;
 @Table(name = "fornecimento_ferramenta", catalog = "sistema_gestao")
 public class FornecimentoFerramenta implements java.io.Serializable {
 
-	private FornecimentoFerramentaId id;
+	private long idfornecimentoFerramenta;
 	private CotacaoFerramenta cotacaoFerramenta;
+	private Pep pep;
 	private Boolean okPrazo;
 	private Boolean okEspec;
 	private Boolean okVisita;
 	private Boolean okAssist;
 	private Date data;
-	private String pep;
 
 	public FornecimentoFerramenta() {
 	}
 
-	public FornecimentoFerramenta(FornecimentoFerramentaId id,
-			CotacaoFerramenta cotacaoFerramenta) {
-		this.id = id;
+	public FornecimentoFerramenta(long idfornecimentoFerramenta,
+			CotacaoFerramenta cotacaoFerramenta, Pep pep) {
+		this.idfornecimentoFerramenta = idfornecimentoFerramenta;
 		this.cotacaoFerramenta = cotacaoFerramenta;
+		this.pep = pep;
 	}
 
-	public FornecimentoFerramenta(FornecimentoFerramentaId id,
-			CotacaoFerramenta cotacaoFerramenta, Boolean okPrazo,
-			Boolean okEspec, Boolean okVisita, Boolean okAssist, Date data,
-			String pep) {
-		this.id = id;
+	public FornecimentoFerramenta(long idfornecimentoFerramenta,
+			CotacaoFerramenta cotacaoFerramenta, Pep pep, Boolean okPrazo,
+			Boolean okEspec, Boolean okVisita, Boolean okAssist, Date data) {
+		this.idfornecimentoFerramenta = idfornecimentoFerramenta;
 		this.cotacaoFerramenta = cotacaoFerramenta;
+		this.pep = pep;
 		this.okPrazo = okPrazo;
 		this.okEspec = okEspec;
 		this.okVisita = okVisita;
 		this.okAssist = okAssist;
 		this.data = data;
-		this.pep = pep;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idfornecimentoFerramenta", column = @Column(name = "idfornecimento_ferramenta", nullable = false)),
-			@AttributeOverride(name = "cotacaoFerramentaIdcotacao", column = @Column(name = "cotacao_ferramenta_idcotacao", nullable = false)) })
-	public FornecimentoFerramentaId getId() {
-		return this.id;
+	@Id
+	@Column(name = "idfornecimento_ferramenta", unique = true, nullable = false)
+	public long getIdfornecimentoFerramenta() {
+		return this.idfornecimentoFerramenta;
 	}
 
-	public void setId(FornecimentoFerramentaId id) {
-		this.id = id;
+	public void setIdfornecimentoFerramenta(long idfornecimentoFerramenta) {
+		this.idfornecimentoFerramenta = idfornecimentoFerramenta;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false)
 	public CotacaoFerramenta getCotacaoFerramenta() {
 		return this.cotacaoFerramenta;
 	}
 
 	public void setCotacaoFerramenta(CotacaoFerramenta cotacaoFerramenta) {
 		this.cotacaoFerramenta = cotacaoFerramenta;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false),
+			@JoinColumn(name = "pep_Conta_idConta", referencedColumnName = "Conta_idConta", nullable = false) })
+	public Pep getPep() {
+		return this.pep;
+	}
+
+	public void setPep(Pep pep) {
+		this.pep = pep;
 	}
 
 	@Column(name = "ok_prazo")
@@ -120,15 +129,6 @@ public class FornecimentoFerramenta implements java.io.Serializable {
 
 	public void setData(Date data) {
 		this.data = data;
-	}
-
-	@Column(name = "pep")
-	public String getPep() {
-		return this.pep;
-	}
-
-	public void setPep(String pep) {
-		this.pep = pep;
 	}
 
 }
