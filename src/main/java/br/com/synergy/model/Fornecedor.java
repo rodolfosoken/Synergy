@@ -31,7 +31,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private FornecedorId id;
-	private Endereco endereco;
+	private Endereco endereco = new Endereco();
 	private String cnpj;
 	private String nome;
 	private String contato;
@@ -52,9 +52,6 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public Fornecedor() {
 	}
 
-
-
-	
 
 	@EmbeddedId
 	@AttributeOverrides({

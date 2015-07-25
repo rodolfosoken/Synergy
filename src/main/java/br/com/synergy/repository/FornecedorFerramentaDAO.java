@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 
 import org.primefaces.component.message.Message;
 
+import br.com.synergy.model.Fornecedor;
 import br.com.synergy.model.FornecedorFerramenta;
 
 
@@ -18,6 +19,7 @@ public class FornecedorFerramentaDAO implements Serializable {
 	private EntityManager entityManager;
 	
 	//@Inject
+	@SuppressWarnings("unused")
 	private Message mensagem;
 	
 	public List<FornecedorFerramenta> todos() {
@@ -45,10 +47,10 @@ public class FornecedorFerramentaDAO implements Serializable {
 		}
 	}
 
-	public FornecedorFerramenta merge(FornecedorFerramenta detachedInstance) {
+	public Fornecedor merge(Fornecedor detachedInstance) {
 
 		try {
-			FornecedorFerramenta result = entityManager.merge(detachedInstance);
+			Fornecedor result = entityManager.merge(detachedInstance);
 
 			return result;
 		} catch (RuntimeException re) {

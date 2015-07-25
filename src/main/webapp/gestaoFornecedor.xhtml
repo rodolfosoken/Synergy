@@ -15,8 +15,45 @@
 	<f:metadata>
 		<f:viewAction action="#{gestaoFornecedorBean.consultar}" />
 	</f:metadata>
-
 	<h:form>
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:toolbar>
+			<f:facet name="left">
+				<p:commandButton value="Novo" icon="ui-icon-document"
+					action="#{gestaoFornecedorBean.prepararNovoCadastro}"
+					process="@this" update="fornecedor-dialog"
+					oncomplete="PF('edicaoFornecedorDialog').show()">
+					<p:resetInput target="fornecedor-dialog" />
+				</p:commandButton>
+
+				<p:commandButton type="button" value="Open"
+					icon="ui-icon-folder-open" />
+
+				<span class="ui-separator"> <span
+					class="ui-icon ui-icon-grip-dotted-vertical" />
+				</span>
+
+				<p:commandButton type="button" title="Save" icon="ui-icon-disk" />
+				<p:commandButton type="button" title="Delete" icon="ui-icon-trash" />
+				<p:commandButton type="button" title="Print" icon="ui-icon-print" />
+			</f:facet>
+
+			<f:facet name="right">
+				<p:menuButton value="Options">
+					<p:menuitem value="Save" actionListener="#{toolbarView.save}"
+						update="messages" icon="ui-icon-disk" />
+					<p:menuitem value="Update" actionListener="#{toolbarView.update}"
+						update="messages" icon="ui-icon-arrowrefresh-1-w" />
+					<p:menuitem value="Delete" actionListener="#{toolbarView.delete}"
+						ajax="false" icon="ui-icon-close" />
+					<p:menuitem value="Homepage" url="http://www.primefaces.org"
+						icon="ui-icon-extlink" />
+				</p:menuButton>
+			</f:facet>
+
+		</p:toolbar>
 
 		<p:dataTable value="#{gestaoFornecedorBean.todosFornecedores}"
 			var="fornecedor" emptyMessage="Nenhuma tarefa cadastrada." rows="10"
@@ -42,9 +79,39 @@
 				<h:outputText value="#{fornecedor.linkSharepoint}" />
 			</p:column>
 
+			<p:column headerText="Link"
+				sortBy="#{fornecedor.endereco.logradouro}">
+				<h:outputText value="#{fornecedor.endereco.logradouro}" />
+			</p:column>
 
 		</p:dataTable>
 
+		<p:dialog header="Novo Fornecedor" widgetVar="edicaoFornecedorDialog"
+			id="fornecedor-dialog" resizable="false" modal="true">
+
+			<p:defaultCommand target="salvar-button" scope="fornecedor-dialog" />
+
+			<h:panelGrid columns="2" id="painel-dialog">
+
+				<p:outputLabel value="CNPJ" for="cnpj" />
+				<p:inputMask id="cnpj" size="18" maxlength="18"
+					value="#{gestaoFornecedorBean.fornecedorEdicao.cnpj}"
+					mask="99.999.999/9999-99" />
+
+				<p:outputLabel value="Fornecedor" for="nome-fantasia" />
+				<p:inputText id="nome-fantasia" size="60" maxlength="80"
+					value="#{gestaoFornecedorBean.fornecedorEdicao.nome}" />
+
+				<p:outputLabel value="Rua" for="rua" />
+				<p:inputText id="rua" size="60" maxlength="120"
+					value="#{gestaoFornecedorBean.fornecedorEdicao.endereco.logradouro}" />
+
+				<p:commandButton value="Salvar" id="salvar-button"
+					action="#{gestaoFornecedorBean.salvar}" process="fornecedor-dialog"
+				
+					oncomplete="if (!args.validationFailed) PF('edicaoFornecedorDialog').hide()" />
+			</h:panelGrid>
+		</p:dialog>
 
 
 	</h:form>
