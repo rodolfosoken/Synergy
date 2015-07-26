@@ -134,7 +134,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setCelular(String celular) {
 		this.celular = celular;
 	}
-
+	@NotEmpty
 	@Column(name = "telefone", length = 45)
 	public String getTelefone() {
 		return this.telefone;

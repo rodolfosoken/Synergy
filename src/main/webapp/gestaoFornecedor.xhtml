@@ -10,16 +10,14 @@
 </h:head>
 
 <h1>Fornecedores</h1>
-<p:messages id="mensagens" />
 <h:body>
 	<f:metadata>
 		<f:viewAction action="#{gestaoFornecedorBean.consultar}" />
 	</f:metadata>
-	<h:form>
+	<h:form id="frm">
+		<p:messages id="messages" />
 
-		<p:growl id="messages" showDetail="true" />
-
-		<p:toolbar>
+		<p:toolbar id="toolbar">
 			<f:facet name="left">
 				<p:commandButton value="Novo" icon="ui-icon-document"
 					action="#{gestaoFornecedorBean.prepararNovoCadastro}"
@@ -28,24 +26,30 @@
 					<p:resetInput target="fornecedor-dialog" />
 				</p:commandButton>
 
-				<p:commandButton type="button" value="Open"
-					icon="ui-icon-folder-open" />
+				<p:commandButton value="Editar"
+					icon="ui-icon-folder-open" process="@this"
+					update="fornecedor-dialog"
+					oncomplete="PF('edicaoFornecedorDialog').show()"
+					disabled="#{gestaoFornecedorBean.fornecedorSelecionado==null}">
+					<p:resetInput target="fornecedor-dialog" />
+					<f:setPropertyActionListener
+						value="#{gestaoFornecedorBean.fornecedorSelecionado}"
+						target="#{gestaoFornecedorBean.fornecedorEdicao}" />
+				</p:commandButton>
 
 				<span class="ui-separator"> <span
 					class="ui-icon ui-icon-grip-dotted-vertical" />
 				</span>
-
-				<p:commandButton type="button" title="Save" icon="ui-icon-disk" />
-				<p:commandButton type="button" title="Delete" icon="ui-icon-trash" />
-				<p:commandButton type="button" title="Print" icon="ui-icon-print" />
+				<p:commandButton title="Excluir" icon="ui-icon-trash" />
+				<p:commandButton title="Download" icon=" ui-icon-arrowthick-1-s" />
 			</f:facet>
 
 			<f:facet name="right">
 				<p:menuButton value="Options">
 					<p:menuitem value="Save" actionListener="#{toolbarView.save}"
 						update="messages" icon="ui-icon-disk" />
-					<p:menuitem value="Update" actionListener="#{toolbarView.update}"
-						update="messages" icon="ui-icon-arrowrefresh-1-w" />
+					<p:menuitem value="Update" actionListener="#{gestaoFornecedorBean.consultar}"
+						 icon="ui-icon-arrowrefresh-1-w" />
 					<p:menuitem value="Delete" actionListener="#{toolbarView.delete}"
 						ajax="false" icon="ui-icon-close" />
 					<p:menuitem value="Homepage" url="http://www.primefaces.org"
@@ -62,6 +66,11 @@
 			selection="#{gestaoFornecedorBean.fornecedorSelecionado}"
 			selectionMode="single" rowKey="#{fornecedor.idfornecedor}">
 
+			<!-- Quando selecionar disparar evento -->
+			<p:ajax event="rowSelect" update=":frm:toolbar" />
+			<p:ajax event="rowUnselect" update=":frm:toolbar" />
+
+
 			<p:column headerText="CNPJ" sortBy="#{fornecedor.cnpj}">
 				<h:outputText value="#{fornecedor.cnpj}" />
 			</p:column>
@@ -74,8 +83,8 @@
 				<h:outputText value="#{fornecedor.contato}" />
 			</p:column>
 
-			<p:column headerText="E-mail" sortBy="#{fornecedor.email}">
-				<h:outputText value="#{fornecedor.email}" />
+			<p:column headerText="Telefone" sortBy="#{fornecedor.telefone}">
+				<h:outputText value="#{fornecedor.telefone}" />
 			</p:column>
 
 			<p:column headerText="Link" sortBy="#{fornecedor.linkSharepoint}">
@@ -107,7 +116,7 @@
 				<p:outputLabel />
 
 				<p:outputLabel value="Fornecedor" for="fornecedor" />
-				<p:inputText id="fornecedor" size="30"
+				<p:inputText id="fornecedor" size="30" required="true"
 					value="#{gestaoFornecedorBean.fornecedorEdicao.nome}" />
 				<p:outputLabel />
 				<p:outputLabel />
@@ -123,12 +132,12 @@
 
 
 				<p:outputLabel value="Telefone" for="telefone" />
-				<p:inputText id="telefone"
+				<p:inputMask id="telefone" mask="(99) 9999-9999"
 					value="#{gestaoFornecedorBean.fornecedorEdicao.telefone}" />
 
 
 				<p:outputLabel value="Celular" for="celular" />
-				<p:inputText id="celular"
+				<p:inputMask id="celular" mask="(99) 99999-9999"
 					value="#{gestaoFornecedorBean.fornecedorEdicao.celular}" />
 
 
@@ -177,8 +186,8 @@
 				<p:inputText id="bairro" size="30"
 					value="#{gestaoFornecedorBean.fornecedorEdicao.bairro}" />
 				<p:outputLabel />
-				<p:outputLabel />					
-					
+				<p:outputLabel />
+
 
 
 				<p:outputLabel value="CEP" for="cep" />
@@ -194,8 +203,8 @@
 					value="#{gestaoFornecedorBean.fornecedorEdicao.obs}" />
 				<p:outputLabel />
 				<p:outputLabel />
-				
-				
+
+
 				<p:commandButton value="Salvar" id="salvar-button"
 					action="#{gestaoFornecedorBean.salvar}" process="fornecedor-dialog"
 					update="msgs-dialog painel-dialog"

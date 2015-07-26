@@ -1,11 +1,14 @@
 package br.com.synergy.controller;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.repository.FornecedorFerramentaDAO;
@@ -42,6 +45,13 @@ public class GestaoFornecedorBean implements Serializable {
 	public void salvar(){
 		cadastroFornecedor.salvar(fornecedorEdicao);
 		consultar();
+
+		messages.info("Fornecedor salvo com sucesso!");
+		
+		//pega lista de componentes para atualizar
+		//atualizando a tabela e lança a mensagem de sucesso
+		RequestContext.getCurrentInstance().update(
+				Arrays.asList("frm:messages", "frm:fornecedores-table"));
 	}
 	
 	public void prepararNovoCadastro(){
