@@ -43,6 +43,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	private String cep;
 	private String estado;
 	private String tipoFornecedor; 
+	private String cargo;
 	public Fornecedor() {
 	}
 
@@ -87,6 +88,15 @@ public abstract class Fornecedor implements java.io.Serializable {
 
 	public void setContato(String contato) {
 		this.contato = contato;
+	}
+	
+	@Column(name = "cargo")
+	public String getCargo() {
+		return this.cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 
 	@Column(name = "email")
