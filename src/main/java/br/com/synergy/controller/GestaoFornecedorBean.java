@@ -24,7 +24,8 @@ public class GestaoFornecedorBean implements Serializable {
 	@Inject
 	private CadastroFornecedorService cadastroFornecedor;
 	
-
+	@Inject
+	private FacesMessages messages;
 	
 	private List<FornecedorFerramenta> todosFornecedores;
 	

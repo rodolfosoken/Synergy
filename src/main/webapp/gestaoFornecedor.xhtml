@@ -56,8 +56,11 @@
 		</p:toolbar>
 
 		<p:dataTable value="#{gestaoFornecedorBean.todosFornecedores}"
-			var="fornecedor" emptyMessage="Nenhuma tarefa cadastrada." rows="10"
-			id="tarefas-table">
+			var="fornecedor" emptyMessage="Nenhum fornecedor cadastrada."
+			rows="10" id="fornecedores-table" paginator="true"
+			paginatorPosition="bottom"
+			selection="#{gestaoFornecedorBean.fornecedorSelecionado}"
+			selectionMode="single" rowKey="#{fornecedor.idfornecedor}">
 
 			<p:column headerText="CNPJ" sortBy="#{fornecedor.cnpj}">
 				<h:outputText value="#{fornecedor.cnpj}" />
@@ -79,8 +82,7 @@
 				<h:outputText value="#{fornecedor.linkSharepoint}" />
 			</p:column>
 
-			<p:column headerText="Link"
-				sortBy="#{fornecedor.logradouro}">
+			<p:column headerText="Link" sortBy="#{fornecedor.logradouro}">
 				<h:outputText value="#{fornecedor.logradouro}" />
 			</p:column>
 
@@ -89,27 +91,43 @@
 		<p:dialog header="Novo Fornecedor" widgetVar="edicaoFornecedorDialog"
 			id="fornecedor-dialog" resizable="false" modal="true">
 
+			<!-- mensagens de erro -->
+			<p:messages id="msgs-dialog" />
+
 			<p:defaultCommand target="salvar-button" scope="fornecedor-dialog" />
 
-			<h:panelGrid columns="2" id="painel-dialog">
 
+			<h:panelGrid columns="5" id="painel-dialog">
 				<p:outputLabel value="CNPJ" for="cnpj" />
+				<p:outputLabel />
 				<p:inputMask id="cnpj" size="18" maxlength="18"
 					value="#{gestaoFornecedorBean.fornecedorEdicao.cnpj}"
-					mask="99.999.999/9999-99" />
+					mask="99.999.999/9999-99" required="true" />
+				<p:outputLabel />
 
-				<p:outputLabel value="Fornecedor" for="nome-fantasia" />
-				<p:inputText id="nome-fantasia" size="60" maxlength="80"
+				<p:outputLabel value="Fornecedor" for="fornecedor" />
+				<p:outputLabel />
+				<p:inputText id="fornecedor" size="60" maxlength="80"
 					value="#{gestaoFornecedorBean.fornecedorEdicao.nome}" />
+				<p:outputLabel />
+
+				<p:outputLabel value="Contato" for="contato" />
+				<p:inputText id="contato" size="60" maxlength="80"
+					value="#{gestaoFornecedorBean.fornecedorEdicao.contato}" />
+				<p:outputLabel value="Cargo" for="cargo"/>
+				<p:inputText id="cargo"  />
 
 				<p:outputLabel value="Rua" for="rua" />
+				<p:outputLabel />
 				<p:inputText id="rua" size="60" maxlength="120"
 					value="#{gestaoFornecedorBean.fornecedorEdicao.logradouro}" />
+				<p:outputLabel />
 
 				<p:commandButton value="Salvar" id="salvar-button"
 					action="#{gestaoFornecedorBean.salvar}" process="fornecedor-dialog"
-				
+					update="msgs-dialog painel-dialog"
 					oncomplete="if (!args.validationFailed) PF('edicaoFornecedorDialog').hide()" />
+
 			</h:panelGrid>
 		</p:dialog>
 

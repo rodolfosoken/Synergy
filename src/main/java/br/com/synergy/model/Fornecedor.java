@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "fornecedor", catalog = "sistema_gestao")
@@ -39,6 +42,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	private String bairro;
 	private String cep;
 	private String estado;
+	private String tipoFornecedor; 
 	public Fornecedor() {
 	}
 
@@ -54,7 +58,8 @@ public abstract class Fornecedor implements java.io.Serializable {
 		this.idfornecedor = idfornecedor;
 	}
 
-
+	@NotNull
+	@NotEmpty
 	@Column(name = "cnpj", nullable = false, length = 18)
 	public String getCnpj() {
 		return this.cnpj;
@@ -63,7 +68,9 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
-
+	
+	@NotNull
+	@NotEmpty
 	@Column(name = "nome")
 	public String getNome() {
 		return this.nome;
@@ -189,6 +196,15 @@ public abstract class Fornecedor implements java.io.Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	
+	@Column(name = "TIPO_FORNECEDOR", nullable = false, length = 45, insertable=false, updatable=false)
+	public String getTipoFornecedor() {
+		return this.tipoFornecedor;
+	}
+
+	public void setTipoFornecedor(String tipoFornecedor) {
+		this.tipoFornecedor = tipoFornecedor;
 	}
 
 

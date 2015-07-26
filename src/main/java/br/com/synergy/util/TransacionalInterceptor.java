@@ -24,6 +24,7 @@ public class TransacionalInterceptor implements Serializable {
 	public Object invoke(InvocationContext context) throws Exception {
 		EntityTransaction trx = manager.getTransaction();
 		boolean criador = false;
+		System.out.println("entrou em interventor");
 
 		try {
 			if (!trx.isActive()) {
@@ -34,20 +35,23 @@ public class TransacionalInterceptor implements Serializable {
 
 				// agora sim inicia a transação
 				trx.begin();
-
+				System.out.println("transacional");
 				criador = true;
 			}
 
 			return context.proceed();
 		} catch (Exception e) {
 			if (trx != null && criador) {
+				System.out.println("rollback");
 				trx.rollback();
 			}
 
 			throw e;
 		} finally {
 			if (trx != null && trx.isActive() && criador) {
+				System.out.println("commit");
 				trx.commit();
+				
 			}
 		}
 	}
