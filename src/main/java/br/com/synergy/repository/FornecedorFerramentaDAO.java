@@ -6,27 +6,31 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.primefaces.component.message.Message;
-
-import br.com.synergy.model.FornecedorFerramenta;
+import br.com.synergy.model.Fornecedor;
 
 
 public class FornecedorFerramentaDAO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Inject
-	private EntityManager entityManager;
+	private EntityManager em;
 	
-	//@Inject
-	@SuppressWarnings("unused")
-	private Message mensagem;
 	
-	public List<FornecedorFerramenta> todos() {
-		return entityManager.createQuery("from FornecedorFerramenta", FornecedorFerramenta.class).getResultList();
+	public List<Fornecedor> todos() {
+		return em.createQuery("from Fornecedor", Fornecedor.class).getResultList();
 	}
 	
-	public void guardar(FornecedorFerramenta fornecedor){
-		entityManager.persist(fornecedor);		
+	public void guardar(Fornecedor fornecedor){
+		em.merge(fornecedor);		
+	}
+	
+	public void excluir(Fornecedor fornecedor){
+		fornecedor = buscaPorId(fornecedor.getIdfornecedor());
+		em.remove(fornecedor);
+	}
+	
+	public Fornecedor buscaPorId(Long id){
+		return em.find(Fornecedor.class, id);
 	}
 
 

@@ -12,6 +12,12 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.12</version>
+			<scope>compile</scope>
+		</dependency>
 
 
 		<dependency>

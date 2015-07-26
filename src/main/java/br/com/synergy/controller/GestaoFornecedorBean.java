@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.synergy.model.Fornecedor;
 import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.repository.FornecedorFerramentaDAO;
 import br.com.synergy.service.CadastroFornecedorService;
@@ -30,7 +31,7 @@ public class GestaoFornecedorBean implements Serializable {
 	@Inject
 	private FacesMessages messages;
 	
-	private List<FornecedorFerramenta> todosFornecedores;
+	private List<Fornecedor> todosFornecedores;
 	
 	private FornecedorFerramenta fornecedorEdicao = new FornecedorFerramenta();
 	private FornecedorFerramenta fornecedorSelecionado;
@@ -59,8 +60,17 @@ public class GestaoFornecedorBean implements Serializable {
 	}
 	
 	
+	public void excluir(){
+		cadastroFornecedor.excluir(fornecedorSelecionado);
+		System.out.println("fui clicado!");
+		messages.info("Fornecedor: "+fornecedorSelecionado.getNome()+" excluido com sucesso!");
+		fornecedorSelecionado=null;
+		consultar();
+		
+	}
+	
 	//getters e setters
-	public List<FornecedorFerramenta> getTodosFornecedores() {
+	public List<Fornecedor> getTodosFornecedores() {
 		return todosFornecedores;
 	}
 	public FornecedorFerramenta getFornecedorEdicao() {

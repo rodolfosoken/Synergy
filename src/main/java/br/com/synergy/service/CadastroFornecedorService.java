@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
-import br.com.synergy.model.FornecedorFerramenta;
+import br.com.synergy.model.Fornecedor;
 import br.com.synergy.repository.FornecedorFerramentaDAO;
 import br.com.synergy.util.Transacional;
 
@@ -19,8 +19,13 @@ public class CadastroFornecedorService implements Serializable {
 		
 	
 	@Transacional
-	public void salvar(FornecedorFerramenta fornecedor){
+	public void salvar(Fornecedor fornecedor){
 		dao.guardar(fornecedor);
+	}
+	
+	@Transacional
+	public void excluir(Fornecedor fornecedor){
+		dao.excluir(fornecedor);
 	}
 	
 
