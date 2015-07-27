@@ -9,12 +9,16 @@ import javax.persistence.EntityManager;
 import br.com.synergy.model.Fornecedor;
 
 
-public class FornecedorFerramentaDAO implements Serializable {
+public class FornecedorDAO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private EntityManager em;
 	
+	
+	public List<Fornecedor> todos(String tipo) {
+		return em.createQuery("from Fornecedor"+tipo, Fornecedor.class).getResultList();
+	}
 	
 	public List<Fornecedor> todos() {
 		return em.createQuery("from Fornecedor", Fornecedor.class).getResultList();

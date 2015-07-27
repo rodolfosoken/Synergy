@@ -2,6 +2,7 @@ package br.com.synergy.controller;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
@@ -11,19 +12,19 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.Fornecedor;
-import br.com.synergy.model.FornecedorFerramenta;
-import br.com.synergy.repository.FornecedorFerramentaDAO;
+import br.com.synergy.model.FornecedorPeca;
+import br.com.synergy.repository.FornecedorDAO;
 import br.com.synergy.service.CadastroFornecedorService;
 import br.com.synergy.util.FacesMessages;
 
 @Named
 @ViewScoped
-public class GestaoFornecedorBean implements Serializable {
+public class FornecedorPecaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private FornecedorFerramentaDAO dao;
+	private FornecedorDAO dao;
 	
 	@Inject
 	private CadastroFornecedorService cadastroFornecedor;
@@ -33,14 +34,14 @@ public class GestaoFornecedorBean implements Serializable {
 	
 	private List<Fornecedor> todosFornecedores;
 	
-	private FornecedorFerramenta fornecedorEdicao = new FornecedorFerramenta();
-	private FornecedorFerramenta fornecedorSelecionado;
+	private Fornecedor fornecedorEdicao = new FornecedorPeca();
+	private Fornecedor fornecedorSelecionado;
 	
 	//metodos utilitários
 	
 	//metodo chamado no inicio da pagina em metadata, para popular datatable
 	public void consultar() {
-	todosFornecedores = dao.todos();
+	todosFornecedores = dao.todos("Peca");
 	}
 	
 	public void salvar(){
@@ -56,13 +57,12 @@ public class GestaoFornecedorBean implements Serializable {
 	}
 	
 	public void prepararNovoCadastro(){
-		fornecedorEdicao = new FornecedorFerramenta();
+		fornecedorEdicao = new FornecedorPeca();
 	}
 	
 	
 	public void excluir(){
 		cadastroFornecedor.excluir(fornecedorSelecionado);
-		System.out.println("fui clicado!");
 		messages.info("Fornecedor: "+fornecedorSelecionado.getNome()+" excluido com sucesso!");
 		fornecedorSelecionado=null;
 		consultar();
@@ -73,20 +73,18 @@ public class GestaoFornecedorBean implements Serializable {
 	public List<Fornecedor> getTodosFornecedores() {
 		return todosFornecedores;
 	}
-	public FornecedorFerramenta getFornecedorEdicao() {
+	public Fornecedor getFornecedorEdicao() {
 		return fornecedorEdicao;
 	}
-	public void setFornecedorEdicao(FornecedorFerramenta fornecedorEdicao) {
+	public void setFornecedorEdicao(Fornecedor fornecedorEdicao) {
 		this.fornecedorEdicao = fornecedorEdicao;
 	}
-	public FornecedorFerramenta getFornecedorSelecionado() {
+	public Fornecedor getFornecedorSelecionado() {
 		return fornecedorSelecionado;
 	}
-	public void setFornecedorSelecionado(FornecedorFerramenta fornecedorSelecionado) {
+	public void setFornecedorSelecionado(Fornecedor fornecedorSelecionado) {
 		this.fornecedorSelecionado = fornecedorSelecionado;
 	}
-
-	
 
 	
 	
