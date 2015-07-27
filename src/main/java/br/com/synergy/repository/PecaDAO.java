@@ -16,11 +16,7 @@ public class PecaDAO implements Serializable {
 	private EntityManager em;
 	
 	
-	public List<Peca> todos(String tipo) {
-		return em.createQuery("from Peca"+tipo, Peca.class).getResultList();
-	}
-	
-	public List<Peca> todos() {
+	public List<Peca> todas() {
 		return em.createQuery("from Peca", Peca.class).getResultList();
 	}
 	

@@ -10,7 +10,9 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.synergy.model.Material;
 import br.com.synergy.model.Peca;
+import br.com.synergy.repository.MaterialDAO;
 import br.com.synergy.repository.PecaDAO;
 import br.com.synergy.service.CadastroPecaService;
 import br.com.synergy.util.FacesMessages;
@@ -22,10 +24,13 @@ public class PecaBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private PecaDAO dao;
+	private PecaDAO pecas;
 	
 	@Inject
 	private CadastroPecaService cadastroPeca;
+	
+	@Inject
+	private MaterialDAO materiais;
 	
 	@Inject
 	private FacesMessages messages;
@@ -39,14 +44,18 @@ public class PecaBean implements Serializable {
 	
 	//metodo chamado no inicio da pagina em metadata, para popular datatable
 	public void consultar() {
-	todasPecas = dao.todos();
+	todasPecas = pecas.todas();
 	}
 	
 	public void salvar(){
-		cadastroPeca.salvar(pecaEdicao);
+System.out.println("executou salvar!");
+System.out.println(pecaEdicao.getMaterial().getMaterialEspc());
+
+		cadastroPeca.salvar(pecaEdicao); 
 		consultar();
 
-		messages.info("Peca salvo com sucesso!");
+		messages.info("Peça salva com sucesso!");
+		prepararNovoCadastro();
 		
 		//pega lista de componentes para atualizar
 		//atualizando a tabela e lança a mensagem de sucesso
@@ -66,6 +75,12 @@ public class PecaBean implements Serializable {
 		consultar();
 		
 	}
+	
+	
+	public List<Material> completarMaterial(String nome){
+		return materiais.buscaPorMaterialEspc(nome.toString());
+	}
+	
 	
 	//getters e setters
 	public List<Peca> getTodasPecas() {

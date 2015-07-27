@@ -18,17 +18,15 @@
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:commandButton value="Novo" icon="ui-icon-document"
+					<p:commandButton value="Novo Material" icon="ui-icon-document"
 						action="#{pecaBean.prepararNovoCadastro}" process="@this"
-						update="peca-dialog" oncomplete="PF('edicaoPecaDialog').show()">
-						<p:resetInput target="peca-dialog" />
+						update="material-dialog" oncomplete="PF('materialDialog').show()">
+						<p:resetInput target="material-dialog" />
 					</p:commandButton>
 
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
-						process="@this" update="peca-dialog"
-						oncomplete="PF('edicaoPecaDialog').show()"
+						 update="cadastro-peca" 
 						disabled="#{pecaBean.pecaSelecionado==null}">
-						<p:resetInput target="peca-dialog" />
 						<f:setPropertyActionListener value="#{pecaBean.pecaSelecionado}"
 							target="#{pecaBean.pecaEdicao}" />
 					</p:commandButton>
@@ -61,9 +59,39 @@
 					</p:commandButton>
 
 				</f:facet>
-
-
 			</p:toolbar>
+
+
+
+
+			<h:panelGrid columns="2" id="cadastro-peca">
+
+				<p:outputLabel value="Material" for="material" />
+				<p:autoComplete id="material" value="#{pecaBean.pecaEdicao.material}" dropdown="true" size="40"
+					completeMethod="#{pecaBean.completarMaterial}" var="material"
+					itemLabel="#{material.materialEspc}" itemValue="#{material}" forceSelection="true"/>
+
+				<p:outputLabel value="Pn Less" for="pnLess" />
+				<p:inputText id="pnLess" size="30" 
+					value="#{pecaBean.pecaEdicao.pnLess}" />
+
+				<p:outputLabel value="Part Name" for="partName" />
+				<p:inputText id="partName" value="#{pecaBean.pecaEdicao.partName}" />
+
+				<p:outputLabel value="Descrição" for="desc" />
+				<p:inputText id="desc" value="#{pecaBean.pecaEdicao.desc}" />
+
+
+				<p:outputLabel value="upcFna" for="upcFna" />
+				<p:inputText id="upcFna" value="#{pecaBean.pecaEdicao.upcFna}" />
+
+
+				<p:commandButton value="Salvar" action="#{pecaBean.salvar}"
+					update="cadastro-peca" ajax="false" />
+
+			</h:panelGrid>
+
+
 
 			<p:dataTable value="#{pecaBean.todasPecas}" var="peca"
 				emptyMessage="Nenhum peca cadastrada." rows="10" id="pecas-table"
@@ -101,72 +129,16 @@
 
 			</p:dataTable>
 
-			<p:dialog header="Nova Peca" widgetVar="edicaoPecaDialog"
-				id="peca-dialog" resizable="false" modal="true" closeOnEscape="true">
-
-				<!-- mensagens de erro -->
-				<p:messages id="msgs-dialog" />
-
-				<p:defaultCommand target="salvar-button" scope="peca-dialog" />
 
 
-				<h:panelGrid columns="2" id="painel-dialog">
-
-					<p:outputLabel value="Pn Less" for="pnLess" />
-					<p:inputText id="pnLess" size="30" required="true"
-						value="#{pecaBean.pecaEdicao.pnLess}" />
-
-
-					<p:outputLabel value="Part Name" for="partName" />
-					<p:inputText id="partName" value="#{pecaBean.pecaEdicao.partName}" />
-
-					<p:outputLabel value="Descrição" for="desc" />
-					<p:inputText id="desc" value="#{pecaBean.pecaEdicao.desc}" />
-
-
-					<p:outputLabel value="upcFna" for="upcFna" />
-					<p:inputText id="upcFna" value="#{pecaBean.pecaEdicao.upcFna}" />
+			<p:dialog header="Novo Material" id="material-dialog">
 
 
 
 
-					<p:commandButton value="Novo Material" icon="ui-icon-document"
-						process="@this" update="peca-dialog"
-						oncomplete="PF('novoMaterialDialog').show()">
-						<p:resetInput target="peca-dialog" />
-					</p:commandButton>
-
-
-					<p:commandButton value="Salvar" id="salvar-button"
-						action="#{pecaBean.salvar}" process="peca-dialog"
-						update="msgs-dialog painel-dialog"
-						oncomplete="if (!args.validationFailed) PF('edicaoPecaDialog').hide()" />
-
-
-
-
-
-				</h:panelGrid>
 			</p:dialog>
 
-					<p:dialog header="Novo Material" widgetVar="novoMaterialDialog"
-						id="material-dialog" modal="true" closeOnEscape="true">
-						
-						<p:defaultCommand target="salvar-material" scope="material-dialog" />
-						
-						
-						<h:panelGrid columns="2" id="material-grid">
-							<p:outputLabel value="Descrição" />
-							<p:inputText size="30" required="true"
-								value="#" />
-								
-								<p:commandButton value="Salvar" id="salvar-material"
-						action="#{pecaBean.salvar}" process="peca-dialog"
-						update="msgs-dialog painel-dialog"
-						oncomplete="if (!args.validationFailed) PF('edicaoPecaDialog').hide()" />
 
-						</h:panelGrid>
-					</p:dialog>
 
 		</h:form>
 	</ui:define>

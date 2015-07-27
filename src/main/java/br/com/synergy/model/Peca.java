@@ -23,6 +23,10 @@ import javax.persistence.Table;
 @Table(name = "peca", catalog = "sistema_gestao")
 public class Peca implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long idpeca;
 	private Material material;
 	private String pnLess;
@@ -72,7 +76,7 @@ public class Peca implements java.io.Serializable {
 		this.material = material;
 	}
 
-	@Column(name = "pn_less")
+	@Column(name = "pn")
 	public String getPnLess() {
 		return this.pnLess;
 	}
@@ -90,7 +94,7 @@ public class Peca implements java.io.Serializable {
 		this.partName = partName;
 	}
 
-	@Column(name = "desc")
+	@Column(name = "descricao")
 	public String getDesc() {
 		return this.desc;
 	}
