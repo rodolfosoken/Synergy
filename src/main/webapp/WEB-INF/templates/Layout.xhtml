@@ -19,10 +19,12 @@
 		<p:menubar id="menuBar">
 
 			<p:menuitem icon="ui-icon-home" value="Home" url="index.xhtml" />
+			
+			<p:menuitem icon="ui-icon-cart" value="Cotações" url="#" />
 
-<p:menuitem icon="ui-icon-clipboard" value="Projetos" url="#" />
-<p:menuitem icon="ui-icon-seek-next" value="Montagens" url="#" />
-						
+			<p:menuitem icon="ui-icon-folder-open" value="Projetos" url="#" />
+			
+			<p:menuitem icon="ui-icon-seek-next" value="Montagens" url="#" />
 
 			<p:submenu label="Fornecedores" icon="ui-icon-contact">
 				<p:menuitem value="Ferramentas" url="fornecedorFerramenta.xhtml" />
@@ -30,13 +32,13 @@
 				<p:menuitem value="Materiais" url="fornecedorMaterial.xhtml" />
 				<p:menuitem value="Pesquisar" url="#" />
 			</p:submenu>
-						
+
 			<p:menuitem icon="ui-icon-gear" value="Peças" url="pecas.xhtml" />
 			<p:menuitem icon="ui-icon-wrench" value="Ferramentas"
 				url="ferramentas.xhtml" />
-			<p:menuitem icon="ui-icon-cart" value="Materiais"
+			<p:menuitem icon="ui-icon-star" value="Materiais"
 				url="materiais.xhtml" />
-				
+
 
 			<f:facet name="options">
 				<p:inputText style="margin-right:10px" placeholder="Search" />
@@ -50,15 +52,14 @@
 
 
 	<header>
-		<h:graphicImage library="synergy" name="logo.png" />
+		<h:graphicImage library="synergy" name="logo.png" id="imgCabecalho" />
 	</header>
 
 	<div id="conteudo">
 		<ui:insert name="body" />
 	</div>
 
-	<footer> SYNERGY - Sistema de Gestão Colaborativo para
-		Projetos </footer>
+	<footer> SYNERGY - Sistema para Gestão Colaborativa de Projetos </footer>
 
 </h:body>
 </html>
