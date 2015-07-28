@@ -25,10 +25,9 @@
 					</p:commandButton>
 
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
-						 update="cadastro-peca" 
-						disabled="#{pecaBean.pecaSelecionado==null}">
+						update="cadastro-peca" disabled="#{pecaBean.pecaSelecionado==null}">
 						<f:setPropertyActionListener value="#{pecaBean.pecaSelecionado}"
-							target="#{pecaBean.pecaEdicao}" />
+							target="#{pecaBean.pecaEdicao}"/>
 					</p:commandButton>
 
 					<span class="ui-separator"> <span
@@ -67,12 +66,16 @@
 			<h:panelGrid columns="2" id="cadastro-peca">
 
 				<p:outputLabel value="Material" for="material" />
-				<p:autoComplete id="material" value="#{pecaBean.pecaEdicao.material}" dropdown="true" size="40"
+					<f:attribute name="collectionType" value="java.util.ArrayList" />
+				<p:autoComplete id="material"
+					value="#{pecaBean.pecaEdicao.material}" dropdown="true" size="40"
 					completeMethod="#{pecaBean.completarMaterial}" var="material"
-					itemLabel="#{material.materialEspc}" itemValue="#{material}" forceSelection="true"/>
+					itemLabel="#{material.materialEspc}" itemValue="#{material}"
+					forceSelection="true"  >
+					</p:autoComplete>
 
 				<p:outputLabel value="Pn Less" for="pnLess" />
-				<p:inputText id="pnLess" size="30" 
+				<p:inputText id="pnLess" size="30"
 					value="#{pecaBean.pecaEdicao.pnLess}" />
 
 				<p:outputLabel value="Part Name" for="partName" />

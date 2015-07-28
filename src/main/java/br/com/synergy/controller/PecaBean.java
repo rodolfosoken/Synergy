@@ -12,8 +12,8 @@ import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.Material;
 import br.com.synergy.model.Peca;
-import br.com.synergy.repository.MaterialDAO;
-import br.com.synergy.repository.PecaDAO;
+import br.com.synergy.repository.Materiais;
+import br.com.synergy.repository.Pecas;
 import br.com.synergy.service.CadastroPecaService;
 import br.com.synergy.util.FacesMessages;
 
@@ -24,13 +24,13 @@ public class PecaBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private PecaDAO pecas;
+	private Pecas pecas;
 	
 	@Inject
 	private CadastroPecaService cadastroPeca;
 	
 	@Inject
-	private MaterialDAO materiais;
+	private Materiais materiais;
 	
 	@Inject
 	private FacesMessages messages;
@@ -62,7 +62,7 @@ System.out.println(pecaEdicao.getMaterial().getMaterialEspc());
 		RequestContext.getCurrentInstance().update(
 				Arrays.asList("frm:messages", "frm:pecas-table"));
 	}
-	
+
 	public void prepararNovoCadastro(){
 		pecaEdicao = new Peca();
 	}

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import br.com.synergy.model.Fornecedor;
-import br.com.synergy.repository.FornecedorDAO;
+import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.util.Transacional;
 
 public class CadastroFornecedorService implements Serializable {
@@ -15,7 +15,7 @@ public class CadastroFornecedorService implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private FornecedorDAO dao;
+	private Fornecedores dao;
 		
 	
 	@Transacional

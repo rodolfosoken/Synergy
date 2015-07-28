@@ -13,7 +13,7 @@ import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.Fornecedor;
 import br.com.synergy.model.FornecedorMaterial;
-import br.com.synergy.repository.FornecedorDAO;
+import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.service.CadastroFornecedorService;
 import br.com.synergy.util.FacesMessages;
 
@@ -24,7 +24,7 @@ public class FornecedorMaterialBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private FornecedorDAO dao;
+	private Fornecedores dao;
 	
 	@Inject
 	private CadastroFornecedorService cadastroFornecedor;

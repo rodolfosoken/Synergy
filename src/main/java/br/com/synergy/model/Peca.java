@@ -66,7 +66,7 @@ public class Peca implements java.io.Serializable {
 		this.idpeca = idpeca;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "material_idmaterial", nullable = false)
 	public Material getMaterial() {
 		return this.material;

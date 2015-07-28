@@ -6,16 +6,16 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.synergy.model.Material;
-import br.com.synergy.repository.MaterialDAO;
+import br.com.synergy.repository.Materiais;
 import br.com.synergy.util.CDIServiceLocator;
 
 @FacesConverter(forClass = Material.class)
 public class MaterialConverter implements Converter {
 
-	private MaterialDAO materiais;
+	private Materiais materiais;
 	
 	public MaterialConverter() {
-	materiais = CDIServiceLocator.getBean(MaterialDAO.class);
+	materiais = CDIServiceLocator.getBean(Materiais.class);
 	
 	}
 	
