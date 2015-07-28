@@ -2,7 +2,6 @@ package br.com.synergy.controller;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;

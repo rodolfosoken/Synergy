@@ -14,7 +14,7 @@
 			<f:viewAction action="#{materialBean.consultar}" />
 		</f:metadata>
 		<h:form id="frm">
-			<p:messages id="messages" closable="true" />
+	
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
@@ -62,8 +62,10 @@
 			</p:toolbar>
 
 			<h:panelGrid columns="2" id="cadastro-material">
-				<p:outputLabel />
+				
 				<p:defaultCommand target="salvar-materialButton" scope="cadastro-material" />
+				<p:messages id="messages" closable="true"/>
+
 
 				<p:outputLabel value="Cotação" for="material" />
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
@@ -84,7 +86,7 @@
 				<p:inputText id="desc" value="#{materialBean.materialEdicao.desc}" />
 
 				<p:commandButton value="Salvar" action="#{materialBean.salvar}"
-					update="cadastro-material" ajax="false" id="salvar-materialButton" />
+					update="cadastro-material" id="salvar-materialButton" />
 
 			</h:panelGrid>
 

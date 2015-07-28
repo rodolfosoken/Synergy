@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/templates/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Peças</ui:define>
+
+	<ui:define name="body">
+		<h1>Ferramentas</h1>
+		<f:metadata>
+			<f:viewAction action="#{ferramentaBean.consultar}" />
+		</f:metadata>
+		<h:form id="frm">
+			<p:messages id="messages" closable="true" />
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<p:commandButton value="Nova Ferramenta" icon="ui-icon-document"
+						process="@this" update="ferramenta-dialog"
+						oncomplete="PF('ferramentaDialog').show()">
+
+					</p:commandButton>
+
+					<p:commandButton value="Editar" icon="ui-icon-folder-open"
+						process="@this" update="ferramenta-dialog"
+						oncomplete="PF('ferramentaDialog').show()"
+						disabled="#{ferramentaBean.ferramentaSelecionado==null}">
+						<p:resetInput target="ferramenta-dialog" />
+						<f:setPropertyActionListener
+							value="#{ferramentaBean.ferramentaSelecionado}"
+							target="#{ferramentaBean.ferramentaEdicao}" />
+					</p:commandButton>
+
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" />
+					</span>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						process="@this" update="ferramentas-table messages toolbar"
+						action="#{ferramentaBean.excluir}"
+						disabled="#{ferramentaBean.ferramentaSelecionado == null}">
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Tem certeza que deseja excluir o ferramenta?" />
+
+					</p:commandButton>
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Ok" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Cancelar" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton icon="ui-icon-arrowthickstop-1-s" value="Exportar"
+						title="Exportar para XLS" ajax="false" immediate="true">
+						<p:dataExporter type="xls" target="ferramentas-table"
+							fileName="Ferramentas" />
+					</p:commandButton>
+
+				</f:facet>
+			</p:toolbar>
+
+
+
+
+
+			<p:dataTable value="#{ferramentaBean.todasFerramentas}"
+				var="ferramenta" emptyMessage="Nenhum ferramenta cadastrada."
+				rows="10" id="ferramentas-table" paginator="true"
+				paginatorPosition="bottom"
+				selection="#{ferramentaBean.ferramentaSelecionado}"
+				selectionMode="single" rowKey="#{ferramenta.idferramenta}">
+
+				<!-- Quando selecionar disparar evento -->
+				<p:ajax event="rowSelect" update=":frm:toolbar" />
+				<p:ajax event="rowUnselect" update=":frm:toolbar" />
+
+				<p:column headerText="ID" sortBy="#{ferramenta.idferramenta}">
+					<h:outputText value="#{ferramenta.idferramenta}" />
+				</p:column>
+
+				<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}">
+					<h:outputText value="#{ferramenta.nome}" />
+				</p:column>
+
+				<p:column headerText="Descrição" sortBy="#{ferramenta.desc}">
+					<h:outputText value="#{ferramenta.desc}" />
+				</p:column>
+
+				<p:column headerText="Descrição" sortBy="#{ferramenta.desc}">
+					<h:outputText value="#{ferramenta.desc}" />
+				</p:column>
+			</p:dataTable>
+
+
+
+			<p:dialog header="Nova Ferramenta" id="ferramenta-dialog"
+				widgetVar="ferramentaDialog" resizable="false" modal="true"
+				closeOnEscape="true">
+				<p:messages id="msgs-dialog" />
+
+				<p:outputLabel value="" />
+
+				<h:panelGrid columns="2" id="cadastro-ferramenta">
+					<p:outputLabel />
+					<p:defaultCommand target="salvar-ferramentaButton"
+						scope="ferramenta-dialog" />
+
+					<p:outputLabel value="Cotação" for="ferramenta" />
+					<p:autoComplete id="cotacao" size="40"
+						value="#{ferramentaBean.ferramentaEdicao.cotacaoFerramenta}"
+						dropdown="true"
+						completeMethod="#{ferramentaBean.completarCotacao}"
+						var="cotacaoFerramenta" itemLabel="#{cotacaoFerramenta.descricao}"
+						itemValue="#{cotacaoFerramenta}" forceSelection="true" />
+
+					<p:outputLabel value="Id Equipament" for="idEquip" />
+					<p:inputText id="idEquip"
+						value="#{ferramentaBean.ferramentaEdicao.idEquipament}" />
+
+					<p:outputLabel value="Ferramenta" for="ferramenta" />
+					<p:inputText id="ferramenta" size="30"
+						value="#{ferramentaBean.ferramentaEdicao.nome}" />
+
+					<p:outputLabel value="Descrição" for="desc" />
+					<p:inputText id="desc" size="60"
+						value="#{ferramentaBean.ferramentaEdicao.desc}" />
+					
+					<p:outputLabel value="Utilidade" for="utilidade" />
+					<p:inputText id="utilidade" size="60"
+						value="#{ferramentaBean.ferramentaEdicao.utilidade}" />
+					
+
+					<p:commandButton value="Salvar" action="#{ferramentaBean.salvar}"
+						process="ferramenta-dialog" id="salvar-ferramentaButton"
+						update="msgs-dialog ferramenta-dialog"
+						oncomplete="if(!args.validationFailed) PF('ferramentaDialog').hide()" />
+
+
+				</h:panelGrid>
+
+
+			</p:dialog>
+
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
