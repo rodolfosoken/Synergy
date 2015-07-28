@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import br.com.synergy.model.CotacaoMaterial;
 import br.com.synergy.model.Material;
 
 public class Materiais implements Serializable {
@@ -35,6 +36,11 @@ public class Materiais implements Serializable {
 	public List<Material> buscaPorMaterialEspc(String nome) {
 		return em.createQuery("from Material" + " where materialEspc like :nome",
 				Material.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
+	}
+	
+	public List<CotacaoMaterial> buscaPorCotacao(String nome) {
+		return em.createQuery("from CotacaoMaterial" + " where descricao like :nome",
+				CotacaoMaterial.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 
 }

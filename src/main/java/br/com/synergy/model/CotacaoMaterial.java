@@ -26,8 +26,13 @@ import javax.persistence.TemporalType;
 @Table(name = "cotacao_material", catalog = "sistema_gestao")
 public class CotacaoMaterial implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer idcotacao;
 	private String responsavel;
+	private String descricao;
 	private Date data;
 	private Set<FornecimentoMaterial> fornecimentoMaterials = new HashSet<FornecimentoMaterial>(
 			0);
@@ -76,6 +81,16 @@ public class CotacaoMaterial implements java.io.Serializable {
 	public void setData(Date data) {
 		this.data = data;
 	}
+	
+	@Column(name = "descricao")
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoMaterial")
 	public Set<FornecimentoMaterial> getFornecimentoMaterials() {
@@ -105,5 +120,6 @@ public class CotacaoMaterial implements java.io.Serializable {
 	public void setMaterials(Set<Material> materials) {
 		this.materials = materials;
 	}
+		
 
 }

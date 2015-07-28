@@ -13,21 +13,22 @@
 		<f:metadata>
 			<f:viewAction action="#{pecaBean.consultar}" />
 		</f:metadata>
+		
 		<h:form id="frm">
-			<p:messages id="messages" />
-
+		
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
 					<p:commandButton value="Novo Material" icon="ui-icon-document"
-						action="#{pecaBean.prepararNovoCadastro}" process="@this"
+						 process="@this"
 						update="material-dialog" oncomplete="PF('materialDialog').show()">
 						<p:resetInput target="material-dialog" />
 					</p:commandButton>
 
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
-						update="cadastro-peca" disabled="#{pecaBean.pecaSelecionado==null}">
+						update="cadastro-peca" process="@this"
+						disabled="#{pecaBean.pecaSelecionado==null}">
 						<f:setPropertyActionListener value="#{pecaBean.pecaSelecionado}"
-							target="#{pecaBean.pecaEdicao}"/>
+							target="#{pecaBean.pecaEdicao}" />
 					</p:commandButton>
 
 					<span class="ui-separator"> <span
@@ -60,19 +61,20 @@
 				</f:facet>
 			</p:toolbar>
 
-
-
-
 			<h:panelGrid columns="2" id="cadastro-peca">
+				
+				
+				<p:defaultCommand target="salvar-pecaButton" scope="cadastro-peca" />
+				<p:messages id="messages"/>
 
 				<p:outputLabel value="Material" for="material" />
-					<f:attribute name="collectionType" value="java.util.ArrayList" />
+				<f:attribute name="collectionType" value="java.util.ArrayList" />
 				<p:autoComplete id="material"
 					value="#{pecaBean.pecaEdicao.material}" dropdown="true" size="40"
 					completeMethod="#{pecaBean.completarMaterial}" var="material"
 					itemLabel="#{material.materialEspc}" itemValue="#{material}"
-					forceSelection="true"  >
-					</p:autoComplete>
+					forceSelection="true">
+				</p:autoComplete>
 
 				<p:outputLabel value="Pn Less" for="pnLess" />
 				<p:inputText id="pnLess" size="30"
@@ -89,8 +91,8 @@
 				<p:inputText id="upcFna" value="#{pecaBean.pecaEdicao.upcFna}" />
 
 
-				<p:commandButton value="Salvar" action="#{pecaBean.salvar}"
-					update="cadastro-peca" ajax="false" />
+				<p:commandButton value="Salvar" action="#{pecaBean.salvar}" 
+					update="cadastro-peca"  id="salvar-pecaButton"/>
 
 			</h:panelGrid>
 
@@ -134,8 +136,12 @@
 
 
 
-			<p:dialog header="Novo Material" id="material-dialog">
-
+			<p:dialog header="Novo Material" id="material-dialog"
+				widgetVar="materialDialog" resizable="false" modal="true"
+				closeOnEscape="true">
+				<p:messages id="msgs-dialog" />
+				
+				<p:outputLabel value=""/>			
 
 
 

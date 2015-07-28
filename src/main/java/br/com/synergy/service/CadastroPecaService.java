@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import br.com.synergy.model.Peca;
-import br.com.synergy.repository.Materiais;
 import br.com.synergy.repository.Pecas;
 import br.com.synergy.util.Transacional;
 
@@ -14,9 +13,7 @@ public class CadastroPecaService implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private Pecas dao;
-	
-	@Inject
-	private Materiais materiais;
+
 		
 	
 	@Transacional

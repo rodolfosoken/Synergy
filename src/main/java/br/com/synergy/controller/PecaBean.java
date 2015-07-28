@@ -48,9 +48,6 @@ public class PecaBean implements Serializable {
 	}
 	
 	public void salvar(){
-System.out.println("executou salvar!");
-System.out.println(pecaEdicao.getMaterial().getMaterialEspc());
-
 		cadastroPeca.salvar(pecaEdicao); 
 		consultar();
 

@@ -61,7 +61,7 @@ public class Material implements java.io.Serializable {
 		this.idmaterial = idmaterial;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cotacao_material_idcotacao", nullable = false)
 	public CotacaoMaterial getCotacaoMaterial() {
 		return this.cotacaoMaterial;
@@ -89,7 +89,7 @@ public class Material implements java.io.Serializable {
 		this.material = material;
 	}
 
-	@Column(name = "desc")
+	@Column(name = "descricao")
 	public String getDesc() {
 		return this.desc;
 	}

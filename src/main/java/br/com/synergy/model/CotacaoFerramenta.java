@@ -26,6 +26,10 @@ import javax.persistence.TemporalType;
 @Table(name = "cotacao_ferramenta", catalog = "sistema_gestao")
 public class CotacaoFerramenta implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long idcotacao;
 	private Date data;
 	private String responsavel;
