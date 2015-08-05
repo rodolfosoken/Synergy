@@ -18,7 +18,7 @@
 
 		<p:menubar id="menuBar" >
 
-			<p:menuitem icon="ui-icon-home" value="Home" url="index.xhtml" />
+			<p:menuitem icon="ui-icon-home" value="Home" outcome="/index.xhtml" />
 			
 			<p:menuitem icon="ui-icon-cart" value="Cotações" url="#" />
 
@@ -27,17 +27,17 @@
 			<p:menuitem icon="ui-icon-seek-next" value="Montagens" url="#" />
 
 			<p:submenu label="Fornecedores" icon="ui-icon-contact">
-				<p:menuitem value="Ferramentas" url="fornecedorFerramenta.xhtml" />
-				<p:menuitem value="Peças" url="fornecedorPeca.xhtml" />
-				<p:menuitem value="Materiais" url="fornecedorMaterial.xhtml" />
+				<p:menuitem value="Ferramentas" outcome="/ferramentas/fornecedorFerramenta.xhtml" />
+				<p:menuitem value="Peças" outcome="/pecas/fornecedorPeca.xhtml" />
+				<p:menuitem value="Materiais" outcome="/materiais/fornecedorMaterial.xhtml" />
 				<p:menuitem value="Pesquisar" url="#" />
 			</p:submenu>
 
-			<p:menuitem icon="ui-icon-gear" value="Peças" url="pecas.xhtml" />
+			<p:menuitem icon="ui-icon-gear" value="Peças" outcome="/pecas/pecas.xhtml" />
 			<p:menuitem icon="ui-icon-wrench" value="Ferramentas"
-				url="ferramentas.xhtml" />
+				outcome="/ferramentas/ferramentas.xhtml" />
 			<p:menuitem icon="ui-icon-star" value="Materiais"
-				url="materiais.xhtml" />
+				outcome="/materiais/materiais.xhtml" />
 
 
 			<f:facet name="options">

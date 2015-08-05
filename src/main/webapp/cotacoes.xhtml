@@ -6,8 +6,35 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Contações</ui:define>
+	<ui:define name="title">Contações Materiais</ui:define>
 	<ui:define name="body">
+
+		<h1>Cotação para Materiais</h1>
+
+		<h:form id="frm">
+			<p:messages id="messages" />
+
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Responsável" for="responsavel" />
+				<p:inputText id="responsavel" name="responsavel" />
+
+				<p:outputLabel value="Descrição do Material" for="descricao" />
+				<p:inputText id="descricao" name="descricao" />
+
+				<p:outputLabel value="Data:" for="data" />
+				<p:calendar id="data" />
+
+			</h:panelGrid>
+
+			<p:panelGrid columns="4">
+				<p:outputLabel value="Fornecedor" for="fornecedor" />
+				<p:inputText id="fornecedor" name="fornecedor"/>
+				
+				<p:outputLabel value="Material" for="material" />
+				<p:inputText id="material" name="material"/>
+			</p:panelGrid>
+
+		</h:form>
 
 	</ui:define>
 </ui:composition>
