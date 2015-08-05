@@ -25,7 +25,7 @@
 					</p:commandButton>
 
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
-						update="cadastro-material"
+						update="cadastro-material" process="@this"
 						disabled="#{materialBean.materialSelecionado==null}">
 						<f:setPropertyActionListener value="#{materialBean.materialSelecionado}"
 							target="#{materialBean.materialEdicao}" />

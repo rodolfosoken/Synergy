@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 body {
-	font-size: 13px;
+	font-size: 15px;
 	font-family: Arial, Helvetica, sans-serif;
 	margin: 0px;
 	font-weight: normal
@@ -15,6 +15,7 @@ header {
 	color: #fff;
 	box-shadow: 0px 2px 2px #ccc
 }
+
 
 #imgCabecalho {
 	margin-top: -15px;
