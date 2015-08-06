@@ -1,12 +1,14 @@
 package br.com.synergy.model;
 
-// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
+// Generated 06/08/2015 08:46:26 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,47 +22,45 @@ import javax.persistence.Table;
 @Table(name = "participante_peca", catalog = "sistema_gestao")
 public class ParticipantePeca implements java.io.Serializable {
 
-	private long idparticipantePeca;
-	private Peca peca;
+	private Long idparticipantePeca;
+	private CotacaoPeca cotacaoPeca;
 	private Fornecedor fornecedor;
-	private Set<CotacaoPeca> cotacaoPecas = new HashSet<CotacaoPeca>(0);
+	private Set<Peca> pecas = new HashSet<Peca>(0);
 
 	public ParticipantePeca() {
 	}
 
-	public ParticipantePeca(long idparticipantePeca, Peca peca,
-			Fornecedor fornecedor) {
-		this.idparticipantePeca = idparticipantePeca;
-		this.peca = peca;
+	public ParticipantePeca(CotacaoPeca cotacaoPeca, Fornecedor fornecedor) {
+		this.cotacaoPeca = cotacaoPeca;
 		this.fornecedor = fornecedor;
 	}
 
-	public ParticipantePeca(long idparticipantePeca, Peca peca,
-			Fornecedor fornecedor, Set<CotacaoPeca> cotacaoPecas) {
-		this.idparticipantePeca = idparticipantePeca;
-		this.peca = peca;
+	public ParticipantePeca(CotacaoPeca cotacaoPeca, Fornecedor fornecedor,
+			Set<Peca> pecas) {
+		this.cotacaoPeca = cotacaoPeca;
 		this.fornecedor = fornecedor;
-		this.cotacaoPecas = cotacaoPecas;
+		this.pecas = pecas;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idparticipante_peca", unique = true, nullable = false)
-	public long getIdparticipantePeca() {
+	public Long getIdparticipantePeca() {
 		return this.idparticipantePeca;
 	}
 
-	public void setIdparticipantePeca(long idparticipantePeca) {
+	public void setIdparticipantePeca(Long idparticipantePeca) {
 		this.idparticipantePeca = idparticipantePeca;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "peca_idpeca", nullable = false)
-	public Peca getPeca() {
-		return this.peca;
+	@JoinColumn(name = "cotacao_peca_cotacao_idcotacao", nullable = false)
+	public CotacaoPeca getCotacaoPeca() {
+		return this.cotacaoPeca;
 	}
 
-	public void setPeca(Peca peca) {
-		this.peca = peca;
+	public void setCotacaoPeca(CotacaoPeca cotacaoPeca) {
+		this.cotacaoPeca = cotacaoPeca;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -74,12 +74,12 @@ public class ParticipantePeca implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participantePeca")
-	public Set<CotacaoPeca> getCotacaoPecas() {
-		return this.cotacaoPecas;
+	public Set<Peca> getPecas() {
+		return this.pecas;
 	}
 
-	public void setCotacaoPecas(Set<CotacaoPeca> cotacaoPecas) {
-		this.cotacaoPecas = cotacaoPecas;
+	public void setPecas(Set<Peca> pecas) {
+		this.pecas = pecas;
 	}
 
 }

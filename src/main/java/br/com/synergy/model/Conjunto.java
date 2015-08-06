@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
+// Generated 06/08/2015 08:46:26 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,30 +24,29 @@ import javax.persistence.Table;
 public class Conjunto implements java.io.Serializable {
 
 	private Long idconjunto;
-	private Montagem montagem;
 	private String pnLess;
 	private String desc;
 	private String upcFna;
 	private String fnaDesc;
+	private Set<Montagem> montagems = new HashSet<Montagem>(0);
 	private Set<Projeto> projetos = new HashSet<Projeto>(0);
 	private Set<RiskAssesment> riskAssesments = new HashSet<RiskAssesment>(0);
 
 	public Conjunto() {
 	}
 
-	public Conjunto(Montagem montagem, String pnLess) {
-		this.montagem = montagem;
+	public Conjunto(String pnLess) {
 		this.pnLess = pnLess;
 	}
 
-	public Conjunto(Montagem montagem, String pnLess, String desc,
-			String upcFna, String fnaDesc, Set<Projeto> projetos,
+	public Conjunto(String pnLess, String desc, String upcFna, String fnaDesc,
+			Set<Montagem> montagems, Set<Projeto> projetos,
 			Set<RiskAssesment> riskAssesments) {
-		this.montagem = montagem;
 		this.pnLess = pnLess;
 		this.desc = desc;
 		this.upcFna = upcFna;
 		this.fnaDesc = fnaDesc;
+		this.montagems = montagems;
 		this.projetos = projetos;
 		this.riskAssesments = riskAssesments;
 	}
@@ -62,16 +60,6 @@ public class Conjunto implements java.io.Serializable {
 
 	public void setIdconjunto(Long idconjunto) {
 		this.idconjunto = idconjunto;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "montagem_idmontagem", nullable = false)
-	public Montagem getMontagem() {
-		return this.montagem;
-	}
-
-	public void setMontagem(Montagem montagem) {
-		this.montagem = montagem;
 	}
 
 	@Column(name = "pn_less", nullable = false)
@@ -108,6 +96,15 @@ public class Conjunto implements java.io.Serializable {
 
 	public void setFnaDesc(String fnaDesc) {
 		this.fnaDesc = fnaDesc;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto")
+	public Set<Montagem> getMontagems() {
+		return this.montagems;
+	}
+
+	public void setMontagems(Set<Montagem> montagems) {
+		this.montagems = montagems;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)

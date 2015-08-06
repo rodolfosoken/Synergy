@@ -12,6 +12,7 @@ import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.model.Ferramenta;
+import br.com.synergy.model.ParticipanteFerramenta;
 import br.com.synergy.repository.Ferramentas;
 import br.com.synergy.service.CadastroFerramentaService;
 import br.com.synergy.util.FacesMessages;
@@ -70,8 +71,8 @@ public class FerramentaBean implements Serializable {
 		
 	}
 	
-	public List<CotacaoFerramenta> completarCotacao(String nome){
-		return ferramentas.buscaPorCotacao(nome.toString());
+	public List<ParticipanteFerramenta> completarParticipante(String nome){
+		return ferramentas.buscaPorParticipante(nome.toString());
 	}
 
 	

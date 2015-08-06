@@ -88,12 +88,12 @@
 					<h:outputText value="#{ferramenta.nome}" />
 				</p:column>
 
-				<p:column headerText="Descrição" sortBy="#{ferramenta.desc}">
-					<h:outputText value="#{ferramenta.desc}" />
+				<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}">
+					<h:outputText value="#{ferramenta.descricao}" />
 				</p:column>
 
-				<p:column headerText="Descrição" sortBy="#{ferramenta.desc}">
-					<h:outputText value="#{ferramenta.desc}" />
+				<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}">
+					<h:outputText value="#{ferramenta.descricao}" />
 				</p:column>
 			</p:dataTable>
 
@@ -113,11 +113,11 @@
 
 					<p:outputLabel value="Cotação" for="ferramenta" />
 					<p:autoComplete id="cotacao" size="40"
-						value="#{ferramentaBean.ferramentaEdicao.cotacaoFerramenta}"
+						value="#{ferramentaBean.ferramentaEdicao.participanteFerramenta}"
 						dropdown="true"
-						completeMethod="#{ferramentaBean.completarCotacao}"
-						var="cotacaoFerramenta" itemLabel="#{cotacaoFerramenta.descricao}"
-						itemValue="#{cotacaoFerramenta}" forceSelection="true" />
+						completeMethod="#{ferramentaBean.completarParticipante}"
+						var="participanteFerrmaneta" itemLabel="#{pariticpanteFerramenta.fornecedor.nome}"
+						itemValue="#{participanteFerramenta}" forceSelection="true" />
 
 					<p:outputLabel value="Id Equipament" for="idEquip" />
 					<p:inputText id="idEquip"
@@ -127,9 +127,9 @@
 					<p:inputText id="ferramenta" size="30"
 						value="#{ferramentaBean.ferramentaEdicao.nome}" />
 
-					<p:outputLabel value="Descrição" for="desc" />
-					<p:inputText id="desc" size="60"
-						value="#{ferramentaBean.ferramentaEdicao.desc}" />
+					<p:outputLabel value="Descrição" for="descricao" />
+					<p:inputText id="descricao" size="60"
+						value="#{ferramentaBean.ferramentaEdicao.descricao}" />
 					
 					<p:outputLabel value="Utilidade" for="utilidade" />
 					<p:inputText id="utilidade" size="60"

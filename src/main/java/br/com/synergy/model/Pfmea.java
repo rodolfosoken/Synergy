@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
+// Generated 06/08/2015 08:46:26 by Hibernate Tools 3.4.0.CR1
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,9 +1,7 @@
 package br.com.synergy.model;
 
-// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
+// Generated 06/08/2015 08:46:26 by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +10,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -25,20 +22,15 @@ public class Montagem implements java.io.Serializable {
 	private Long idmontagem;
 	private Ferramenta ferramenta;
 	private Peca peca;
-	private Set<Conjunto> conjuntos = new HashSet<Conjunto>(0);
+	private Conjunto conjunto;
 
 	public Montagem() {
 	}
 
-	public Montagem(Ferramenta ferramenta, Peca peca) {
+	public Montagem(Ferramenta ferramenta, Peca peca, Conjunto conjunto) {
 		this.ferramenta = ferramenta;
 		this.peca = peca;
-	}
-
-	public Montagem(Ferramenta ferramenta, Peca peca, Set<Conjunto> conjuntos) {
-		this.ferramenta = ferramenta;
-		this.peca = peca;
-		this.conjuntos = conjuntos;
+		this.conjunto = conjunto;
 	}
 
 	@Id
@@ -72,13 +64,14 @@ public class Montagem implements java.io.Serializable {
 		this.peca = peca;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "montagem")
-	public Set<Conjunto> getConjuntos() {
-		return this.conjuntos;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "conjunto_idconjunto", nullable = false)
+	public Conjunto getConjunto() {
+		return this.conjunto;
 	}
 
-	public void setConjuntos(Set<Conjunto> conjuntos) {
-		this.conjuntos = conjuntos;
+	public void setConjunto(Conjunto conjunto) {
+		this.conjunto = conjunto;
 	}
 
 }

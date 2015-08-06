@@ -16,24 +16,32 @@
 
 		<p:growl id="messages" />
 
-		<p:menubar id="menuBar" >
+		<p:menubar id="menuBar">
 
 			<p:menuitem icon="ui-icon-home" value="Home" outcome="/index.xhtml" />
-			
-			<p:menuitem icon="ui-icon-cart" value="Cotações" url="#" />
+
+			<p:submenu icon="ui-icon-cart" label="Cotações">
+				<p:menuitem value="Cotação Material"
+					outcome="/materiais/cotacaoMaterial.xhtml" />
+					<p:menuitem value="Cotação Ferramenta" />
+					<p:menuitem value="Cotação Peça" />
+			</p:submenu>
 
 			<p:menuitem icon="ui-icon-folder-open" value="Projetos" url="#" />
-			
+
 			<p:menuitem icon="ui-icon-seek-next" value="Montagens" url="#" />
 
 			<p:submenu label="Fornecedores" icon="ui-icon-contact">
-				<p:menuitem value="Ferramentas" outcome="/ferramentas/fornecedorFerramenta.xhtml" />
+				<p:menuitem value="Ferramentas"
+					outcome="/ferramentas/fornecedorFerramenta.xhtml" />
 				<p:menuitem value="Peças" outcome="/pecas/fornecedorPeca.xhtml" />
-				<p:menuitem value="Materiais" outcome="/materiais/fornecedorMaterial.xhtml" />
+				<p:menuitem value="Materiais"
+					outcome="/materiais/fornecedorMaterial.xhtml" />
 				<p:menuitem value="Pesquisar" url="#" />
 			</p:submenu>
 
-			<p:menuitem icon="ui-icon-gear" value="Peças" outcome="/pecas/pecas.xhtml" />
+			<p:menuitem icon="ui-icon-gear" value="Peças"
+				outcome="/pecas/pecas.xhtml" />
 			<p:menuitem icon="ui-icon-wrench" value="Ferramentas"
 				outcome="/ferramentas/ferramentas.xhtml" />
 			<p:menuitem icon="ui-icon-star" value="Materiais"
@@ -59,7 +67,8 @@
 		<ui:insert name="body" />
 	</div>
 
-	<footer> SYNERGY - Sistema para Gestão Colaborativa de Projetos </footer>
+	<footer> SYNERGY - Sistema para Gestão Colaborativa de
+		Projetos </footer>
 
 </h:body>
 </html>

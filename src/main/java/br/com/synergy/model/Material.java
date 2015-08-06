@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
+// Generated 06/08/2015 08:46:26 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,31 +23,32 @@ import javax.persistence.Table;
 public class Material implements java.io.Serializable {
 
 	private Long idmaterial;
+	private ParticipanteMaterial participanteMaterial;
 	private String materialEspc;
 	private String material;
 	private String desc;
 	private Boolean disponibilidade;
-	private Set<ParticipanteMaterial> participanteMaterials = new HashSet<ParticipanteMaterial>(
-			0);
 	private Set<CompraMaterial> compraMaterials = new HashSet<CompraMaterial>(0);
 	private Set<Peca> pecas = new HashSet<Peca>(0);
 
 	public Material() {
 	}
 
-	public Material(String materialEspc) {
+	public Material(ParticipanteMaterial participanteMaterial,
+			String materialEspc) {
+		this.participanteMaterial = participanteMaterial;
 		this.materialEspc = materialEspc;
 	}
 
-	public Material(String materialEspc, String material, String desc,
-			Boolean disponibilidade,
-			Set<ParticipanteMaterial> participanteMaterials,
-			Set<CompraMaterial> compraMaterials, Set<Peca> pecas) {
+	public Material(ParticipanteMaterial participanteMaterial,
+			String materialEspc, String material, String desc,
+			Boolean disponibilidade, Set<CompraMaterial> compraMaterials,
+			Set<Peca> pecas) {
+		this.participanteMaterial = participanteMaterial;
 		this.materialEspc = materialEspc;
 		this.material = material;
 		this.desc = desc;
 		this.disponibilidade = disponibilidade;
-		this.participanteMaterials = participanteMaterials;
 		this.compraMaterials = compraMaterials;
 		this.pecas = pecas;
 	}
@@ -59,6 +62,17 @@ public class Material implements java.io.Serializable {
 
 	public void setIdmaterial(Long idmaterial) {
 		this.idmaterial = idmaterial;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "participante_material_idparticipante", nullable = false)
+	public ParticipanteMaterial getParticipanteMaterial() {
+		return this.participanteMaterial;
+	}
+
+	public void setParticipanteMaterial(
+			ParticipanteMaterial participanteMaterial) {
+		this.participanteMaterial = participanteMaterial;
 	}
 
 	@Column(name = "material_espc", nullable = false)
@@ -95,16 +109,6 @@ public class Material implements java.io.Serializable {
 
 	public void setDisponibilidade(Boolean disponibilidade) {
 		this.disponibilidade = disponibilidade;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "material")
-	public Set<ParticipanteMaterial> getParticipanteMaterials() {
-		return this.participanteMaterials;
-	}
-
-	public void setParticipanteMaterials(
-			Set<ParticipanteMaterial> participanteMaterials) {
-		this.participanteMaterials = participanteMaterials;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "material")

@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
+// Generated 06/08/2015 08:46:26 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,14 +23,13 @@ import javax.persistence.Table;
 public class Peca implements java.io.Serializable {
 
 	private Long idpeca;
+	private ParticipantePeca participantePeca;
 	private Material material;
 	private String pn;
 	private String partName;
 	private String descricao;
 	private String upcFna;
 	private Set<CompraPeca> compraPecas = new HashSet<CompraPeca>(0);
-	private Set<ParticipantePeca> participantePecas = new HashSet<ParticipantePeca>(
-			0);
 	private Set<Montagem> montagems = new HashSet<Montagem>(0);
 
 	public Peca() {
@@ -40,16 +39,16 @@ public class Peca implements java.io.Serializable {
 		this.material = material;
 	}
 
-	public Peca(Material material, String pn, String partName,
-			String descricao, String upcFna, Set<CompraPeca> compraPecas,
-			Set<ParticipantePeca> participantePecas, Set<Montagem> montagems) {
+	public Peca(ParticipantePeca participantePeca, Material material,
+			String pn, String partName, String descricao, String upcFna,
+			Set<CompraPeca> compraPecas, Set<Montagem> montagems) {
+		this.participantePeca = participantePeca;
 		this.material = material;
 		this.pn = pn;
 		this.partName = partName;
 		this.descricao = descricao;
 		this.upcFna = upcFna;
 		this.compraPecas = compraPecas;
-		this.participantePecas = participantePecas;
 		this.montagems = montagems;
 	}
 
@@ -62,6 +61,16 @@ public class Peca implements java.io.Serializable {
 
 	public void setIdpeca(Long idpeca) {
 		this.idpeca = idpeca;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "participante_peca_idparticipante_peca")
+	public ParticipantePeca getParticipantePeca() {
+		return this.participantePeca;
+	}
+
+	public void setParticipantePeca(ParticipantePeca participantePeca) {
+		this.participantePeca = participantePeca;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -117,15 +126,6 @@ public class Peca implements java.io.Serializable {
 
 	public void setCompraPecas(Set<CompraPeca> compraPecas) {
 		this.compraPecas = compraPecas;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "peca")
-	public Set<ParticipantePeca> getParticipantePecas() {
-		return this.participantePecas;
-	}
-
-	public void setParticipantePecas(Set<ParticipantePeca> participantePecas) {
-		this.participantePecas = participantePecas;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "peca")

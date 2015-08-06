@@ -6,8 +6,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.model.Ferramenta;
+import br.com.synergy.model.ParticipanteFerramenta;
 
 public class Ferramentas implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -38,9 +38,9 @@ public class Ferramentas implements Serializable {
 				Ferramenta.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 	
-	public List<CotacaoFerramenta> buscaPorCotacao(String nome) {
-		return em.createQuery("from CotacaoFerramenta" + " where descricao like :nome",
-				CotacaoFerramenta.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
+	public List<ParticipanteFerramenta> buscaPorParticipante(String nome) {
+		return em.createQuery("from ParticipanteFerramenta" + " where fornecedor_idfornecedor like :nome",
+				ParticipanteFerramenta.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 
 }

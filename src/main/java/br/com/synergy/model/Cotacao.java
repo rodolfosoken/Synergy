@@ -1,6 +1,5 @@
 package br.com.synergy.model;
 
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
@@ -21,9 +20,7 @@ import javax.persistence.TemporalType;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Cotacao implements java.io.Serializable {
 
-
-	private static final long serialVersionUID = 1L;
-	private long idcotacao;
+	private Long idcotacao;
 	private String responsavel;
 	private Date dataInicio;
 	private String dataTermino;
@@ -33,21 +30,19 @@ public abstract class Cotacao implements java.io.Serializable {
 	public Cotacao() {
 	}
 
-	public Cotacao(long idcotacao, String descricao) {
-		this.idcotacao = idcotacao;
+	public Cotacao(String descricao) {
 		this.descricao = descricao;
 	}
-
 
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idcotacao", unique = true, nullable = false)
-	public long getIdcotacao() {
+	public Long getIdcotacao() {
 		return this.idcotacao;
 	}
 
-	public void setIdcotacao(long idcotacao) {
+	public void setIdcotacao(Long idcotacao) {
 		this.idcotacao = idcotacao;
 	}
 

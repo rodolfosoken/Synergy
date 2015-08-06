@@ -1,10 +1,12 @@
 package br.com.synergy.model;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -16,22 +18,20 @@ public class CotacaoPeca extends Cotacao implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = 1L;
-	private ParticipantePeca participantePeca;
+	private Set<ParticipantePeca> participantePecas = new HashSet<ParticipantePeca>(
+			0);
 
 	public CotacaoPeca() {
 	}
 
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "participante_peca_idparticipante_peca", nullable = false)
-	public ParticipantePeca getParticipantePeca() {
-		return this.participantePeca;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoPeca")
+	public Set<ParticipantePeca> getParticipantePecas() {
+		return this.participantePecas;
 	}
 
-	public void setParticipantePeca(ParticipantePeca participantePeca) {
-		this.participantePeca = participantePeca;
+	public void setParticipantePecas(Set<ParticipantePeca> participantePecas) {
+		this.participantePecas = participantePecas;
 	}
-
-
 
 }
