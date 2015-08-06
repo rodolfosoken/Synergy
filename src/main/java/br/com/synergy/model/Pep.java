@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
+// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,12 +25,10 @@ public class Pep implements java.io.Serializable {
 	private PepId id;
 	private Conta conta;
 	private String numero;
-	private Set<FornecimentoFerramenta> fornecimentoFerramentas = new HashSet<FornecimentoFerramenta>(
+	private Set<CompraFerramenta> compraFerramentas = new HashSet<CompraFerramenta>(
 			0);
-	private Set<FornecimentoPeca> fornecimentoPecas = new HashSet<FornecimentoPeca>(
-			0);
-	private Set<FornecimentoMaterial> fornecimentoMaterials = new HashSet<FornecimentoMaterial>(
-			0);
+	private Set<CompraPeca> compraPecas = new HashSet<CompraPeca>(0);
+	private Set<CompraMaterial> compraMaterials = new HashSet<CompraMaterial>(0);
 
 	public Pep() {
 	}
@@ -41,15 +39,14 @@ public class Pep implements java.io.Serializable {
 	}
 
 	public Pep(PepId id, Conta conta, String numero,
-			Set<FornecimentoFerramenta> fornecimentoFerramentas,
-			Set<FornecimentoPeca> fornecimentoPecas,
-			Set<FornecimentoMaterial> fornecimentoMaterials) {
+			Set<CompraFerramenta> compraFerramentas,
+			Set<CompraPeca> compraPecas, Set<CompraMaterial> compraMaterials) {
 		this.id = id;
 		this.conta = conta;
 		this.numero = numero;
-		this.fornecimentoFerramentas = fornecimentoFerramentas;
-		this.fornecimentoPecas = fornecimentoPecas;
-		this.fornecimentoMaterials = fornecimentoMaterials;
+		this.compraFerramentas = compraFerramentas;
+		this.compraPecas = compraPecas;
+		this.compraMaterials = compraMaterials;
 	}
 
 	@EmbeddedId
@@ -84,32 +81,30 @@ public class Pep implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
-	public Set<FornecimentoFerramenta> getFornecimentoFerramentas() {
-		return this.fornecimentoFerramentas;
+	public Set<CompraFerramenta> getCompraFerramentas() {
+		return this.compraFerramentas;
 	}
 
-	public void setFornecimentoFerramentas(
-			Set<FornecimentoFerramenta> fornecimentoFerramentas) {
-		this.fornecimentoFerramentas = fornecimentoFerramentas;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
-	public Set<FornecimentoPeca> getFornecimentoPecas() {
-		return this.fornecimentoPecas;
-	}
-
-	public void setFornecimentoPecas(Set<FornecimentoPeca> fornecimentoPecas) {
-		this.fornecimentoPecas = fornecimentoPecas;
+	public void setCompraFerramentas(Set<CompraFerramenta> compraFerramentas) {
+		this.compraFerramentas = compraFerramentas;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
-	public Set<FornecimentoMaterial> getFornecimentoMaterials() {
-		return this.fornecimentoMaterials;
+	public Set<CompraPeca> getCompraPecas() {
+		return this.compraPecas;
 	}
 
-	public void setFornecimentoMaterials(
-			Set<FornecimentoMaterial> fornecimentoMaterials) {
-		this.fornecimentoMaterials = fornecimentoMaterials;
+	public void setCompraPecas(Set<CompraPeca> compraPecas) {
+		this.compraPecas = compraPecas;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
+	public Set<CompraMaterial> getCompraMaterials() {
+		return this.compraMaterials;
+	}
+
+	public void setCompraMaterials(Set<CompraMaterial> compraMaterials) {
+		this.compraMaterials = compraMaterials;
 	}
 
 }

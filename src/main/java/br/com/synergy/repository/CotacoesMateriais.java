@@ -29,7 +29,7 @@ public class CotacoesMateriais implements Serializable {
 		em.remove(cotacao);
 	}
 	
-	public CotacaoMaterial buscaPorId(Integer id){
+	public CotacaoMaterial buscaPorId(Long id){
 		return em.find(CotacaoMaterial.class, id);
 	}
 

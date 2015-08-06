@@ -34,7 +34,7 @@ public class CotacaoFerramentaConverter implements Converter {
 	@Override
 	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2) {
 		if(arg2 != null){
-			return ((CotacaoFerramenta) arg2).getIdcotacao().toString();
+			return String.valueOf(((CotacaoFerramenta) arg2).getIdcotacao());
 		}
 		return null;
 	}

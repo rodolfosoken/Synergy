@@ -1,6 +1,6 @@
 package br.com.synergy.model;
 
-// Generated 25/07/2015 13:37:07 by Hibernate Tools 4.3.1
+// Generated 05/08/2015 21:41:19 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,9 +11,8 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,22 +23,22 @@ import javax.persistence.Table;
 public class Montagem implements java.io.Serializable {
 
 	private Long idmontagem;
-	private Conjunto conjunto;
-	private Set<Peca> pecas = new HashSet<Peca>(0);
-	private Set<Ferramenta> ferramentas = new HashSet<Ferramenta>(0);
+	private Ferramenta ferramenta;
+	private Peca peca;
+	private Set<Conjunto> conjuntos = new HashSet<Conjunto>(0);
 
 	public Montagem() {
 	}
 
-	public Montagem(Conjunto conjunto) {
-		this.conjunto = conjunto;
+	public Montagem(Ferramenta ferramenta, Peca peca) {
+		this.ferramenta = ferramenta;
+		this.peca = peca;
 	}
 
-	public Montagem(Conjunto conjunto, Set<Peca> pecas,
-			Set<Ferramenta> ferramentas) {
-		this.conjunto = conjunto;
-		this.pecas = pecas;
-		this.ferramentas = ferramentas;
+	public Montagem(Ferramenta ferramenta, Peca peca, Set<Conjunto> conjuntos) {
+		this.ferramenta = ferramenta;
+		this.peca = peca;
+		this.conjuntos = conjuntos;
 	}
 
 	@Id
@@ -54,33 +53,32 @@ public class Montagem implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "conjunto_idconjunto", nullable = false)
-	public Conjunto getConjunto() {
-		return this.conjunto;
+	@JoinColumn(name = "ferramenta_idferramenta", nullable = false)
+	public Ferramenta getFerramenta() {
+		return this.ferramenta;
 	}
 
-	public void setConjunto(Conjunto conjunto) {
-		this.conjunto = conjunto;
+	public void setFerramenta(Ferramenta ferramenta) {
+		this.ferramenta = ferramenta;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "montagem_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) })
-	public Set<Peca> getPecas() {
-		return this.pecas;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "peca_idpeca", nullable = false)
+	public Peca getPeca() {
+		return this.peca;
 	}
 
-	public void setPecas(Set<Peca> pecas) {
-		this.pecas = pecas;
+	public void setPeca(Peca peca) {
+		this.peca = peca;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "montagem_has_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "montagem_idmontagem", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) })
-	public Set<Ferramenta> getFerramentas() {
-		return this.ferramentas;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "montagem")
+	public Set<Conjunto> getConjuntos() {
+		return this.conjuntos;
 	}
 
-	public void setFerramentas(Set<Ferramenta> ferramentas) {
-		this.ferramentas = ferramentas;
+	public void setConjuntos(Set<Conjunto> conjuntos) {
+		this.conjuntos = conjuntos;
 	}
 
 }

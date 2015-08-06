@@ -1,25 +1,21 @@
 package br.com.synergy.model;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
+import javax.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("MATERIAL")
-public class FornecedorMaterial extends Fornecedor implements java.io.Serializable {
-
-	
+public class FornecedorMaterial extends Fornecedor implements
+		java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Set<CotacaoMaterial> cotacaoMaterials = new HashSet<CotacaoMaterial>(
+
+	private Set<ParticipanteMaterial> participanteMaterials = new HashSet<ParticipanteMaterial>(
 			0);
 
 	public FornecedorMaterial() {
@@ -29,15 +25,14 @@ public class FornecedorMaterial extends Fornecedor implements java.io.Serializab
 		this.setCnpj(cnpj);
 	}
 
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_material_has_fornecedor", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_material_idcotacao", nullable = false, updatable = false) })
-	public Set<CotacaoMaterial> getCotacaoMaterials() {
-		return this.cotacaoMaterials;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fornecedor")
+	public Set<ParticipanteMaterial> getParticipanteMaterials() {
+		return this.participanteMaterials;
 	}
 
-	public void setCotacaoMaterials(Set<CotacaoMaterial> cotacaoMaterials) {
-		this.cotacaoMaterials = cotacaoMaterials;
+	public void setParticipanteMaterials(
+			Set<ParticipanteMaterial> participanteMaterials) {
+		this.participanteMaterials = participanteMaterials;
 	}
 
 }

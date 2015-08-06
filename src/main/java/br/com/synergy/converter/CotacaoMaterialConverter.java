@@ -24,7 +24,7 @@ public class CotacaoMaterialConverter implements Converter {
 		CotacaoMaterial convertido = null;
 		
 		if (arg2 != null) {
-			Integer id = new Integer(arg2);
+			Long id = new Long(arg2);
 			convertido = cotacoes.buscaPorId(id);
 		}
 		
@@ -34,7 +34,7 @@ public class CotacaoMaterialConverter implements Converter {
 	@Override
 	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2) {
 		if(arg2 != null){
-			return ((CotacaoMaterial) arg2).getIdcotacao().toString();
+			return String.valueOf(((CotacaoMaterial) arg2).getIdcotacao());
 		}
 		return null;
 	}

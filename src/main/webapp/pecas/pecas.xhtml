@@ -76,15 +76,15 @@
 					forceSelection="true">
 				</p:autoComplete>
 
-				<p:outputLabel value="Pn Less" for="pnLess" />
-				<p:inputText id="pnLess" size="30"
-					value="#{pecaBean.pecaEdicao.pnLess}" />
+				<p:outputLabel value="Pn Less" for="pn" />
+				<p:inputText id="pn" size="30"
+					value="#{pecaBean.pecaEdicao.pn}" />
 
 				<p:outputLabel value="Part Name" for="partName" />
 				<p:inputText id="partName" value="#{pecaBean.pecaEdicao.partName}" />
 
-				<p:outputLabel value="Descrição" for="desc" />
-				<p:inputText id="desc" value="#{pecaBean.pecaEdicao.desc}" />
+				<p:outputLabel value="Descrição" for="descricao" />
+				<p:inputText id="descricao" value="#{pecaBean.pecaEdicao.descricao}" />
 
 
 				<p:outputLabel value="upcFna" for="upcFna" />
@@ -116,12 +116,12 @@
 					<h:outputText value="#{peca.partName}" />
 				</p:column>
 
-				<p:column headerText="Pn Less" sortBy="#{peca.pnLess}">
-					<h:outputText value="#{peca.pnLess}" />
+				<p:column headerText="Pn Less" sortBy="#{peca.pn}">
+					<h:outputText value="#{peca.pn}" />
 				</p:column>
 
-				<p:column headerText="Descrição" sortBy="#{peca.desc}">
-					<h:outputText value="#{peca.desc}" />
+				<p:column headerText="Descrição" sortBy="#{peca.descricao}">
+					<h:outputText value="#{peca.descricao}" />
 				</p:column>
 
 				<p:column headerText="upcFna" sortBy="#{peca.upcFna}">

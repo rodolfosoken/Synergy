@@ -7,9 +7,7 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -18,8 +16,9 @@ public class FornecedorFerramenta extends Fornecedor implements java.io.Serializ
 
 
 	
-	private static final long serialVersionUID = 1L;
-	private Set<CotacaoFerramenta> cotacaoFerramentas = new HashSet<CotacaoFerramenta>(0);
+	private static final long serialVersionUID = 1L;	
+	private Set<ParticipanteFerramenta> participanteFerramentas = new HashSet<ParticipanteFerramenta>(
+			0);
 
 	public FornecedorFerramenta() {
 
@@ -30,14 +29,14 @@ public class FornecedorFerramenta extends Fornecedor implements java.io.Serializ
 	}
 
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "cotacao_ferramenta_has_fornecedor", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "fornecedor_idfornecedor", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "cotacao_ferramenta_idcotacao", nullable = false, updatable = false) })
-	public Set<CotacaoFerramenta> getCotacaoFerramentas() {
-		return this.cotacaoFerramentas;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fornecedor")
+	public Set<ParticipanteFerramenta> getParticipanteFerramentas() {
+		return this.participanteFerramentas;
 	}
 
-	public void setCotacaoFerramentas(Set<CotacaoFerramenta> cotacaoFerramentas) {
-		this.cotacaoFerramentas = cotacaoFerramentas;
+	public void setParticipanteFerramentas(
+			Set<ParticipanteFerramenta> participanteFerramentas) {
+		this.participanteFerramentas = participanteFerramentas;
 	}
 
 }

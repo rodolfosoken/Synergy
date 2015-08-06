@@ -12,9 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "fornecedor", catalog = "sistema_gestao")
@@ -22,14 +20,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 @DiscriminatorColumn(name="TIPO_FORNECEDOR", discriminatorType=DiscriminatorType.STRING)
 public abstract class Fornecedor implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Long idfornecedor;
 	private String cnpj;
 	private String nome;
 	private String contato;
+	private String cargo;
 	private String email;
 	private String linkSharepoint;
 	private String obs;
@@ -42,8 +39,9 @@ public abstract class Fornecedor implements java.io.Serializable {
 	private String bairro;
 	private String cep;
 	private String estado;
-	private String tipoFornecedor; 
-	private String cargo;
+	private String tipoFornecedor;
+
+
 	public Fornecedor() {
 	}
 
@@ -59,8 +57,6 @@ public abstract class Fornecedor implements java.io.Serializable {
 		this.idfornecedor = idfornecedor;
 	}
 
-	@NotNull
-	@NotEmpty
 	@Column(name = "cnpj", nullable = false, length = 18)
 	public String getCnpj() {
 		return this.cnpj;
@@ -69,9 +65,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
-	
-	@NotNull
-	@NotEmpty
+
 	@Column(name = "nome")
 	public String getNome() {
 		return this.nome;
@@ -89,7 +83,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setContato(String contato) {
 		this.contato = contato;
 	}
-	
+
 	@Column(name = "cargo")
 	public String getCargo() {
 		return this.cargo;
@@ -134,7 +128,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setCelular(String celular) {
 		this.celular = celular;
 	}
-	@NotEmpty
+
 	@Column(name = "telefone", length = 45)
 	public String getTelefone() {
 		return this.telefone;
@@ -152,7 +146,6 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setSite(String site) {
 		this.site = site;
 	}
-
 
 	@Column(name = "logradouro")
 	public String getLogradouro() {
@@ -207,7 +200,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
+
 	@Column(name = "TIPO_FORNECEDOR", nullable = false, length = 45, insertable=false, updatable=false)
 	public String getTipoFornecedor() {
 		return this.tipoFornecedor;
@@ -216,6 +209,5 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setTipoFornecedor(String tipoFornecedor) {
 		this.tipoFornecedor = tipoFornecedor;
 	}
-
 
 }
