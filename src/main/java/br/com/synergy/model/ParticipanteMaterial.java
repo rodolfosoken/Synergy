@@ -22,10 +22,12 @@ import javax.persistence.Table;
 @Table(name = "participante_material", catalog = "sistema_gestao")
 public class ParticipanteMaterial implements java.io.Serializable {
 
+
+	private static final long serialVersionUID = 1L;
 	private Long idparticipante;
 	private CotacaoMaterial cotacaoMaterial;
 	private Fornecedor fornecedor;
-	private Set<Material> materials = new HashSet<Material>(0);
+	private Set<Material> materiais = new HashSet<Material>(0);
 
 	public ParticipanteMaterial() {
 	}
@@ -37,10 +39,10 @@ public class ParticipanteMaterial implements java.io.Serializable {
 	}
 
 	public ParticipanteMaterial(CotacaoMaterial cotacaoMaterial,
-			Fornecedor fornecedor, Set<Material> materials) {
+			Fornecedor fornecedor, Set<Material> materiais) {
 		this.cotacaoMaterial = cotacaoMaterial;
 		this.fornecedor = fornecedor;
-		this.materials = materials;
+		this.materiais = materiais;
 	}
 
 	@Id
@@ -75,12 +77,29 @@ public class ParticipanteMaterial implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participanteMaterial")
-	public Set<Material> getMaterials() {
-		return this.materials;
+	public Set<Material> getMateriais() {
+		return this.materiais;
 	}
 
-	public void setMaterials(Set<Material> materials) {
-		this.materials = materials;
+	public void setMateriais(Set<Material> materiais) {
+		this.materiais = materiais;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ParticipanteMaterial other = (ParticipanteMaterial) obj;
+		if (idparticipante == null) {
+			if (other.idparticipante != null)
+				return false;
+		} else if (!idparticipante.equals(other.idparticipante))
+			return false;
+		return true;
 	}
 
 }

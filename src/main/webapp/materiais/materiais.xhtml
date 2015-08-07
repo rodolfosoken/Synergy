@@ -67,12 +67,12 @@
 				<p:messages id="messages" closable="true"/>
 
 
-				<p:outputLabel value="Cotação" for="material" />
+				<p:outputLabel value="Fornecedor" for="participante" />
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
-				<p:autoComplete id="cotacao"
-					value="#{materialBean.materialEdicao.cotacaoMaterial}" dropdown="true" size="40"
-					completeMethod="#{materialBean.completarCotacao}" var="cotacaoMaterial"
-					itemLabel="#{cotacaoMaterial.descricao}" itemValue="#{cotacaoMaterial}"
+				<p:autoComplete id="participante"
+					value="#{materialBean.materialEdicao.participanteMaterial}" dropdown="true" size="40"
+					completeMethod="#{materialBean.completarParticipante}" var="participante"
+					itemLabel="#{participante.fornecedor.nome}" itemValue="#{participante}"
 					forceSelection="true"/>
 
 				<p:outputLabel value="Material Específico" for="materialEspc" />

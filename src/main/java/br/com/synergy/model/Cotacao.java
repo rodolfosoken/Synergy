@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Cotacao implements java.io.Serializable {
 
+
+	private static final long serialVersionUID = 1L;
 	private Long idcotacao;
 	private String responsavel;
 	private Date dataInicio;

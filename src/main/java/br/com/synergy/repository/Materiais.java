@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 
 import br.com.synergy.model.CotacaoMaterial;
 import br.com.synergy.model.Material;
+import br.com.synergy.model.ParticipanteMaterial;
 
 public class Materiais implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -38,9 +39,9 @@ public class Materiais implements Serializable {
 				Material.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 	
-	public List<CotacaoMaterial> buscaPorCotacao(String nome) {
-		return em.createQuery("from CotacaoMaterial" + " where descricao like :nome",
-				CotacaoMaterial.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
+	public List<ParticipanteMaterial> buscaPorParticipante(String nome) {
+		return em.createQuery("from ParticipanteMaterial" + " where fornecedor_idfornecedor like :nome",
+				ParticipanteMaterial.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 
 }

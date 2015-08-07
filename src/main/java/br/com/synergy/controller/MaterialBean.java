@@ -10,8 +10,8 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 
-import br.com.synergy.model.CotacaoMaterial;
 import br.com.synergy.model.Material;
+import br.com.synergy.model.ParticipanteMaterial;
 import br.com.synergy.repository.Materiais;
 import br.com.synergy.service.CadastroMaterialService;
 import br.com.synergy.util.FacesMessages;
@@ -70,8 +70,8 @@ public class MaterialBean implements Serializable {
 		
 	}
 	
-	public List<CotacaoMaterial> completarCotacao(String nome){
-		return materiais.buscaPorCotacao(nome.toString());
+	public List<ParticipanteMaterial> completarParticipante(String nome){
+		return materiais.buscaPorParticipante(nome.toString());
 	}
 
 	

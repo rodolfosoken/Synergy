@@ -28,6 +28,7 @@ public class Material implements java.io.Serializable {
 	private String material;
 	private String desc;
 	private Boolean disponibilidade;
+	private Double valor;
 	private Set<CompraMaterial> compraMaterials = new HashSet<CompraMaterial>(0);
 	private Set<Peca> pecas = new HashSet<Peca>(0);
 
@@ -93,7 +94,7 @@ public class Material implements java.io.Serializable {
 		this.material = material;
 	}
 
-	@Column(name = "desc")
+	@Column(name = "descricao")
 	public String getDesc() {
 		return this.desc;
 	}
@@ -109,6 +110,16 @@ public class Material implements java.io.Serializable {
 
 	public void setDisponibilidade(Boolean disponibilidade) {
 		this.disponibilidade = disponibilidade;
+	}
+	
+	
+	@Column(name="valor")
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "material")

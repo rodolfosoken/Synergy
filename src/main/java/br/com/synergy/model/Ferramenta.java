@@ -2,11 +2,14 @@ package br.com.synergy.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -35,6 +38,7 @@ public class Ferramenta implements java.io.Serializable {
 	private Double area;
 	private Integer maxStack;
 	private String descricao;
+	private Double valor;
 	private Set<Montagem> montagems = new HashSet<Montagem>(0);
 	private Set<CompraFerramenta> compraFerramentas = new HashSet<CompraFerramenta>(
 			0);
@@ -173,6 +177,15 @@ public class Ferramenta implements java.io.Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	@Column(name="valor")
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ferramenta")

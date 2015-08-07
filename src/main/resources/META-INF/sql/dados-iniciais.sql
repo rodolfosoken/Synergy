@@ -50,14 +50,79 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sistema_gestao`.`Conta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`Conta` (
+  `idConta` BIGINT NOT NULL,
+  `numero_conta` VARCHAR(45) NULL,
+  PRIMARY KEY (`idConta`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sistema_gestao`.`pep`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`pep` (
+  `idpep` BIGINT NOT NULL,
+  `Conta_idConta` BIGINT NOT NULL,
+  `valor` DOUBLE NULL,
+  `numero` VARCHAR(45) NULL,
+  PRIMARY KEY (`idpep`, `Conta_idConta`),
+  INDEX `fk_pep_Conta1_idx` (`Conta_idConta` ASC),
+  CONSTRAINT `fk_pep_Conta1`
+    FOREIGN KEY (`Conta_idConta`)
+    REFERENCES `sistema_gestao`.`Conta` (`idConta`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sistema_gestao`.`compra_ferramenta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_ferramenta` (
+  `idfornecimento_ferramenta` BIGINT NOT NULL AUTO_INCREMENT,
+  `ok_prazo` TINYINT(1) NULL,
+  `ok_espec` TINYINT(1) NULL,
+  `ok_visita` TINYINT(1) NULL,
+  `ok_assist` TINYINT(1) NULL,
+  `data_aquisicao` DATE NULL,
+  `preco` DOUBLE NULL,
+  `pep_idpep` BIGINT NOT NULL,
+  `pep_Conta_idConta` BIGINT NOT NULL,
+  `ferramenta_idferramenta` BIGINT NOT NULL,
+  PRIMARY KEY (`idfornecimento_ferramenta`),
+  INDEX `fk_fornecimento_ferramenta_pep1_idx` (`pep_idpep` ASC, `pep_Conta_idConta` ASC),
+  INDEX `fk_compra_ferramenta_ferramenta1_idx` (`ferramenta_idferramenta` ASC),
+  CONSTRAINT `fk_fornecimento_ferramenta_pep1`
+    FOREIGN KEY (`pep_idpep` , `pep_Conta_idConta`)
+    REFERENCES `sistema_gestao`.`pep` (`idpep` , `Conta_idConta`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_compra_ferramenta_ferramenta1`
+    FOREIGN KEY (`ferramenta_idferramenta`)
+    REFERENCES `sistema_gestao`.`ferramenta` (`idferramenta`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sistema_gestao`.`cotacao_ferramenta`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`cotacao_ferramenta` (
   `cotacao_idcotacao` BIGINT NOT NULL AUTO_INCREMENT,
+  `compra_ferramenta_idfornecimento_ferramenta` BIGINT NULL,
   PRIMARY KEY (`cotacao_idcotacao`),
+  INDEX `fk_cotacao_ferramenta_compra_ferramenta1_idx` (`compra_ferramenta_idfornecimento_ferramenta` ASC),
   CONSTRAINT `fk_cotacao_ferramenta_cotacao1`
     FOREIGN KEY (`cotacao_idcotacao`)
     REFERENCES `sistema_gestao`.`cotacao` (`idcotacao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cotacao_ferramenta_compra_ferramenta1`
+    FOREIGN KEY (`compra_ferramenta_idfornecimento_ferramenta`)
+    REFERENCES `sistema_gestao`.`compra_ferramenta` (`idfornecimento_ferramenta`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -104,6 +169,7 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`ferramenta` (
   `descricao` VARCHAR(255) NULL,
   `idferramenta` BIGINT NOT NULL AUTO_INCREMENT,
   `idparticipante_ferramenta` BIGINT NOT NULL,
+  `disponibilidade` TINYINT(1) NULL,
   PRIMARY KEY (`idferramenta`),
   INDEX `fk_ferramenta_participante_ferramenta1_idx` (`idparticipante_ferramenta` ASC),
   CONSTRAINT `fk_ferramenta_participante_ferramenta1`
@@ -116,37 +182,10 @@ COMMENT = '		';
 
 
 -- -----------------------------------------------------
--- Table `sistema_gestao`.`Conta`
+-- Table `sistema_gestao`.`compra_material`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_gestao`.`Conta` (
-  `idConta` BIGINT NOT NULL,
-  `numero_conta` VARCHAR(45) NULL,
-  PRIMARY KEY (`idConta`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sistema_gestao`.`pep`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_gestao`.`pep` (
-  `idpep` BIGINT NOT NULL,
-  `numero` VARCHAR(45) NULL,
-  `Conta_idConta` BIGINT NOT NULL,
-  PRIMARY KEY (`idpep`, `Conta_idConta`),
-  INDEX `fk_pep_Conta1_idx` (`Conta_idConta` ASC),
-  CONSTRAINT `fk_pep_Conta1`
-    FOREIGN KEY (`Conta_idConta`)
-    REFERENCES `sistema_gestao`.`Conta` (`idConta`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sistema_gestao`.`compra_ferramenta`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_ferramenta` (
-  `idfornecimento_ferramenta` BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_material` (
+  `idfornecimento_material` INT NOT NULL AUTO_INCREMENT,
   `ok_prazo` TINYINT(1) NULL,
   `ok_espec` TINYINT(1) NULL,
   `ok_visita` TINYINT(1) NULL,
@@ -155,18 +194,18 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_ferramenta` (
   `preco` DOUBLE NULL,
   `pep_idpep` BIGINT NOT NULL,
   `pep_Conta_idConta` BIGINT NOT NULL,
-  `ferramenta_idferramenta` BIGINT NOT NULL,
-  PRIMARY KEY (`idfornecimento_ferramenta`),
-  INDEX `fk_fornecimento_ferramenta_pep1_idx` (`pep_idpep` ASC, `pep_Conta_idConta` ASC),
-  INDEX `fk_compra_ferramenta_ferramenta1_idx` (`ferramenta_idferramenta` ASC),
-  CONSTRAINT `fk_fornecimento_ferramenta_pep1`
+  `material_idmaterial` BIGINT NOT NULL,
+  PRIMARY KEY (`idfornecimento_material`),
+  INDEX `fk_fornecimento_material_pep1_idx` (`pep_idpep` ASC, `pep_Conta_idConta` ASC),
+  INDEX `fk_compra_material_material1_idx` (`material_idmaterial` ASC),
+  CONSTRAINT `fk_fornecimento_material_pep1`
     FOREIGN KEY (`pep_idpep` , `pep_Conta_idConta`)
     REFERENCES `sistema_gestao`.`pep` (`idpep` , `Conta_idConta`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_compra_ferramenta_ferramenta1`
-    FOREIGN KEY (`ferramenta_idferramenta`)
-    REFERENCES `sistema_gestao`.`ferramenta` (`idferramenta`)
+  CONSTRAINT `fk_compra_material_material1`
+    FOREIGN KEY (`material_idmaterial`)
+    REFERENCES `sistema_gestao`.`material` (`idmaterial`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -177,10 +216,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`cotacao_material` (
   `cotacao_idcotacao` BIGINT NOT NULL AUTO_INCREMENT,
+  `compra_material_idfornecimento_material` INT NULL,
   PRIMARY KEY (`cotacao_idcotacao`),
+  INDEX `fk_cotacao_material_compra_material1_idx` (`compra_material_idfornecimento_material` ASC),
   CONSTRAINT `fk_cotacao_material_cotacao1`
     FOREIGN KEY (`cotacao_idcotacao`)
     REFERENCES `sistema_gestao`.`cotacao` (`idcotacao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cotacao_material_compra_material1`
+    FOREIGN KEY (`compra_material_idfornecimento_material`)
+    REFERENCES `sistema_gestao`.`compra_material` (`idfornecimento_material`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -234,10 +280,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`cotacao_peca` (
   `cotacao_idcotacao` BIGINT NOT NULL AUTO_INCREMENT,
+  `compra_peca_idfornecimento_peca` BIGINT NULL,
   PRIMARY KEY (`cotacao_idcotacao`),
+  INDEX `fk_cotacao_peca_compra_peca1_idx` (`compra_peca_idfornecimento_peca` ASC),
   CONSTRAINT `fk_cotacao_peca_cotacao1`
     FOREIGN KEY (`cotacao_idcotacao`)
     REFERENCES `sistema_gestao`.`cotacao` (`idcotacao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cotacao_peca_compra_peca1`
+    FOREIGN KEY (`compra_peca_idfornecimento_peca`)
+    REFERENCES `sistema_gestao`.`compra_peca` (`idfornecimento_peca`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -277,6 +330,7 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`peca` (
   `idpeca` BIGINT NOT NULL AUTO_INCREMENT,
   `material_idmaterial` BIGINT NOT NULL,
   `participante_peca_idparticipante_peca` BIGINT NULL,
+  `disponibilidade` TINYINT(1) NULL,
   PRIMARY KEY (`idpeca`),
   INDEX `fk_peca_material1_idx` (`material_idmaterial` ASC),
   INDEX `fk_peca_participante_peca1_idx` (`participante_peca_idparticipante_peca` ASC),
@@ -318,36 +372,6 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_peca` (
   CONSTRAINT `fk_compra_peca_peca1`
     FOREIGN KEY (`peca_idpeca`)
     REFERENCES `sistema_gestao`.`peca` (`idpeca`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sistema_gestao`.`compra_material`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_material` (
-  `idfornecimento_material` INT NOT NULL AUTO_INCREMENT,
-  `ok_prazo` TINYINT(1) NULL,
-  `ok_espec` TINYINT(1) NULL,
-  `ok_visita` TINYINT(1) NULL,
-  `ok_assist` TINYINT(1) NULL,
-  `data_aquisicao` DATE NULL,
-  `preco` DOUBLE NULL,
-  `pep_idpep` BIGINT NOT NULL,
-  `pep_Conta_idConta` BIGINT NOT NULL,
-  `material_idmaterial` BIGINT NOT NULL,
-  PRIMARY KEY (`idfornecimento_material`),
-  INDEX `fk_fornecimento_material_pep1_idx` (`pep_idpep` ASC, `pep_Conta_idConta` ASC),
-  INDEX `fk_compra_material_material1_idx` (`material_idmaterial` ASC),
-  CONSTRAINT `fk_fornecimento_material_pep1`
-    FOREIGN KEY (`pep_idpep` , `pep_Conta_idConta`)
-    REFERENCES `sistema_gestao`.`pep` (`idpep` , `Conta_idConta`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_compra_material_material1`
-    FOREIGN KEY (`material_idmaterial`)
-    REFERENCES `sistema_gestao`.`material` (`idmaterial`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -4,11 +4,14 @@ package br.com.synergy.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,6 +32,7 @@ public class Peca implements java.io.Serializable {
 	private String partName;
 	private String descricao;
 	private String upcFna;
+	private Double valor;
 	private Set<CompraPeca> compraPecas = new HashSet<CompraPeca>(0);
 	private Set<Montagem> montagems = new HashSet<Montagem>(0);
 
@@ -117,6 +121,15 @@ public class Peca implements java.io.Serializable {
 
 	public void setUpcFna(String upcFna) {
 		this.upcFna = upcFna;
+	}
+	
+	@Column(name="valor")
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "peca")
