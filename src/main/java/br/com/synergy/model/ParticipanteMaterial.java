@@ -50,7 +50,8 @@ public class ParticipanteMaterial implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "idparticipante", unique = true, nullable = false)
 	public Long getIdparticipante() {
 		return this.idparticipante;
 	}
@@ -88,31 +89,6 @@ public class ParticipanteMaterial implements java.io.Serializable {
 		this.materiais = materiais;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((idparticipante == null) ? 0 : idparticipante.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ParticipanteMaterial other = (ParticipanteMaterial) obj;
-		if (idparticipante == null) {
-			if (other.idparticipante != null)
-				return false;
-		} else if (!idparticipante.equals(other.idparticipante))
-			return false;
-		return true;
-	}
 	
 
 

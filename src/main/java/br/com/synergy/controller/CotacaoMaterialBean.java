@@ -82,9 +82,15 @@ public class CotacaoMaterialBean implements Serializable {
 			RequestContext.getCurrentInstance().update("frm:growl");
 
 		} else if (!contemParticipante(participanteMaterial,cotacaoMaterial.getParticipantesMateriais())) {
+			System.out.println("Vou adicionar: " + participanteMaterial.getFornecedor().getNome());
+			
 			participanteMaterial.setCotacaoMaterial(cotacaoMaterial);
 			cotacaoMaterial.getParticipantesMateriais().add(
 					participanteMaterial);
+			for (ParticipanteMaterial p : cotacaoMaterial.getParticipantesMateriais()) {
+				System.out.println(p.getFornecedor().getNome());
+			}
+			
 			participanteMaterial = new ParticipanteMaterial();
 		} else {
 			messages.error("Fornecedor já foi adicionado!");
