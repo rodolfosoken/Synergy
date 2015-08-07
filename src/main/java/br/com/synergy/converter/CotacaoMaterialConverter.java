@@ -6,16 +6,16 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.synergy.model.CotacaoMaterial;
-import br.com.synergy.repository.CotacoesMateriais;
+import br.com.synergy.repository.Cotacoes;
 import br.com.synergy.util.CDIServiceLocator;
 
 @FacesConverter(forClass = CotacaoMaterial.class)
 public class CotacaoMaterialConverter implements Converter {
 
-	private CotacoesMateriais cotacoes;
+	private Cotacoes cotacoes;
 	
 	public CotacaoMaterialConverter() {
-	cotacoes = CDIServiceLocator.getBean(CotacoesMateriais.class);
+	cotacoes = CDIServiceLocator.getBean(Cotacoes.class);
 	
 	}
 	
@@ -25,7 +25,7 @@ public class CotacaoMaterialConverter implements Converter {
 		
 		if (arg2 != null) {
 			Long id = new Long(arg2);
-			convertido = cotacoes.buscaPorId(id);
+			convertido = (CotacaoMaterial) cotacoes.buscaPorId(id);
 		}
 		
 		return convertido;
