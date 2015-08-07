@@ -38,11 +38,11 @@ public abstract class Cotacao implements java.io.Serializable {
 
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "idcotacao", unique = true, nullable = false)
+	@GeneratedValue
 	public Long getIdcotacao() {
 		return this.idcotacao;
 	}
+
 
 	public void setIdcotacao(Long idcotacao) {
 		this.idcotacao = idcotacao;
@@ -94,5 +94,30 @@ public abstract class Cotacao implements java.io.Serializable {
 		this.concluida = concluida;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((idcotacao == null) ? 0 : idcotacao.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cotacao other = (Cotacao) obj;
+		if (idcotacao == null) {
+			if (other.idcotacao != null)
+				return false;
+		} else if (!idcotacao.equals(other.idcotacao))
+			return false;
+		return true;
+	}
 
 }

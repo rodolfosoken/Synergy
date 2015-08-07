@@ -4,11 +4,15 @@ package br.com.synergy.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -46,8 +50,7 @@ public class ParticipanteMaterial implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "idparticipante", unique = true, nullable = false)
+	@GeneratedValue
 	public Long getIdparticipante() {
 		return this.idparticipante;
 	}
@@ -76,7 +79,7 @@ public class ParticipanteMaterial implements java.io.Serializable {
 		this.fornecedor = fornecedor;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participanteMaterial")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participanteMaterial", cascade= CascadeType.ALL)
 	public Set<Material> getMateriais() {
 		return this.materiais;
 	}
@@ -84,7 +87,16 @@ public class ParticipanteMaterial implements java.io.Serializable {
 	public void setMateriais(Set<Material> materiais) {
 		this.materiais = materiais;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((idparticipante == null) ? 0 : idparticipante.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -101,5 +113,7 @@ public class ParticipanteMaterial implements java.io.Serializable {
 			return false;
 		return true;
 	}
+	
+
 
 }

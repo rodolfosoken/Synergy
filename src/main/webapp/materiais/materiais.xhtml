@@ -18,11 +18,6 @@
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:commandButton value="Novo Material" icon="ui-icon-document"
-						 process="@this"
-						update="material-dialog" oncomplete="PF('materialDialog').show()">
-						<p:resetInput target="material-dialog" />
-					</p:commandButton>
 
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
 						update="cadastro-material" process="@this"
@@ -66,14 +61,6 @@
 				<p:defaultCommand target="salvar-materialButton" scope="cadastro-material" />
 				<p:messages id="messages" closable="true"/>
 
-
-				<p:outputLabel value="Fornecedor" for="participante" />
-				<f:attribute name="collectionType" value="java.util.ArrayList" />
-				<p:autoComplete id="participante"
-					value="#{materialBean.materialEdicao.participanteMaterial}" dropdown="true" size="40"
-					completeMethod="#{materialBean.completarParticipante}" var="participante"
-					itemLabel="#{participante.fornecedor.nome}" itemValue="#{participante}"
-					forceSelection="true"/>
 
 				<p:outputLabel value="Material Específico" for="materialEspc" />
 				<p:inputText id="materialEspc" size="30"
@@ -119,18 +106,6 @@
 				</p:column>
 			</p:dataTable>
 
-
-
-			<p:dialog header="Novo Material" id="material-dialog"
-				widgetVar="materialDialog" resizable="false" modal="true"
-				closeOnEscape="true">
-				<p:messages id="msgs-dialog" />
-				
-				<p:outputLabel value=""/>			
-
-
-
-			</p:dialog>
 
 
 

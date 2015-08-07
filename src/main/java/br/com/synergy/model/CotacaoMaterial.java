@@ -4,6 +4,7 @@ package br.com.synergy.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -11,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.engine.internal.Cascade;
 
 
 @Entity
@@ -23,7 +26,7 @@ public class CotacaoMaterial extends Cotacao implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private CompraMaterial compraMaterial;
-	private Set<ParticipanteMaterial> participanteMateriais = new HashSet<ParticipanteMaterial>(
+	private Set<ParticipanteMaterial> participantesMateriais = new HashSet<ParticipanteMaterial>(
 			0);
 
 	public CotacaoMaterial() {
@@ -40,14 +43,14 @@ public class CotacaoMaterial extends Cotacao implements java.io.Serializable {
 	}
 
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoMaterial")
-	public Set<ParticipanteMaterial> getParticipanteMateriais() {
-		return this.participanteMateriais;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoMaterial",cascade = CascadeType.ALL)
+	public Set<ParticipanteMaterial> getParticipantesMateriais() {
+		return this.participantesMateriais;
 	}
 
-	public void setParticipanteMateriais(
-			Set<ParticipanteMaterial> participanteMateriais) {
-		this.participanteMateriais = participanteMateriais;
+	public void setParticipantesMateriais(
+			Set<ParticipanteMaterial> participantesMateriais) {
+		this.participantesMateriais = participantesMateriais;
 	}
 	
 	@Override

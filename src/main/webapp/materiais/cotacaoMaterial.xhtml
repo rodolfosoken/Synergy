@@ -9,11 +9,11 @@
 	<ui:define name="title">Contações Materiais</ui:define>
 	<ui:define name="body">
 
-		<h1>Cotação para Materiais</h1>
+		<h1>Cotação para Material</h1>
 
 		<h:form id="frm">
 			<p:messages id="messages" />
-			<p:growl id="growl" />  
+			<p:growl id="growl" />
 
 			<p:toolbar id="toolbar">
 				<f:facet name="right">
@@ -23,7 +23,9 @@
 					</span>
 
 
-					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk">
+					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk"
+						action="#{cotacaoMaterialBean.salvarCotacao}" process="frm"
+						update="frm">
 					</p:commandButton>
 
 				</f:facet>
@@ -52,9 +54,10 @@
 
 			<p:tabView id="tabView" style="margin-top: 20px">
 				<p:tab title="Fornecedor" id="tabFornecedor">
-				<p:defaultCommand target="adicionar-fornecedor" scope="tabView" />
-				<h:panelGrid columns="4" style="margin-bottom:20px">
-							
+					<p:defaultCommand target="adicionar-fornecedor"
+						scope="tabFornecedor" />
+					<h:panelGrid columns="4" style="margin-bottom:20px">
+
 						<p:outputLabel value="Fornecedor: " />
 						<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
 							completeMethod="#{cotacaoMaterialBean.completarFornecedor}"
@@ -65,21 +68,22 @@
 
 						</p:autoComplete>
 						<p:spacer width="100" height="10" />
-						<p:commandButton id="adicionar-fornecedor" value="Adicionar" icon="ui-icon-plus"
-							action="#{cotacaoMaterialBean.adicionaFornecedor}"
-							process="tabView" update="tabView"/>
-							<p:outputLabel/>
-							<p:messages id="message-fornecedor" closable="true"/>
+						<p:commandButton id="adicionar-fornecedor" value="Adicionar"
+							icon="ui-icon-plus"
+							action="#{cotacaoMaterialBean.adicionarFornecedor}"
+							process="tabView" update="tabView" />
+						<p:outputLabel />
+						<p:messages id="message-fornecedor" closable="true" />
 					</h:panelGrid>
 
 
 					<p:dataTable
-						value="#{cotacaoMaterialBean.cotacaoMaterial.participanteMateriais}"
+						value="#{cotacaoMaterialBean.cotacaoMaterial.participantesMateriais}"
 						var="participante" emptyMessage="Nenhum fornecedor cadastrado."
 						id="fornecedores-table"
 						selection="#{cotacaoMaterialBean.participanteSelecionado}"
 						selectionMode="single"
-						rowKey="#{participante.fornecedor.idfornecedor}" >
+						rowKey="#{participante.fornecedor.idfornecedor}">
 
 						<!-- Quando selecionar disparar evento -->
 						<p:ajax event="rowSelect" update=":frm:tabView" />
@@ -120,25 +124,27 @@
 				</p:tab>
 				<p:tab title="Produtos do Fornecedor"
 					disabled="#{cotacaoMaterialBean.participanteSelecionado==null}">
-				
-					
-					<h:panelGrid columns="5" id="cadastro-material" style="margin-bottom: 20px">
 
-							<p:outputLabel/>
-							<p:outputLabel/>
-							<p:outputLabel/>
-							<p:outputLabel/>
+
+					<h:panelGrid columns="5" id="cadastro-material"
+						style="margin-bottom: 20px">
+
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
 						<p:commandButton value="Adicionar"
 							action="#{cotacaoMaterialBean.adicionarMaterial}"
-							update="tabView" process="frm" id="salvar-materialButton"/>
-														
+							update="tabView produtos-table" process="tabView"
+							id="salvar-materialButton" />
+
 						<p:outputLabel value="Material Específico" for="materialEspc" />
 						<p:inputText id="materialEspc" size="30"
 							value="#{cotacaoMaterialBean.materialEdicao.materialEspc}" />
 						<p:outputLabel value="Material" for="material" />
 						<p:inputText id="material"
 							value="#{cotacaoMaterialBean.materialEdicao.material}" />
-							<p:outputLabel/>
+						<p:outputLabel />
 
 						<p:outputLabel value="Descrição" for="desc" />
 						<p:inputText id="desc"
@@ -147,7 +153,7 @@
 						<p:outputLabel value="Valor" for="valor" />
 						<p:inputText id="valor"
 							value="#{cotacaoMaterialBean.materialEdicao.valor}" />
-							
+
 
 					</h:panelGrid>
 
@@ -155,13 +161,10 @@
 					<p:dataTable
 						value="#{cotacaoMaterialBean.participanteSelecionado.materiais}"
 						var="material"
+					
 						emptyMessage="Nenhum produto associado ao fornecedor."
 						id="produtos-table">
-
-						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView" />
-						<p:ajax event="rowUnselect" update=":frm:tabView" />
-
+					
 						<p:column headerText="Valor"
 							style="text-align: center; width: 60px">
 							<h:outputText value="#{material.valor}" />

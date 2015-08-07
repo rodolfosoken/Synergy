@@ -79,31 +79,31 @@
 				<p:ajax event="rowSelect" update=":frm:toolbar" />
 				<p:ajax event="rowUnselect" update=":frm:toolbar" />
 
-				<p:column headerText="ID" sortBy="#{fornecedor.idfornecedor}">
+				<p:column headerText="ID" sortBy="#{fornecedor.idfornecedor}" style="text-align: center; width: 45px">
 					<h:outputText value="#{fornecedor.idfornecedor}"/>
 				</p:column>
 				
-				<p:column headerText="CNPJ" sortBy="#{fornecedor.cnpj}">
+				<p:column headerText="CNPJ" sortBy="#{fornecedor.cnpj}" style="text-align: center; width: 160px">
 					<h:outputText value="#{fornecedor.cnpj}" />
 				</p:column>
 
-				<p:column headerText="Nome da Empresa" sortBy="#{fornecedor.nome}">
+				<p:column headerText="Nome da Empresa" sortBy="#{fornecedor.nome}" style="text-align: center; width: 250px">
 					<h:outputText value="#{fornecedor.nome}" />
 				</p:column>
 
-				<p:column headerText="Contato" sortBy="#{fornecedor.contato}">
+				<p:column headerText="Contato" sortBy="#{fornecedor.contato}" style="text-align: center; width: 160px">
 					<h:outputText value="#{fornecedor.contato}" />
 				</p:column>
 
-				<p:column headerText="Telefone" sortBy="#{fornecedor.telefone}">
+				<p:column headerText="Telefone" sortBy="#{fornecedor.telefone}" style="text-align: center; width: 160px">
 					<h:outputText value="#{fornecedor.telefone}" />
 				</p:column>
 
-				<p:column headerText="Link" sortBy="#{fornecedor.linkSharepoint}">
+				<p:column headerText="Link" sortBy="#{fornecedor.linkSharepoint}" style="text-align: center; width: 160px">
 					<h:outputText value="#{fornecedor.linkSharepoint}" />
 				</p:column>
 
-				<p:column headerText="Link" sortBy="#{fornecedor.logradouro}">
+				<p:column headerText="Endereço" sortBy="#{fornecedor.logradouro}" style="text-align: center; width: 160px">
 					<h:outputText value="#{fornecedor.logradouro}" />
 				</p:column>
 

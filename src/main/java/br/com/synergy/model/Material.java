@@ -4,11 +4,14 @@ package br.com.synergy.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -55,8 +58,7 @@ public class Material implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "idmaterial", unique = true, nullable = false)
+	@GeneratedValue
 	public Long getIdmaterial() {
 		return this.idmaterial;
 	}
@@ -138,6 +140,32 @@ public class Material implements java.io.Serializable {
 
 	public void setPecas(Set<Peca> pecas) {
 		this.pecas = pecas;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((idmaterial == null) ? 0 : idmaterial.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Material other = (Material) obj;
+		if (idmaterial == null) {
+			if (other.idmaterial != null)
+				return false;
+		} else if (!idmaterial.equals(other.idmaterial))
+			return false;
+		return true;
 	}
 
 }

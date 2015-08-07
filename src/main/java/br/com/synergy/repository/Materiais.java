@@ -6,7 +6,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import br.com.synergy.model.CotacaoMaterial;
 import br.com.synergy.model.Material;
 import br.com.synergy.model.ParticipanteMaterial;
 

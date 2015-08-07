@@ -1,6 +1,7 @@
 package br.com.synergy.controller;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -12,9 +13,11 @@ import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.CotacaoMaterial;
 import br.com.synergy.model.Fornecedor;
+import br.com.synergy.model.FornecedorMaterial;
 import br.com.synergy.model.Material;
 import br.com.synergy.model.ParticipanteMaterial;
 import br.com.synergy.repository.Fornecedores;
+import br.com.synergy.service.CadastroCotacaoMaterialService;
 import br.com.synergy.util.FacesMessages;
 
 @Named
@@ -30,6 +33,10 @@ public class CotacaoMaterialBean implements Serializable {
 
 	@Inject
 	private Fornecedores fornecedores;
+
+	@Inject
+	private CadastroCotacaoMaterialService cadastro;
+
 	private CotacaoMaterial cotacaoMaterial;
 
 	private ParticipanteMaterial participanteSelecionado;
@@ -48,26 +55,36 @@ public class CotacaoMaterialBean implements Serializable {
 		materialEdicao = new Material();
 	}
 
-	public List<Fornecedor> completarFornecedor(String nome) {
-		return fornecedores.buscaPorNome(nome);
+	public List<FornecedorMaterial> completarFornecedor(String nome) {
+		return fornecedores.buscaPorFornecedorMaterial(nome);
 	}
 
 	public void adicionarMaterial() {
 		materialEdicao.setParticipanteMaterial(participanteSelecionado);
 		participanteSelecionado.getMateriais().add(materialEdicao);
+		System.out.println("Adicionando material: "+materialEdicao.getMaterialEspc());
 		materialEdicao = new Material();
 	}
 
-	public void adicionaFornecedor() {
+	public void salvarCotacao() {
+		cadastro.salvar(cotacaoMaterial);
+		messages.info("Cotação salva com sucesso!");
+		
+		limpar();
+		RequestContext.getCurrentInstance().update(
+				Arrays.asList("frm:messages", "frm"));
+	}
+
+	public void adicionarFornecedor() {
 		if (participanteMaterial.getFornecedor() == null) {
 
-			messages.error("Fornecedor deve ser selecionado!");
+			messages.error("Fornecedor de Materiais deve ser selecionado!");
 			RequestContext.getCurrentInstance().update("frm:growl");
 
-		} else if (!contemParticipante(participanteMaterial,
-				cotacaoMaterial.getParticipanteMateriais())) {
-			cotacaoMaterial.getParticipanteMateriais()
-					.add(participanteMaterial);
+		} else if (!contemParticipante(participanteMaterial,cotacaoMaterial.getParticipantesMateriais())) {
+			participanteMaterial.setCotacaoMaterial(cotacaoMaterial);
+			cotacaoMaterial.getParticipantesMateriais().add(
+					participanteMaterial);
 			participanteMaterial = new ParticipanteMaterial();
 		} else {
 			messages.error("Fornecedor já foi adicionado!");

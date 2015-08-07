@@ -42,9 +42,9 @@ public class Fornecedores implements Serializable {
 		return em.find(FornecedorMaterial.class, id);
 	}
 
-	public List<Fornecedor> buscaPorNome(String nome) {
-		return em.createQuery("from Fornecedor" + " where nome like :nome",
-				Fornecedor.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
+	public List<FornecedorMaterial> buscaPorFornecedorMaterial(String nome) {
+		return em.createQuery("from FornecedorMaterial" + " where nome like :nome",
+				FornecedorMaterial.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 
 }
