@@ -52,7 +52,8 @@
 			</p:panelGrid>
 
 
-			<p:tabView id="tabView" style="margin-top: 20px">
+			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true"
+				activeIndex="#{cotacaoMaterialBean.tabIndex}">
 				<p:tab title="Fornecedor" id="tabFornecedor">
 					<p:defaultCommand target="adicionar-fornecedor"
 						scope="tabFornecedor" />
@@ -74,7 +75,7 @@
 							icon="ui-icon-plus"
 							action="#{cotacaoMaterialBean.adicionarFornecedor}"
 							process="tabView" update="tabView" />
-						
+
 					</h:panelGrid>
 
 					<p:commandButton id="remover-fornecedor" value="Remover"
@@ -130,7 +131,7 @@
 
 				</p:tab>
 				<p:tab title="Produtos do Fornecedor"
-					disabled="#{cotacaoMaterialBean.participanteSelecionado==null}">
+					disabled="#{cotacaoMaterialBean.participanteSelecionado==null}" id="tabProdutos">
 
 
 					<h:panelGrid columns="5" id="cadastro-material"
@@ -142,7 +143,7 @@
 						<p:outputLabel />
 						<p:commandButton value="Adicionar"
 							action="#{cotacaoMaterialBean.adicionarMaterial}"
-							update="tabView produtos-table" process="tabView"
+							update="produtos-table cadastro-material" process="tabProdutos"
 							id="salvar-materialButton" />
 
 						<p:outputLabel value="Material Específico" for="materialEspc" />
@@ -166,13 +167,13 @@
 
 					<p:commandButton id="remover-material" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoMaterialBean.removerMaterial}"
-						process="tabView" update="tabView"
+						action="#{cotacaoMaterialBean.removerMaterial}" process="tabProdutos"
+						update="produtos-table"
 						disabled="#{cotacaoMaterialBean.materialSelecionado==null}" />
 					<p:outputLabel />
-					
-					
-				<p:dataTable
+
+
+					<p:dataTable
 						value="#{cotacaoMaterialBean.participanteSelecionado.materiais}"
 						var="material" id="produtos-table"
 						selection="#{cotacaoMaterialBean.materialSelecionado}"

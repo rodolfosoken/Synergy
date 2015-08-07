@@ -42,6 +42,8 @@ public class CotacaoFerramentaBean implements Serializable {
 	private ParticipanteFerramenta participanteFerramenta;
 	private Ferramenta ferramentaEdicao;
 	private Ferramenta ferramentaSelecionado;
+	private Integer indexTab=0;
+	
 
 	public CotacaoFerramentaBean() {
 		limpar();
@@ -52,6 +54,9 @@ public class CotacaoFerramentaBean implements Serializable {
 		cotacaoFerramenta = new CotacaoFerramenta();
 		participanteFerramenta = new ParticipanteFerramenta();
 		ferramentaEdicao = new Ferramenta();
+		participanteSelecionado=null;
+		ferramentaSelecionado=null;
+		indexTab=0;
 	}
 
 	public List<FornecedorFerramenta> completarFornecedor(String nome) {
@@ -70,7 +75,7 @@ public class CotacaoFerramentaBean implements Serializable {
 		
 		limpar();
 		RequestContext.getCurrentInstance().update(
-				Arrays.asList("frm:messages", "frm:grid-cotacao"));
+				Arrays.asList("frm:messages", "frm"));
 	}
 
 	public void adicionarFornecedor() {
@@ -81,7 +86,6 @@ public class CotacaoFerramentaBean implements Serializable {
 			RequestContext.getCurrentInstance().update("frm:growl");
 
 		} else if (!contemParticipante(participanteFerramenta,cotacaoFerramenta.getParticipantesFerramentas())) {
-			System.out.println("Vou adicionar: " + participanteFerramenta.getFornecedor().getNome());
 			
 			participanteFerramenta.setCotacaoFerramenta(cotacaoFerramenta);
 			cotacaoFerramenta.getParticipantesFerramentas().add(
@@ -111,8 +115,11 @@ public class CotacaoFerramentaBean implements Serializable {
 			Set<ParticipanteFerramenta> lista) {
 		boolean contem = false;
 		for (ParticipanteFerramenta p : lista) {
-			contem = p.getFornecedor().getIdfornecedor()
-					.equals(participante.getFornecedor().getIdfornecedor());
+			if(p.getFornecedor().getIdfornecedor()
+					.equals(participante.getFornecedor().getIdfornecedor())){
+				return !contem;
+			}
+		
 		}
 		return contem;
 	}
@@ -160,5 +167,14 @@ public class CotacaoFerramentaBean implements Serializable {
 			ParticipanteFerramenta participanteSelecionado) {
 		this.participanteSelecionado = participanteSelecionado;
 	}
+
+	public Integer getIndexTab() {
+		return indexTab;
+	}
+
+	public void setIndexTab(Integer indexTab) {
+		this.indexTab = indexTab;
+	}
+	
 
 }

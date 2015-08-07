@@ -52,7 +52,7 @@
 			</p:panelGrid>
 
 
-			<p:tabView id="tabView" style="margin-top: 20px">
+			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true" activeIndex="#{cotacaoFerramentaBean.indexTab}">
 				<p:tab title="Fornecedor" id="tabFornecedor">
 					<p:defaultCommand target="adicionar-fornecedor"
 						scope="tabFornecedor" />
@@ -73,7 +73,7 @@
 						<p:commandButton id="adicionar-fornecedor" value="Adicionar"
 							icon="ui-icon-plus"
 							action="#{cotacaoFerramentaBean.adicionarFornecedor}"
-							process="tabView" update="tabView" />
+							process="tabFornecedor" update="fornecedores-table" />
 							
 					
 					</h:panelGrid>
@@ -131,7 +131,7 @@
 
 				</p:tab>
 				<p:tab title="Produtos do Fornecedor"
-					disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}">
+					disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}" id="tabProdutos">
 
 
 					<h:panelGrid columns="2" id="cadastro-ferramenta"
@@ -159,7 +159,7 @@
 
 						<p:commandButton value="Adicionar"
 							action="#{cotacaoFerramentaBean.adicionarFerramenta}"
-							update="tabView produtos-table" process="tabView"
+							update="produtos-table cadastro-ferramenta" process="tabProdutos"
 							id="salvar-ferramentaButton" />
 
 
@@ -169,7 +169,7 @@
 					<p:commandButton id="remover-ferramenta" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
 						action="#{cotacaoFerramentaBean.removerFerramenta}"
-						process="tabView" update="tabView"
+						process="tabProdutos" update="produtos-table"
 						disabled="#{cotacaoFerramentaBean.ferramentaSelecionado==null}" />
 					<p:outputLabel />
 

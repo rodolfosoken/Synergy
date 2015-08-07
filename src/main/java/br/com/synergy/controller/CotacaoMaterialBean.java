@@ -37,11 +37,11 @@ public class CotacaoMaterialBean implements Serializable {
 	private CadastroCotacaoMaterialService cadastro;
 
 	private CotacaoMaterial cotacaoMaterial;
-
 	private ParticipanteMaterial participanteSelecionado;
 	private ParticipanteMaterial participanteMaterial;
 	private Material materialEdicao;
 	private Material materialSelecionado;
+	private Integer tabIndex = 0;
 
 	public CotacaoMaterialBean() {
 		limpar();
@@ -52,6 +52,9 @@ public class CotacaoMaterialBean implements Serializable {
 		cotacaoMaterial = new CotacaoMaterial();
 		participanteMaterial = new ParticipanteMaterial();
 		materialEdicao = new Material();
+		participanteSelecionado = null;
+		materialSelecionado = null;
+		tabIndex = 0;
 	}
 
 	public List<FornecedorMaterial> completarFornecedor(String nome) {
@@ -61,14 +64,15 @@ public class CotacaoMaterialBean implements Serializable {
 	public void adicionarMaterial() {
 		materialEdicao.setParticipanteMaterial(participanteSelecionado);
 		participanteSelecionado.getMateriais().add(materialEdicao);
-		System.out.println("Adicionando material: "+materialEdicao.getMaterialEspc());
+		System.out.println("Adicionando material: "
+				+ materialEdicao.getMaterialEspc());
 		materialEdicao = new Material();
 	}
 
 	public void salvarCotacao() {
 		cadastro.salvar(cotacaoMaterial);
 		messages.info("Cotação salva com sucesso!");
-		
+
 		limpar();
 		RequestContext.getCurrentInstance().update(
 				Arrays.asList("frm:messages", "frm"));
@@ -80,44 +84,59 @@ public class CotacaoMaterialBean implements Serializable {
 			messages.error("Fornecedor de Materiais deve ser selecionado!");
 			RequestContext.getCurrentInstance().update("frm:growl");
 
-		} else if (!contemParticipante(participanteMaterial,cotacaoMaterial.getParticipantesMateriais())) {
-			System.out.println("Vou adicionar: " + participanteMaterial.getFornecedor().getNome());
-			
+		} else if (!contemParticipante(participanteMaterial,
+				cotacaoMaterial.getParticipantesMateriais())) {
+			System.out.println("Vou adicionar: "
+					+ participanteMaterial.getFornecedor().getNome());
+
 			participanteMaterial.setCotacaoMaterial(cotacaoMaterial);
 			cotacaoMaterial.getParticipantesMateriais().add(
 					participanteMaterial);
-			for (ParticipanteMaterial p : cotacaoMaterial.getParticipantesMateriais()) {
+			for (ParticipanteMaterial p : cotacaoMaterial
+					.getParticipantesMateriais()) {
 				System.out.println(p.getFornecedor().getNome());
 			}
-			
+
 			participanteMaterial = new ParticipanteMaterial();
 		} else {
 			messages.error("Fornecedor já foi adicionado!");
 			RequestContext.getCurrentInstance().update("frm:growl");
 		}
 	}
-	
-	public void removerFornecedor(){
-		cotacaoMaterial.getParticipantesMateriais().remove(participanteSelecionado);
-		participanteSelecionado=null; 
+
+	public void removerFornecedor() {
+		cotacaoMaterial.getParticipantesMateriais().remove(
+				participanteSelecionado);
+		participanteSelecionado = null;
 	}
-	
-	public void removerMaterial(){
+
+	public void removerMaterial() {
 		participanteSelecionado.getMateriais().remove(materialSelecionado);
-		materialSelecionado=null;
+		materialSelecionado = null;
 	}
 
 	public boolean contemParticipante(ParticipanteMaterial participante,
 			Set<ParticipanteMaterial> lista) {
 		boolean contem = false;
 		for (ParticipanteMaterial p : lista) {
-			contem = p.getFornecedor().getIdfornecedor()
-					.equals(participante.getFornecedor().getIdfornecedor());
+			if(p.getFornecedor().getIdfornecedor()
+					.equals(participante.getFornecedor().getIdfornecedor())){
+				return !contem;
+			}
+		
 		}
 		return contem;
 	}
 
 	// getters e setters
+
+	public Integer getTabIndex() {
+		return tabIndex;
+	}
+
+	public void setTabIndex(Integer tabIndex) {
+		this.tabIndex = tabIndex;
+	}
 
 	public Material getMaterialEdicao() {
 		return materialEdicao;
