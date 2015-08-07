@@ -6,7 +6,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import br.com.synergy.model.Fornecedor;
-import br.com.synergy.model.FornecedorMaterial;
 import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.util.CDIServiceLocator;
 
@@ -23,10 +22,10 @@ public class FornecedorConverter implements Converter {
 
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {
-		FornecedorMaterial convertido = null;
+		Fornecedor convertido = null;
 		if (arg2 != null) {
 			Long id = new Long(arg2);
-			convertido = fornecedores.buscaPorIdMaterial(id);
+			convertido = fornecedores.buscaPorId(id);
 		}
 
 		return convertido;

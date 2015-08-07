@@ -60,7 +60,7 @@ public class Ferramenta implements java.io.Serializable {
 		this.idferramenta = idferramenta;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idparticipante_ferramenta", nullable = false)
 	public ParticipanteFerramenta getParticipanteFerramenta() {
 		return this.participanteFerramenta;

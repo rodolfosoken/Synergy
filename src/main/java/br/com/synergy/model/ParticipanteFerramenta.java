@@ -3,11 +3,15 @@ package br.com.synergy.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -63,7 +67,7 @@ public class ParticipanteFerramenta implements java.io.Serializable {
 		this.cotacaoFerramenta = cotacaoFerramenta;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "fornecedor_idfornecedor", nullable = false)
 	public Fornecedor getFornecedor() {
 		return this.fornecedor;
@@ -73,7 +77,7 @@ public class ParticipanteFerramenta implements java.io.Serializable {
 		this.fornecedor = fornecedor;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participanteFerramenta")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participanteFerramenta", cascade= CascadeType.ALL)
 	public Set<Ferramenta> getFerramentas() {
 		return this.ferramentas;
 	}

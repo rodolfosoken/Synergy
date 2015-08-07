@@ -18,12 +18,7 @@
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:commandButton value="Nova Ferramenta" icon="ui-icon-document"
-						process="@this" update="ferramenta-dialog"
-						oncomplete="PF('ferramentaDialog').show()">
-
-					</p:commandButton>
-
+	
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
 						process="@this" update="ferramenta-dialog"
 						oncomplete="PF('ferramentaDialog').show()"
@@ -99,7 +94,7 @@
 
 
 
-			<p:dialog header="Nova Ferramenta" id="ferramenta-dialog"
+			<p:dialog header="Edição Ferramenta" id="ferramenta-dialog"
 				widgetVar="ferramentaDialog" resizable="false" modal="true"
 				closeOnEscape="true">
 				<p:messages id="msgs-dialog" />
@@ -111,13 +106,8 @@
 					<p:defaultCommand target="salvar-ferramentaButton"
 						scope="ferramenta-dialog" />
 
-					<p:outputLabel value="Cotação" for="ferramenta" />
-					<p:autoComplete id="cotacao" size="40"
-						value="#{ferramentaBean.ferramentaEdicao.participanteFerramenta}"
-						dropdown="true"
-						completeMethod="#{ferramentaBean.completarParticipante}"
-						var="participanteFerrmaneta" itemLabel="#{pariticpanteFerramenta.fornecedor.nome}"
-						itemValue="#{participanteFerramenta}" forceSelection="true" />
+					<p:outputLabel value="Fornecedor" for="ferramenta" />
+					<p:outputLabel value="#{ferramentaBean.ferramentaEdicao.participanteFerramenta.fornecedor.nome}" />
 
 					<p:outputLabel value="Id Equipament" for="idEquip" />
 					<p:inputText id="idEquip"

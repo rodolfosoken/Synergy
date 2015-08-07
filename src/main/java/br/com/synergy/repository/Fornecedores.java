@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.synergy.model.Fornecedor;
+import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.model.FornecedorMaterial;
 
 public class Fornecedores implements Serializable {
@@ -46,5 +47,11 @@ public class Fornecedores implements Serializable {
 		return em.createQuery("from FornecedorMaterial" + " where nome like :nome",
 				FornecedorMaterial.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
+	
+	public List<FornecedorFerramenta> buscaPorFornecedorFerramenta(String nome) {
+		return em.createQuery("from FornecedorFerramenta" + " where nome like :nome",
+				FornecedorFerramenta.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
+	}
+	
 
 }

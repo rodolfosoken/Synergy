@@ -12,7 +12,6 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.CotacaoMaterial;
-import br.com.synergy.model.Fornecedor;
 import br.com.synergy.model.FornecedorMaterial;
 import br.com.synergy.model.Material;
 import br.com.synergy.model.ParticipanteMaterial;
@@ -96,6 +95,16 @@ public class CotacaoMaterialBean implements Serializable {
 			messages.error("Fornecedor já foi adicionado!");
 			RequestContext.getCurrentInstance().update("frm:growl");
 		}
+	}
+	
+	public void removerFornecedor(){
+		cotacaoMaterial.getParticipantesMateriais().remove(participanteSelecionado);
+		participanteSelecionado=null; 
+	}
+	
+	public void removerMaterial(){
+		participanteSelecionado.getMateriais().remove(materialSelecionado);
+		materialSelecionado=null;
 	}
 
 	public boolean contemParticipante(ParticipanteMaterial participante,

@@ -6,10 +6,10 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Contações Materiais</ui:define>
+	<ui:define name="title">Contações Ferramentas</ui:define>
 	<ui:define name="body">
 
-		<h1>Cotação para Material</h1>
+		<h1>Cotação para Ferramenta</h1>
 
 		<h:form id="frm">
 			<p:messages id="messages" />
@@ -24,30 +24,30 @@
 
 
 					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk"
-						action="#{cotacaoMaterialBean.salvarCotacao}" process="frm"
+						action="#{cotacaoFerramentaBean.salvarCotacao}" process="frm"
 						update="frm">
 					</p:commandButton>
 
 				</f:facet>
 			</p:toolbar>
 
-			<p:panelGrid columns="4" style="margin-top:20px" id="grid-cotacao">
+			<p:panelGrid columns="4" style="margin-top:20px">
 
 				<p:outputLabel value=" Responsável " for="responsavel" />
 				<p:inputText id="responsavel" name="responsavel" size="25"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.responsavel}" />
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.responsavel}" />
 
 				<p:outputLabel value=" Data Início: " for="dataInicio" />
 				<p:calendar id="dataInicio" size="15"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.dataInicio}" />
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataInicio}" />
 
-				<p:outputLabel value=" Descrição do Material " for="descricao" />
+				<p:outputLabel value=" Descrição do Ferramenta " for="descricao" />
 				<p:inputText id="descricao" name="descricao" size="30"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.descricao}" />
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.descricao}" />
 
 				<p:outputLabel value=" Data Término: " for="dataTermino" />
 				<p:calendar id="dataTermino" size="15"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.dataTermino}" />
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataTermino}" />
 
 			</p:panelGrid>
 
@@ -60,11 +60,11 @@
 
 						<p:outputLabel value="Fornecedor: " />
 						<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
-							completeMethod="#{cotacaoMaterialBean.completarFornecedor}"
+							completeMethod="#{cotacaoFerramentaBean.completarFornecedor}"
 							var="fornecedor" itemLabel="#{fornecedor.nome}"
 							itemValue="#{fornecedor}" forceSelection="true"
 							converter="fornecedorConverter"
-							value="#{cotacaoMaterialBean.participanteMaterial.fornecedor}">
+							value="#{cotacaoFerramentaBean.participanteFerramenta.fornecedor}">
 						</p:autoComplete>
 
 						<p:spacer width="100" height="10" />
@@ -72,23 +72,24 @@
 
 						<p:commandButton id="adicionar-fornecedor" value="Adicionar"
 							icon="ui-icon-plus"
-							action="#{cotacaoMaterialBean.adicionarFornecedor}"
+							action="#{cotacaoFerramentaBean.adicionarFornecedor}"
 							process="tabView" update="tabView" />
-						
+							
+					
 					</h:panelGrid>
 
 					<p:commandButton id="remover-fornecedor" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoMaterialBean.removerFornecedor}"
+						action="#{cotacaoFerramentaBean.removerFornecedor}"
 						process="tabView" update="tabView"
-						disabled="#{cotacaoMaterialBean.participanteSelecionado==null}" />
+						disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}" />
 					<p:outputLabel />
 
 					<p:dataTable
-						value="#{cotacaoMaterialBean.cotacaoMaterial.participantesMateriais}"
+						value="#{cotacaoFerramentaBean.cotacaoFerramenta.participantesFerramentas}"
 						var="participante" emptyMessage="Nenhum fornecedor cadastrado."
 						id="fornecedores-table"
-						selection="#{cotacaoMaterialBean.participanteSelecionado}"
+						selection="#{cotacaoFerramentaBean.participanteSelecionado}"
 						selectionMode="single"
 						rowKey="#{participante.fornecedor.idfornecedor}">
 
@@ -130,84 +131,79 @@
 
 				</p:tab>
 				<p:tab title="Produtos do Fornecedor"
-					disabled="#{cotacaoMaterialBean.participanteSelecionado==null}">
+					disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}">
 
 
-					<h:panelGrid columns="5" id="cadastro-material"
+					<h:panelGrid columns="2" id="cadastro-ferramenta"
 						style="margin-bottom: 20px">
 
+						<p:defaultCommand target="salvar-ferramentaButton" scope="frm" />
 						<p:outputLabel />
-						<p:outputLabel />
-						<p:outputLabel />
-						<p:outputLabel />
+
+
+						<p:outputLabel value="Id Equipament" for="idEquip" />
+						<p:inputText id="idEquip"
+							value="#{cotacaoFerramentaBean.ferramentaEdicao.idEquipament}" />
+
+						<p:outputLabel value="Ferramenta" for="ferramenta" />
+						<p:inputText id="ferramenta" size="45"
+							value="#{cotacaoFerramentaBean.ferramentaEdicao.nome}" />
+
+						<p:outputLabel value="Descrição" for="descricao" />
+						<p:inputText id="descricao" size="45"
+							value="#{cotacaoFerramentaBean.ferramentaEdicao.descricao}" />
+
+						<p:outputLabel value="Utilidade" for="utilidade" />
+						<p:inputText id="utilidade" size="45"
+							value="#{cotacaoFerramentaBean.ferramentaEdicao.utilidade}" />
+
 						<p:commandButton value="Adicionar"
-							action="#{cotacaoMaterialBean.adicionarMaterial}"
+							action="#{cotacaoFerramentaBean.adicionarFerramenta}"
 							update="tabView produtos-table" process="tabView"
-							id="salvar-materialButton" />
+							id="salvar-ferramentaButton" />
 
-						<p:outputLabel value="Material Específico" for="materialEspc" />
-						<p:inputText id="materialEspc" size="30"
-							value="#{cotacaoMaterialBean.materialEdicao.materialEspc}" />
-						<p:outputLabel value="Material" for="material" />
-						<p:inputText id="material"
-							value="#{cotacaoMaterialBean.materialEdicao.material}" />
-						<p:outputLabel />
-
-						<p:outputLabel value="Descrição" for="desc" />
-						<p:inputText id="desc"
-							value="#{cotacaoMaterialBean.materialEdicao.desc}" />
-
-						<p:outputLabel value="Valor" for="valor" />
-						<p:inputText id="valor"
-							value="#{cotacaoMaterialBean.materialEdicao.valor}" />
 
 
 					</h:panelGrid>
 
-					<p:commandButton id="remover-material" value="Remover"
+					<p:commandButton id="remover-ferramenta" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoMaterialBean.removerMaterial}"
+						action="#{cotacaoFerramentaBean.removerFerramenta}"
 						process="tabView" update="tabView"
-						disabled="#{cotacaoMaterialBean.materialSelecionado==null}" />
+						disabled="#{cotacaoFerramentaBean.ferramentaSelecionado==null}" />
 					<p:outputLabel />
-					
-					
-				<p:dataTable
-						value="#{cotacaoMaterialBean.participanteSelecionado.materiais}"
-						var="material" id="produtos-table"
-						selection="#{cotacaoMaterialBean.materialSelecionado}"
-						selectionMode="single" rowKey="#{material}"
+
+
+					<p:dataTable
+						value="#{cotacaoFerramentaBean.participanteSelecionado.ferramentas}"
+						var="ferramenta" id="produtos-table"
+						selection="#{cotacaoFerramentaBean.ferramentaSelecionado}"
+						selectionMode="single" rowKey="#{ferramenta}"
 						emptyMessage="Nenhum produto associado ao fornecedor.">
 
 						<!-- Quando selecionar disparar evento -->
 						<p:ajax event="rowSelect" update=":frm:tabView" />
 						<p:ajax event="rowUnselect" update=":frm:tabView" />
 
-						<p:column headerText="Valor"
-							style="text-align: center; width: 60px">
-							<h:outputText value="#{material.valor}" />
+
+						<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}">
+							<h:outputText value="#{ferramenta.nome}" />
 						</p:column>
 
-						<p:column headerText="Material Específico"
-							sortBy="#{material.materialEspc}">
-							<h:outputText value="#{material.materialEspc}" />
+						<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}">
+							<h:outputText value="#{ferramenta.descricao}" />
 						</p:column>
 
-						<p:column headerText="Material" sortBy="#{material.material}">
-							<h:outputText value="#{material.material}" />
+						<p:column headerText="Utilidade" sortBy="#{ferramenta.utilidade}">
+							<h:outputText value="#{ferramenta.utilidade}" />
 						</p:column>
-
-						<p:column headerText="Descrição" sortBy="#{material.desc}">
-							<h:outputText value="#{material.desc}" />
-						</p:column>
-
 
 					</p:dataTable>
 
 
 
 				</p:tab>
-				<p:tab title="Compra do Material" disabled="true">
+				<p:tab title="Compra da Ferramenta" disabled="true">
 					<h:panelGrid columns="2" cellpadding="10">
 						<h:outputText value="Recurso ainda não implementado" />
 					</h:panelGrid>

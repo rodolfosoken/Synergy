@@ -4,6 +4,7 @@ package br.com.synergy.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -23,7 +24,7 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private CompraFerramenta compraFerramenta;
-	private Set<ParticipanteFerramenta> participanteFerramentas = new HashSet<ParticipanteFerramenta>(
+	private Set<ParticipanteFerramenta> participantesFerramentas = new HashSet<ParticipanteFerramenta>(
 			0);
 
 	public CotacaoFerramenta() {
@@ -39,14 +40,14 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 		this.compraFerramenta = compraFerramenta;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta")
-	public Set<ParticipanteFerramenta> getParticipanteFerramentas() {
-		return this.participanteFerramentas;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta", cascade= CascadeType.ALL)
+	public Set<ParticipanteFerramenta> getParticipantesFerramentas() {
+		return this.participantesFerramentas;
 	}
 
-	public void setParticipanteFerramentas(
-			Set<ParticipanteFerramenta> participanteFerramentas) {
-		this.participanteFerramentas = participanteFerramentas;
+	public void setParticipantesFerramentas(
+			Set<ParticipanteFerramenta> participantesFerramentas) {
+		this.participantesFerramentas = participantesFerramentas;
 	}
 
 }

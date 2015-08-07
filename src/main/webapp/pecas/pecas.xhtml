@@ -18,12 +18,7 @@
 		
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:commandButton value="Novo Material" icon="ui-icon-document"
-						 process="@this"
-						update="material-dialog" oncomplete="PF('materialDialog').show()">
-						<p:resetInput target="material-dialog" />
-					</p:commandButton>
-
+					
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
 						update="cadastro-peca" process="@this"
 						disabled="#{pecaBean.pecaSelecionado==null}">
@@ -135,17 +130,6 @@
 			</p:dataTable>
 
 
-
-			<p:dialog header="Novo Material" id="material-dialog"
-				widgetVar="materialDialog" resizable="false" modal="true"
-				closeOnEscape="true">
-				<p:messages id="msgs-dialog" />
-				
-				<p:outputLabel value=""/>			
-
-
-
-			</p:dialog>
 
 
 
