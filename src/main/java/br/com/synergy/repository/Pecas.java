@@ -33,4 +33,9 @@ public class Pecas implements Serializable {
 		return em.find(Peca.class, id);
 	}
 
+	public List<Peca> buscaPorPecaNome(String nome) {
+		return em.createQuery("from Peca" + " where partName like :nome",
+				Peca.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
+	}
+
 }

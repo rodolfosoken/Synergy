@@ -82,7 +82,7 @@
 					<p:commandButton id="remover-fornecedor" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
 						action="#{cotacaoMaterialBean.removerFornecedor}"
-						process="tabView" update="tabView" immediate="true"
+						process="@this" update="tabView"
 						disabled="#{cotacaoMaterialBean.participanteSelecionado==null}" />
 					<p:outputLabel />
 
@@ -178,7 +178,7 @@
 					<p:commandButton id="remover-material" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
 						action="#{cotacaoMaterialBean.removerMaterial}"
-						process="tabProdutos" update="produtos-table"
+						process="@this" update="@this produtos-table"
 						disabled="#{cotacaoMaterialBean.materialSelecionado==null}" />
 					<p:outputLabel />
 

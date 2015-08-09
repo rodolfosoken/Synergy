@@ -19,13 +19,13 @@ public class Ferramentas implements Serializable {
 		return em.createQuery("from Ferramenta", Ferramenta.class).getResultList();
 	}
 
-	public void guardar(Ferramenta material) {
-		em.merge(material);
+	public void guardar(Ferramenta ferramenta) {
+		em.merge(ferramenta);
 	}
 
-	public void excluir(Ferramenta material) {
-		material = buscaPorId(material.getIdferramenta());
-		em.remove(material);
+	public void excluir(Ferramenta ferramenta) {
+		ferramenta = buscaPorId(ferramenta.getIdferramenta());
+		em.remove(ferramenta);
 	}
 
 	public Ferramenta buscaPorId(Long id) {
@@ -33,8 +33,8 @@ public class Ferramentas implements Serializable {
 	}
 	
 
-	public List<Ferramenta> buscaPorFerramentaEspc(String nome) {
-		return em.createQuery("from Ferramenta" + " where materialEspc like :nome",
+	public List<Ferramenta> buscaPorFerramentaNome(String nome) {
+		return em.createQuery("from Ferramenta" + " where nome like :nome",
 				Ferramenta.class).setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 	

@@ -10,7 +10,6 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 
-import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.model.Ferramenta;
 import br.com.synergy.model.ParticipanteFerramenta;
 import br.com.synergy.repository.Ferramentas;

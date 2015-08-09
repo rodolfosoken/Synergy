@@ -3,17 +3,24 @@ package br.com.synergy.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity
@@ -59,7 +66,9 @@ public class Conjunto implements java.io.Serializable {
 	public void setIdconjunto(Long idconjunto) {
 		this.idconjunto = idconjunto;
 	}
-
+	
+	@NotNull
+	@NotBlank
 	@Column(name = "pn", nullable = false)
 	public String getPnLess() {
 		return this.pnLess;
@@ -68,7 +77,9 @@ public class Conjunto implements java.io.Serializable {
 	public void setPnLess(String pnLess) {
 		this.pnLess = pnLess;
 	}
-
+	
+	@NotNull
+	@NotBlank
 	@Column(name = "descricao")
 	public String getDesc() {
 		return this.desc;
@@ -96,7 +107,7 @@ public class Conjunto implements java.io.Serializable {
 		this.fnaDesc = fnaDesc;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade = CascadeType.ALL)
 	public Set<Montagem> getMontagems() {
 		return this.montagems;
 	}
