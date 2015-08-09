@@ -49,6 +49,10 @@ public class CotacaoFerramentaBean implements Serializable {
 		limpar();
 
 	}
+	
+	public void onRowSelection(){
+		indexTab=1;
+	}
 
 	private void limpar() {
 		cotacaoFerramenta = new CotacaoFerramenta();

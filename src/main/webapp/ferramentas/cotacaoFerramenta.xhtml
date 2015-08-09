@@ -24,21 +24,21 @@
 
 
 					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk"
-						action="#{cotacaoFerramentaBean.salvarCotacao}" process="frm"
+						action="#{cotacaoFerramentaBean.salvarCotacao}" process="cotacao-grid @this"
 						update="frm">
 					</p:commandButton>
 
 				</f:facet>
 			</p:toolbar>
 
-			<p:panelGrid columns="4" style="margin-top:20px">
+			<p:panelGrid columns="4" style="margin-top:20px" id="cotacao-grid">
 
 				<p:outputLabel value=" Responsável " for="responsavel" />
 				<p:inputText id="responsavel" name="responsavel" size="25"
 					value="#{cotacaoFerramentaBean.cotacaoFerramenta.responsavel}" />
 
 				<p:outputLabel value=" Data Início: " for="dataInicio" />
-				<p:calendar id="dataInicio" size="15"
+				<p:calendar id="dataInicio" size="15" pattern="dd/MM/yyyy"
 					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataInicio}" />
 
 				<p:outputLabel value=" Descrição do Ferramenta " for="descricao" />
@@ -46,24 +46,24 @@
 					value="#{cotacaoFerramentaBean.cotacaoFerramenta.descricao}" />
 
 				<p:outputLabel value=" Data Término: " for="dataTermino" />
-				<p:calendar id="dataTermino" size="15"
+				<p:calendar id="dataTermino" size="15" pattern="dd/MM/yyyy"
 					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataTermino}" />
 
 			</p:panelGrid>
 
 
 			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true" activeIndex="#{cotacaoFerramentaBean.indexTab}">
-				<p:tab title="Fornecedor" id="tabFornecedor">
+				<p:tab title="1-Fornecedor" id="tabFornecedor">
 					<p:defaultCommand target="adicionar-fornecedor"
 						scope="tabFornecedor" />
 					<h:panelGrid columns="4" style="margin-bottom:10px">
 
-						<p:outputLabel value="Fornecedor: " />
+						<p:outputLabel value="Fornecedor: " for="pesquisaFornecedor"/>
 						<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
 							completeMethod="#{cotacaoFerramentaBean.completarFornecedor}"
 							var="fornecedor" itemLabel="#{fornecedor.nome}"
 							itemValue="#{fornecedor}" forceSelection="true"
-							converter="fornecedorConverter"
+							converter="fornecedorConverter"  required="true"
 							value="#{cotacaoFerramentaBean.participanteFerramenta.fornecedor}">
 						</p:autoComplete>
 
@@ -73,7 +73,7 @@
 						<p:commandButton id="adicionar-fornecedor" value="Adicionar"
 							icon="ui-icon-plus"
 							action="#{cotacaoFerramentaBean.adicionarFornecedor}"
-							process="tabFornecedor" update="fornecedores-table" />
+							process="tabFornecedor" update="pesquisaFornecedor fornecedores-table :frm:messages" />
 							
 					
 					</h:panelGrid>
@@ -81,7 +81,7 @@
 					<p:commandButton id="remover-fornecedor" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
 						action="#{cotacaoFerramentaBean.removerFornecedor}"
-						process="tabView" update="tabView"
+						process="tabView" update="tabView" immediate="true"
 						disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}" />
 					<p:outputLabel />
 
@@ -94,7 +94,7 @@
 						rowKey="#{participante.fornecedor.idfornecedor}">
 
 						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView" />
+						<p:ajax event="rowSelect" update=":frm:tabView" listener="#{cotacaoFerramentaBean.onRowSelection}"/>
 						<p:ajax event="rowUnselect" update=":frm:tabView" />
 
 						<p:column headerText="ID" style="text-align: center; width: 60px">
@@ -130,23 +130,23 @@
 					</p:dataTable>
 
 				</p:tab>
-				<p:tab title="Produtos do Fornecedor"
+				<p:tab title="2-Produtos do Fornecedor"
 					disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}" id="tabProdutos">
 
 
 					<h:panelGrid columns="2" id="cadastro-ferramenta"
 						style="margin-bottom: 20px">
 
-						<p:defaultCommand target="salvar-ferramentaButton" scope="frm" />
+						<p:defaultCommand target="salvar-ferramentaButton" scope="tabProdutos" />
 						<p:outputLabel />
 
 
 						<p:outputLabel value="Id Equipament" for="idEquip" />
-						<p:inputText id="idEquip"
+						<p:inputText id="idEquip" required="true"
 							value="#{cotacaoFerramentaBean.ferramentaEdicao.idEquipament}" />
 
 						<p:outputLabel value="Ferramenta" for="ferramenta" />
-						<p:inputText id="ferramenta" size="45"
+						<p:inputText id="ferramenta" size="45" required="true"
 							value="#{cotacaoFerramentaBean.ferramentaEdicao.nome}" />
 
 						<p:outputLabel value="Descrição" for="descricao" />
@@ -159,7 +159,7 @@
 
 						<p:commandButton value="Adicionar"
 							action="#{cotacaoFerramentaBean.adicionarFerramenta}"
-							update="produtos-table cadastro-ferramenta" process="tabProdutos"
+							update="produtos-table cadastro-ferramenta :frm:messages" process="tabProdutos"
 							id="salvar-ferramentaButton" />
 
 
@@ -169,7 +169,7 @@
 					<p:commandButton id="remover-ferramenta" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
 						action="#{cotacaoFerramentaBean.removerFerramenta}"
-						process="tabProdutos" update="produtos-table"
+						process="tabProdutos" update="produtos-table" immediate="true"
 						disabled="#{cotacaoFerramentaBean.ferramentaSelecionado==null}" />
 					<p:outputLabel />
 
@@ -203,7 +203,7 @@
 
 
 				</p:tab>
-				<p:tab title="Compra da Ferramenta" disabled="true">
+				<p:tab title="3-Compra da Ferramenta" disabled="true">
 					<h:panelGrid columns="2" cellpadding="10">
 						<h:outputText value="Recurso ainda não implementado" />
 					</h:panelGrid>

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ferramenta", catalog = "sistema_gestao")
@@ -70,7 +71,7 @@ public class Ferramenta implements java.io.Serializable {
 			ParticipanteFerramenta participanteFerramenta) {
 		this.participanteFerramenta = participanteFerramenta;
 	}
-
+	@NotNull
 	@Column(name = "id_equipament", nullable = false)
 	public String getIdEquipament() {
 		return this.idEquipament;
@@ -79,7 +80,7 @@ public class Ferramenta implements java.io.Serializable {
 	public void setIdEquipament(String idEquipament) {
 		this.idEquipament = idEquipament;
 	}
-
+	@NotNull
 	@Column(name = "nome")
 	public String getNome() {
 		return this.nome;

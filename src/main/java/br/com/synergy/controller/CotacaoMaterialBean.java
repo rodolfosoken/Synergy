@@ -56,6 +56,10 @@ public class CotacaoMaterialBean implements Serializable {
 		materialSelecionado = null;
 		tabIndex = 0;
 	}
+	
+	public void onRowSelection(){
+		tabIndex=1;
+	}
 
 	public List<FornecedorMaterial> completarFornecedor(String nome) {
 		return fornecedores.buscaPorFornecedorMaterial(nome);

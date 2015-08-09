@@ -24,7 +24,7 @@
 
 
 					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk"
-						action="#{cotacaoMaterialBean.salvarCotacao}" process="frm"
+						action="#{cotacaoMaterialBean.salvarCotacao}" process="@this grid-cotacao"
 						update="frm">
 					</p:commandButton>
 
@@ -54,17 +54,17 @@
 
 			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true"
 				activeIndex="#{cotacaoMaterialBean.tabIndex}">
-				<p:tab title="Fornecedor" id="tabFornecedor">
+				<p:tab title="1-Fornecedor" id="tabFornecedor">
 					<p:defaultCommand target="adicionar-fornecedor"
 						scope="tabFornecedor" />
 					<h:panelGrid columns="4" style="margin-bottom:10px">
 
-						<p:outputLabel value="Fornecedor: " />
+						<p:outputLabel value="Fornecedor: " for="pesquisaFornecedor" />
 						<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
 							completeMethod="#{cotacaoMaterialBean.completarFornecedor}"
 							var="fornecedor" itemLabel="#{fornecedor.nome}"
 							itemValue="#{fornecedor}" forceSelection="true"
-							converter="fornecedorConverter"
+							converter="fornecedorConverter" required="true"
 							value="#{cotacaoMaterialBean.participanteMaterial.fornecedor}">
 						</p:autoComplete>
 
@@ -74,14 +74,15 @@
 						<p:commandButton id="adicionar-fornecedor" value="Adicionar"
 							icon="ui-icon-plus"
 							action="#{cotacaoMaterialBean.adicionarFornecedor}"
-							process="tabView" update="tabView" />
+							process="tabFornecedor"
+							update="pesquisaFornecedor fornecedores-table  :frm:messages" />
 
 					</h:panelGrid>
 
 					<p:commandButton id="remover-fornecedor" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
 						action="#{cotacaoMaterialBean.removerFornecedor}"
-						process="tabView" update="tabView"
+						process="tabView" update="tabView" immediate="true"
 						disabled="#{cotacaoMaterialBean.participanteSelecionado==null}" />
 					<p:outputLabel />
 
@@ -94,7 +95,8 @@
 						rowKey="#{participante.fornecedor.idfornecedor}">
 
 						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView" />
+						<p:ajax event="rowSelect" update=":frm:tabView"
+							listener="#{cotacaoMaterialBean.onRowSelection}" />
 						<p:ajax event="rowUnselect" update=":frm:tabView" />
 
 						<p:column headerText="ID" style="text-align: center; width: 60px">
@@ -130,8 +132,9 @@
 					</p:dataTable>
 
 				</p:tab>
-				<p:tab title="Produtos do Fornecedor"
-					disabled="#{cotacaoMaterialBean.participanteSelecionado==null}" id="tabProdutos">
+				<p:tab title="2-Produtos do Fornecedor"
+					disabled="#{cotacaoMaterialBean.participanteSelecionado==null}"
+					id="tabProdutos">
 
 
 					<h:panelGrid columns="5" id="cadastro-material"
@@ -141,25 +144,32 @@
 						<p:outputLabel />
 						<p:outputLabel />
 						<p:outputLabel />
+						
+						
 						<p:commandButton value="Adicionar"
 							action="#{cotacaoMaterialBean.adicionarMaterial}"
-							update="produtos-table cadastro-material" process="tabProdutos"
+							update="produtos-table cadastro-material :frm:messages" process="@this tabProdutos"
 							id="salvar-materialButton" />
 
+
 						<p:outputLabel value="Material Específico" for="materialEspc" />
-						<p:inputText id="materialEspc" size="30"
+						<p:inputText id="materialEspc" size="30" required="true"
 							value="#{cotacaoMaterialBean.materialEdicao.materialEspc}" />
+
+
 						<p:outputLabel value="Material" for="material" />
 						<p:inputText id="material"
 							value="#{cotacaoMaterialBean.materialEdicao.material}" />
 						<p:outputLabel />
+						
 
-						<p:outputLabel value="Descrição" for="desc" />
-						<p:inputText id="desc"
+						<p:outputLabel value="Descrição" for="descricao" />
+						<p:inputText id="descricao"
 							value="#{cotacaoMaterialBean.materialEdicao.desc}" />
+							
 
 						<p:outputLabel value="Valor" for="valor" />
-						<p:inputText id="valor"
+						<p:inputText id="valor" required="true" styleClass="dinheiro"
 							value="#{cotacaoMaterialBean.materialEdicao.valor}" />
 
 
@@ -167,8 +177,8 @@
 
 					<p:commandButton id="remover-material" value="Remover"
 						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoMaterialBean.removerMaterial}" process="tabProdutos"
-						update="produtos-table"
+						action="#{cotacaoMaterialBean.removerMaterial}"
+						process="tabProdutos" update="produtos-table"
 						disabled="#{cotacaoMaterialBean.materialSelecionado==null}" />
 					<p:outputLabel />
 
@@ -208,7 +218,7 @@
 
 
 				</p:tab>
-				<p:tab title="Compra do Material" disabled="true">
+				<p:tab title="3-Compra do Material" disabled="true">
 					<h:panelGrid columns="2" cellpadding="10">
 						<h:outputText value="Recurso ainda não implementado" />
 					</h:panelGrid>

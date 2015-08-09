@@ -13,6 +13,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity
@@ -25,7 +28,7 @@ public abstract class Cotacao implements java.io.Serializable {
 	private Long idcotacao;
 	private String responsavel;
 	private Date dataInicio;
-	private String dataTermino;
+	private Date dataTermino;
 	private String descricao;
 	private Boolean concluida;
 
@@ -48,7 +51,9 @@ public abstract class Cotacao implements java.io.Serializable {
 	public void setIdcotacao(Long idcotacao) {
 		this.idcotacao = idcotacao;
 	}
-
+	
+	@NotBlank
+	@NotNull
 	@Column(name = "responsavel")
 	public String getResponsavel() {
 		return this.responsavel;
@@ -69,11 +74,11 @@ public abstract class Cotacao implements java.io.Serializable {
 	}
 
 	@Column(name = "data_termino", length = 45)
-	public String getDataTermino() {
+	public Date getDataTermino() {
 		return this.dataTermino;
 	}
 
-	public void setDataTermino(String dataTermino) {
+	public void setDataTermino(Date dataTermino) {
 		this.dataTermino = dataTermino;
 	}
 
