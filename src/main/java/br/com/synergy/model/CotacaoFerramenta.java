@@ -19,9 +19,6 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name="cotacao_idcotacao", referencedColumnName="idcotacao")
 public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private CompraFerramenta compraFerramenta;
 	private Set<ParticipanteFerramenta> participantesFerramentas = new HashSet<ParticipanteFerramenta>(

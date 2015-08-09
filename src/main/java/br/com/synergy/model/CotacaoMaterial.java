@@ -13,17 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.hibernate.engine.internal.Cascade;
-
 
 @Entity
 @Table(name = "cotacao_material", catalog = "sistema_gestao")
 @PrimaryKeyJoinColumn(name="cotacao_idcotacao", referencedColumnName="idcotacao")
 public class CotacaoMaterial extends Cotacao implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private CompraMaterial compraMaterial;
 	private Set<ParticipanteMaterial> participantesMateriais = new HashSet<ParticipanteMaterial>(

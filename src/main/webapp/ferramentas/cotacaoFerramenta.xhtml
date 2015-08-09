@@ -157,9 +157,11 @@
 						<p:inputText id="utilidade" size="45"
 							value="#{cotacaoFerramentaBean.ferramentaEdicao.utilidade}" />
 
+						
+						<!-- Botão adicionar produto -->
 						<p:commandButton value="Adicionar"
 							action="#{cotacaoFerramentaBean.adicionarFerramenta}"
-							update="produtos-table cadastro-ferramenta :frm:messages" process="tabProdutos"
+							update="produtos-table cadastro-ferramenta :frm:messages" process="@this tabProdutos"
 							id="salvar-ferramentaButton" />
 
 

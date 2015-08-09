@@ -21,9 +21,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "ferramenta", catalog = "sistema_gestao")
 public class Ferramenta implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Long idferramenta;
 	private ParticipanteFerramenta participanteFerramenta;
