@@ -38,7 +38,7 @@
 					value="#{cotacaoMaterialBean.cotacaoMaterial.responsavel}" />
 
 				<p:outputLabel value=" Data Início: " for="dataInicio" />
-				<p:calendar id="dataInicio" size="15"
+				<p:calendar id="dataInicio" size="15" pattern="dd/MM/yyyy"
 					value="#{cotacaoMaterialBean.cotacaoMaterial.dataInicio}" />
 
 				<p:outputLabel value=" Descrição do Material " for="descricao" />
@@ -46,7 +46,7 @@
 					value="#{cotacaoMaterialBean.cotacaoMaterial.descricao}" />
 
 				<p:outputLabel value=" Data Término: " for="dataTermino" />
-				<p:calendar id="dataTermino" size="15"
+				<p:calendar id="dataTermino" size="15" pattern="dd/MM/yyyy"
 					value="#{cotacaoMaterialBean.cotacaoMaterial.dataTermino}" />
 
 			</p:panelGrid>

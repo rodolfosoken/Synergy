@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`fornecedor` (
   `numero` VARCHAR(45) NULL,
   `complemento` VARCHAR(255) NULL,
   `bairro` VARCHAR(255) NULL,
-  `cep` VARCHAR(8) NULL,
+  `cep` VARCHAR(10) NULL,
   `estado` VARCHAR(45) NULL,
   `TIPO_FORNECEDOR` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idfornecedor`))
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`cotacao` (
   `idcotacao` BIGINT NOT NULL AUTO_INCREMENT,
   `responsavel` VARCHAR(255) NULL,
   `data_inicio` DATE NULL,
-  `data_termino` VARCHAR(45) NULL,
+  `data_termino` DATE NULL,
   `descricao` VARCHAR(45) NOT NULL,
   `concluida` TINYINT(1) NULL,
   PRIMARY KEY (`idcotacao`))
@@ -384,10 +384,10 @@ ENGINE = InnoDB;
 -- Table `sistema_gestao`.`conjunto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`conjunto` (
-  `pn_less` VARCHAR(255) NOT NULL,
-  `desc` VARCHAR(255) NULL,
+  `pn` VARCHAR(255) NOT NULL,
+  `descricao` VARCHAR(255) NULL,
   `upc_fna` VARCHAR(255) NULL,
-  `fna_desc` VARCHAR(255) NULL,
+  `fna_descricao` VARCHAR(255) NULL,
   `idconjunto` BIGINT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`idconjunto`))
 ENGINE = InnoDB;
