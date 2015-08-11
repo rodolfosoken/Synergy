@@ -35,7 +35,7 @@ public class ConjuntoBean implements Serializable {
 
 	@Inject
 	private Pecas pecas;
-	
+
 	@Inject
 	private Conjuntos conjuntos;
 
@@ -51,7 +51,7 @@ public class ConjuntoBean implements Serializable {
 	private void limpar() {
 		conjuntoEdicao = new Conjunto();
 		montagem = new Montagem();
-		montagemSelecionada =null;
+		montagemSelecionada = null;
 	}
 
 	public List<Ferramenta> completarFerramenta(String nome) {
@@ -67,34 +67,39 @@ public class ConjuntoBean implements Serializable {
 		montagem.getFerramenta().getMontagems().add(montagem);
 		montagem.setConjunto(conjuntoEdicao);
 		conjuntoEdicao.getMontagems().add(montagem);
-		montagem= new Montagem();
+		montagem = new Montagem();
 	}
-	
-	public void removerMontagem(){
-		if(montagemSelecionada!=null){
-		montagemSelecionada.getPeca().getMontagems().remove(montagemSelecionada);
-		montagemSelecionada.getFerramenta().getMontagems().remove(montagemSelecionada);
-		conjuntoEdicao.getMontagems().remove(montagemSelecionada);
-		
-		montagemSelecionada= null;
-		}else{
+
+	public void removerMontagem() {
+		if (montagemSelecionada != null) {
+			montagemSelecionada.getPeca().getMontagems()
+					.remove(montagemSelecionada);
+			montagemSelecionada.getFerramenta().getMontagems()
+					.remove(montagemSelecionada);
+			conjuntoEdicao.getMontagems().remove(montagemSelecionada);
+
+			montagemSelecionada = null;
+		} else {
 			messages.error("Selecione uma montagem para remover.");
 			RequestContext.getCurrentInstance().update(":frm:messages");
 		}
 	}
-	
-	public void salvarConjunto(){
+
+	public void salvarConjunto() {
 		cadastro.guardar(conjuntoEdicao);
 		limpar();
 		messages.info("Conjunto cadastrado com sucesso!");
 		RequestContext.getCurrentInstance().update("frm");
 	}
-	
 
-	public List<Conjunto> getTodos(){
+	public void editarConjunto() {
+			conjuntoEdicao = conjuntoSelecionado;
+	
+	}
+
+	public List<Conjunto> getTodos() {
 		return conjuntos.todos();
 	}
-	
 
 	// getters e setters
 
@@ -130,7 +135,4 @@ public class ConjuntoBean implements Serializable {
 		this.conjuntoSelecionado = conjuntoSelecionado;
 	}
 
-	
-	
-	
 }

@@ -15,8 +15,8 @@
 			<p:growl id="growl" />
 
 			<p:tabView id="tabView">
-				
-				<p:tab title="Edição de Conjunto">
+
+				<p:tab title="Edição de Conjunto" id="edicaoConjunto">
 
 					<p:toolbar id="toolbar" style="margin-bottom:5px">
 
@@ -128,11 +128,12 @@
 
 
 				<p:tab title="Conjuntos" id="tabConjuntos">
-				
+
+					
+
 					<p:dataTable id="conjuntos-table" value="#{conjuntoBean.todos}"
 						var="conjunto" emptyMessage="Nenhum conjunto encontrado"
 						 rowKey="#{conjunto}">
-
 
 						<p:column headerText="ID">
 							<h:outputText value="#{conjunto.idconjunto}" />

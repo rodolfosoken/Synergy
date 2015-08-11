@@ -184,8 +184,8 @@
 						emptyMessage="Nenhum produto associado ao fornecedor.">
 
 						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView" />
-						<p:ajax event="rowUnselect" update=":frm:tabView" />
+						<p:ajax event="rowSelect" update=":frm:tabView:remover-ferramenta" />
+						<p:ajax event="rowUnselect" update=":frm:tabView:remover-ferramenta" />
 
 
 						<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}">
