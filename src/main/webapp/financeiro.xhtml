@@ -6,12 +6,19 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
+	<ui:define name="title">Financeiro</ui:define>
 	<ui:define name="body">
-	<h1 id="tituloIndex"> Sistema para Gestão Colaborativa de Projetos</h1>
-	<h:graphicImage library="synergy" name="logo.gif" id="imgIndex"/>
-	<p/>
-	<h1>Projetos em Andamento</h1>
 	
+	<h:form>
+	<p:panelGrid name="conta" columns="2">
+	
+	<p:outputLabel for="conta" value="Conta"/>
+	<h:inputText id="conta" value="#{contaBean.numero}"/>
+	
+	</p:panelGrid>
+	
+	</h:form>	
+
 
 	</ui:define>
 </ui:composition>

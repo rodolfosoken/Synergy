@@ -2,6 +2,7 @@ package br.com.synergy.controller;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +48,7 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public CotacaoFerramentaBean() {
 		limpar();
+		cotacaoFerramenta.setDataInicio(new Date());
 
 	}
 	
@@ -91,13 +93,12 @@ public class CotacaoFerramentaBean implements Serializable {
 
 		} else if (!contemParticipante(participanteFerramenta,cotacaoFerramenta.getParticipantesFerramentas())) {
 			
+			//Referência bidirecional
 			participanteFerramenta.setCotacaoFerramenta(cotacaoFerramenta);
 			cotacaoFerramenta.getParticipantesFerramentas().add(
 					participanteFerramenta);
-			for (ParticipanteFerramenta p : cotacaoFerramenta.getParticipantesFerramentas()) {
-				System.out.println(p.getFornecedor().getNome());
-			}
 			
+			//limpa a instancia do bean
 			participanteFerramenta = new ParticipanteFerramenta();
 		} else {
 			messages.error("Fornecedor já foi adicionado!");

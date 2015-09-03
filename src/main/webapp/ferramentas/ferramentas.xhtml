@@ -6,7 +6,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Peças</ui:define>
+	<ui:define name="title">Ferramentas</ui:define>
 
 	<ui:define name="body">
 		<h1>Ferramentas</h1>
@@ -18,7 +18,7 @@
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-	
+
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
 						process="@this" update="ferramenta-dialog"
 						oncomplete="PF('ferramentaDialog').show()"
@@ -67,29 +67,33 @@
 			<p:dataTable value="#{ferramentaBean.todasFerramentas}"
 				var="ferramenta" emptyMessage="Nenhum ferramenta cadastrada."
 				rows="10" id="ferramentas-table" paginator="true"
-				paginatorPosition="bottom"
+				paginatorPosition="bottom" rowStyleClass="#{ferramenta.disponivel ? 'disponivel' : ''}"
 				selection="#{ferramentaBean.ferramentaSelecionado}"
-				selectionMode="single" rowKey="#{ferramenta.idferramenta}">
+				 selectionMode="single"
+				rowKey="#{ferramenta.idferramenta}">
 
 				<!-- Quando selecionar disparar evento -->
 				<p:ajax event="rowSelect" update=":frm:toolbar" />
 				<p:ajax event="rowUnselect" update=":frm:toolbar" />
 
-				<p:column headerText="ID" sortBy="#{ferramenta.idferramenta}">
+				<p:column headerText="Disponível" sortBy="#{ferramenta.disponivel}" style="text-align: center; width:10px">
+					<p:selectBooleanCheckbox value="#{ferramenta.disponivel}" disabled="true"
+						offLabel="Não" onLabel="Sim" />
+				</p:column>
+
+				<p:column headerText="ID" sortBy="#{ferramenta.idferramenta}" style="text-align: center; width: 10px">
 					<h:outputText value="#{ferramenta.idferramenta}" />
 				</p:column>
 
-				<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}">
+				<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}" style="text-align: center; width: 60px">
 					<h:outputText value="#{ferramenta.nome}" />
 				</p:column>
 
-				<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}">
+				<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}" style="text-align: center; width: 60px">
 					<h:outputText value="#{ferramenta.descricao}" />
 				</p:column>
 
-				<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}">
-					<h:outputText value="#{ferramenta.descricao}" />
-				</p:column>
+
 			</p:dataTable>
 
 
@@ -107,7 +111,8 @@
 						scope="ferramenta-dialog" />
 
 					<p:outputLabel value="Fornecedor" for="ferramenta" />
-					<p:outputLabel value="#{ferramentaBean.ferramentaEdicao.participanteFerramenta.fornecedor.nome}" />
+					<p:outputLabel
+						value="#{ferramentaBean.ferramentaEdicao.participanteFerramenta.fornecedor.nome}" />
 
 					<p:outputLabel value="Id Equipament" for="idEquip" />
 					<p:inputText id="idEquip"
@@ -120,11 +125,16 @@
 					<p:outputLabel value="Descrição" for="descricao" />
 					<p:inputText id="descricao" size="60"
 						value="#{ferramentaBean.ferramentaEdicao.descricao}" />
-					
+
 					<p:outputLabel value="Utilidade" for="utilidade" />
-					<p:inputText id="utilidade" size="60"
+					<p:inputText id="utilidade" 
 						value="#{ferramentaBean.ferramentaEdicao.utilidade}" />
-					
+
+
+					<p:outputLabel value="Disponibilidade" for="disponivel" />
+					<p:selectBooleanCheckbox id="disponivel" 
+						value="#{ferramentaBean.ferramentaEdicao.disponivel}" />
+
 
 					<p:commandButton value="Salvar" action="#{ferramentaBean.salvar}"
 						process="ferramenta-dialog" id="salvar-ferramentaButton"

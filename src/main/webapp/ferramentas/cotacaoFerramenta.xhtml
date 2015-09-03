@@ -38,8 +38,10 @@
 					value="#{cotacaoFerramentaBean.cotacaoFerramenta.responsavel}" />
 
 				<p:outputLabel value=" Data Início: " for="dataInicio" />
-				<p:calendar id="dataInicio" size="15" pattern="dd/MM/yyyy"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataInicio}" />
+				<h:outputText id="dataInicio" size="15" disabled="true"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataInicio}" >
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
 
 				<p:outputLabel value=" Descrição da Ferramenta " for="descricao" />
 				<p:inputText id="descricao" name="descricao" size="30"

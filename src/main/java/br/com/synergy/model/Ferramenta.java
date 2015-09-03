@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "ferramenta", catalog = "sistema_gestao")
 public class Ferramenta implements java.io.Serializable {
 
-
 	private static final long serialVersionUID = 1L;
+	private Boolean disponivel;
 	private Long idferramenta;
 	private ParticipanteFerramenta participanteFerramenta;
 	private String idEquipament;
@@ -45,9 +45,6 @@ public class Ferramenta implements java.io.Serializable {
 	public Ferramenta() {
 	}
 
-
-	
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idferramenta", unique = true, nullable = false)
@@ -69,6 +66,7 @@ public class Ferramenta implements java.io.Serializable {
 			ParticipanteFerramenta participanteFerramenta) {
 		this.participanteFerramenta = participanteFerramenta;
 	}
+
 	@NotNull
 	@Column(name = "id_equipament", nullable = false)
 	public String getIdEquipament() {
@@ -78,6 +76,7 @@ public class Ferramenta implements java.io.Serializable {
 	public void setIdEquipament(String idEquipament) {
 		this.idEquipament = idEquipament;
 	}
+
 	@NotNull
 	@Column(name = "nome")
 	public String getNome() {
@@ -177,14 +176,23 @@ public class Ferramenta implements java.io.Serializable {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	@Column(name="valor")
+
+	@Column(name = "valor")
 	public Double getValor() {
 		return valor;
 	}
 
 	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+
+	@Column(name = "disponibilidade")
+	public Boolean getDisponivel() {
+		return disponivel;
+	}
+
+	public void setDisponivel(Boolean disponivel) {
+		this.disponivel = disponivel;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ferramenta")
