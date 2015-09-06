@@ -54,7 +54,10 @@ public class Projeto implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "projeto_has_conjunto", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "projeto_idprojeto", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
+	@JoinTable(name = "projeto_has_conjunto", catalog = "sistema_gestao", 
+	joinColumns = { @JoinColumn(name = "projeto_idprojeto", nullable = false, updatable = false) }, 
+	inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, 
+	updatable = false) })
 	public Set<Conjunto> getConjuntos() {
 		return this.conjuntos;
 	}
