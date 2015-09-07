@@ -23,6 +23,7 @@ public class UsuarioDetalhesService implements UserDetailsService {
 		
 		Usuarios usuarios = CDIServiceLocator.getBean(Usuarios.class);
 		//busca usuário pelo email
+		System.out.println(username);
 		Usuario usuario = usuarios.buscaPorEmail(username);
 		
 		//armazenará o objeto usuário com as informações de autoridades
@@ -33,7 +34,6 @@ public class UsuarioDetalhesService implements UserDetailsService {
 			usuarioDetalhado = new UsuarioSessao(usuario, getAutoridades(usuario));
 		}
 		
-		
 		return usuarioDetalhado;
 	}
 
@@ -43,7 +43,7 @@ public class UsuarioDetalhesService implements UserDetailsService {
 		List<SimpleGrantedAuthority> autoridades = new ArrayList<>();
 		
 		for (Cargo cargo : usuario.getCargos()) {
-			autoridades.add(new SimpleGrantedAuthority(cargo.getNome().toUpperCase()));			
+			autoridades.add(new SimpleGrantedAuthority(cargo.getNome().toUpperCase()));	
 		}
 		
 		return autoridades;

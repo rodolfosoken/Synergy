@@ -15,16 +15,17 @@
 
 	<div id="login-dialog">
 		<h1>Login</h1>
-		<h:form id="frm">
+		<form action="/Synergy/login" method="post" id="frm" >
+			<p:messages id="messages" autoUpdate="true" closable="true"/>
 			<h:panelGrid columns="2" styleClass="borda-login">
 				<p:outputLabel value="E-mail" for="username" />
 				<p:inputText id="username" value="#{loginBean.email}"/>
 				<p:outputLabel value="Senha" for="password" />
 				<p:password id="password" />
 				<p:outputLabel />
-				<p:commandButton value="Login" style="float:right" action="#{loginBean.login}" ajax="false"/>
+				<h:commandButton type="submit" value="Login" />
 			</h:panelGrid>
-		</h:form>
+		</form>
 	</div>
 
 

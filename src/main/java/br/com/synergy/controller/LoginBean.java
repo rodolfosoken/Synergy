@@ -30,9 +30,8 @@ public class LoginBean implements Serializable{
 	private String email;
 	
 	public void login() throws ServletException, IOException{
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/j_spring_security_check");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
 		dispatcher.forward(request, response);
-		
 	}
 
 	public String getEmail() {

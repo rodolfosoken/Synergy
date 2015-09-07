@@ -1,6 +1,7 @@
 package br.com.synergy.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -24,15 +25,20 @@ public class Usuarios implements Serializable {
 		Usuario usuario = null;
 
 		try {
-			this.em.createQuery("from Usuario where lower(email)= :email",
-					Usuario.class).setParameter("email", email.toLowerCase())
+			usuario = this.em
+					.createQuery("from Usuario where lower(email) = :email",
+							Usuario.class)
+					.setParameter("email", email.toLowerCase())
 					.getSingleResult();
 		} catch (NoResultException e) {
-			//nenhum email encontrado
+			// nenhum email encontrado
 		}
 
 		return usuario;
 
 	}
 
+	public List<Usuario> getTodos(){
+		return em.createQuery("from Usuario", Usuario.class).getResultList();
+	}
 }
