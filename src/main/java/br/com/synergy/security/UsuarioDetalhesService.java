@@ -23,7 +23,6 @@ public class UsuarioDetalhesService implements UserDetailsService {
 		
 		Usuarios usuarios = CDIServiceLocator.getBean(Usuarios.class);
 		//busca usuário pelo email
-		System.out.println(username);
 		Usuario usuario = usuarios.buscaPorEmail(username);
 		
 		//armazenará o objeto usuário com as informações de autoridades
@@ -32,6 +31,8 @@ public class UsuarioDetalhesService implements UserDetailsService {
 		//se a busca retornar algum usuário, ele deve receber as autoridades de seu cargo
 		if(usuario != null){
 			usuarioDetalhado = new UsuarioSessao(usuario, getAutoridades(usuario));
+		}else{
+			 throw new UsernameNotFoundException("Email não encontrado");
 		}
 		
 		return usuarioDetalhado;
@@ -48,5 +49,7 @@ public class UsuarioDetalhesService implements UserDetailsService {
 		
 		return autoridades;
 	}
+	
+
 
 }

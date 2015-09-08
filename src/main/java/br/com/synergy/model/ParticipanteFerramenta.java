@@ -67,7 +67,7 @@ public class ParticipanteFerramenta implements java.io.Serializable {
 		this.cotacaoFerramenta = cotacaoFerramenta;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fornecedor_idfornecedor", nullable = false)
 	public Fornecedor getFornecedor() {
 		return this.fornecedor;

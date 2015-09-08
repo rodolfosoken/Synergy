@@ -11,13 +11,14 @@
 	<http pattern="/seguranca/login.xhtml" security="none" />
 	<http pattern="/javax.faces.resource/**" security="none" />
 
-	<http auto-config="true" use-expressions="true">
+	<http auto-config="false" use-expressions="true">
 		<intercept-url pattern="/**" access="isAuthenticated()" />
-		<csrf disabled="true" />
 
-		<form-login login-page="/seguranca/login.xhtml" authentication-failure-url="/Login.xhtml?invalid=true" 
+		<form-login login-page="/seguranca/login.xhtml" authentication-failure-url="/seguranca/login.xhtml?invalid=true" 
 			default-target-url="/" always-use-default-target="true" />
 		<logout logout-url="/logout" invalidate-session="true" />
+		
+		<csrf disabled="true"/>
 
 	</http>
 

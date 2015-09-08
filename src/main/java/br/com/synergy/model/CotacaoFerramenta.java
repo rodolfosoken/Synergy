@@ -1,8 +1,8 @@
 package br.com.synergy.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,13 +21,13 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private CompraFerramenta compraFerramenta;
-	private Set<ParticipanteFerramenta> participantesFerramentas = new HashSet<ParticipanteFerramenta>(
+	private List<ParticipanteFerramenta> participantesFerramentas = new ArrayList<ParticipanteFerramenta>(
 			0);
 
 	public CotacaoFerramenta() {
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "compra_ferramenta_idfornecimento_ferramenta")
 	public CompraFerramenta getCompraFerramenta() {
 		return this.compraFerramenta;
@@ -38,12 +38,12 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta", cascade= CascadeType.ALL)
-	public Set<ParticipanteFerramenta> getParticipantesFerramentas() {
+	public List<ParticipanteFerramenta> getParticipantesFerramentas() {
 		return this.participantesFerramentas;
 	}
 
 	public void setParticipantesFerramentas(
-			Set<ParticipanteFerramenta> participantesFerramentas) {
+			List<ParticipanteFerramenta> participantesFerramentas) {
 		this.participantesFerramentas = participantesFerramentas;
 	}
 

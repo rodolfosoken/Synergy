@@ -10,12 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity
@@ -26,11 +25,13 @@ public abstract class Cotacao implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long idcotacao;
-	private String responsavel;
 	private Date dataInicio;
 	private Date dataTermino;
+	private Date dataPrevisao;
 	private String descricao;
 	private Boolean concluida;
+	private Boolean comprado;
+	private Usuario usuario;
 
 	public Cotacao() {
 	}
@@ -52,19 +53,8 @@ public abstract class Cotacao implements java.io.Serializable {
 		this.idcotacao = idcotacao;
 	}
 	
-	@NotBlank
-	@NotNull
-	@Column(name = "responsavel")
-	public String getResponsavel() {
-		return this.responsavel;
-	}
-
-	public void setResponsavel(String responsavel) {
-		this.responsavel = responsavel;
-	}
-
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_inicio", length = 10)
+	@Column(name = "data_inicio")
 	public Date getDataInicio() {
 		return this.dataInicio;
 	}
@@ -73,13 +63,22 @@ public abstract class Cotacao implements java.io.Serializable {
 		this.dataInicio = dataInicio;
 	}
 
-	@Column(name = "data_termino", length = 45)
+	@Column(name = "data_termino")
 	public Date getDataTermino() {
 		return this.dataTermino;
 	}
 
 	public void setDataTermino(Date dataTermino) {
 		this.dataTermino = dataTermino;
+	}
+
+	@Column(name="data_previsao")
+	public Date getDataPrevisao() {
+		return dataPrevisao;
+	}
+	
+	public void setDataPrevisao(Date dataPrevisao) {
+		this.dataPrevisao = dataPrevisao;
 	}
 
 	@Column(name = "descricao", nullable = false, length = 45)
@@ -99,6 +98,28 @@ public abstract class Cotacao implements java.io.Serializable {
 	public void setConcluida(Boolean concluida) {
 		this.concluida = concluida;
 	}
+
+	@ManyToOne
+	@JoinColumn(name="usuario_idusuario")
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	@Column(name="comprado")
+	public Boolean getComprado() {
+		return comprado;
+	}
+
+	public void setComprado(Boolean comprado) {
+		this.comprado = comprado;
+	}
+
+	
+	
 
 
 }

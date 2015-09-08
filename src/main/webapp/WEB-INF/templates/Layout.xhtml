@@ -36,7 +36,7 @@
 
 				<p:menuitem value="Cotação Peça" />
 
-				<p:menuitem value="Pesquisa" outcome="/cotacaoPesquisa.xhtml" />
+				<p:menuitem value="Pesquisa" outcome="/ferramentas/cotacaoFerramenta2.xhtml" />
 
 			</p:submenu>
 
@@ -72,12 +72,16 @@
 			<p:menuitem icon="ui-icon-star" value="Materiais"
 				outcome="/materiais/materiais.xhtml" />
 
-			<p:menuitem value="Logout" icon="ui-icon-extlink" url="/logout" />
-			<p:menuitem value="Usuário" outcome="/seguranca/usuarios.xhtml"/>
+		
+
+			<p:submenu label="Olá #{usuarioPrincipal.nomeUsuarioLogado}!" style="float:right">
+				<p:menuitem value="Logout" icon="ui-icon-extlink" url="/logout" />
+				<p:menuitem value="Usuários" outcome="/seguranca/usuarios.xhtml" />
+			</p:submenu>
 
 			<f:facet name="options">
 				<p:inputText style="margin-right:10px" placeholder="Search" />
-			
+
 			</f:facet>
 		</p:menubar>
 

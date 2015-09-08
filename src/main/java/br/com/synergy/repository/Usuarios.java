@@ -25,12 +25,8 @@ public class Usuarios implements Serializable {
 		Usuario usuario = null;
 
 		try {
-			usuario = this.em
-					.createQuery("from Usuario where lower(email) = :email",
-							Usuario.class)
-					.setParameter("email", email.toLowerCase())
-					.getSingleResult();
-		} catch (NoResultException e) {
+			usuario = this.em.createQuery("from Usuario where lower(email) = :email", Usuario.class)
+					.setParameter("email", email.toLowerCase()).getSingleResult();} catch (NoResultException e) {
 			// nenhum email encontrado
 		}
 

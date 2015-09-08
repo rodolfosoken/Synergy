@@ -1,10 +1,10 @@
 package br.com.synergy.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -13,10 +13,13 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.CotacaoFerramenta;
-import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.model.Ferramenta;
+import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.model.ParticipanteFerramenta;
+import br.com.synergy.repository.Cotacoes;
 import br.com.synergy.repository.Fornecedores;
+import br.com.synergy.repository.Participantes;
+import br.com.synergy.security.UsuarioPrincipal;
 import br.com.synergy.service.CadastroCotacaoFerramentaService;
 import br.com.synergy.util.FacesMessages;
 
@@ -36,8 +39,16 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	@Inject
 	private CadastroCotacaoFerramentaService cadastro;
-
+	
+	@Inject
+	private Cotacoes cotacoes;
+	
+	@Inject
+	private Participantes participantes;
+	
+	
 	private CotacaoFerramenta cotacaoFerramenta;
+	private CotacaoFerramenta cotacaoSelecionada;
 
 	private ParticipanteFerramenta participanteSelecionado;
 	private ParticipanteFerramenta participanteFerramenta;
@@ -48,8 +59,7 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public CotacaoFerramentaBean() {
 		limpar();
-		cotacaoFerramenta.setDataInicio(new Date());
-
+		
 	}
 	
 	public void onRowSelection(){
@@ -62,7 +72,24 @@ public class CotacaoFerramentaBean implements Serializable {
 		ferramentaEdicao = new Ferramenta();
 		participanteSelecionado=null;
 		ferramentaSelecionado=null;
+		cotacaoFerramenta.setUsuario(UsuarioPrincipal.getUsuarioLogado().getUsuario());
+		cotacaoFerramenta.setDataInicio(new Date());
+		cotacaoFerramenta.setConcluida(false);
+		cotacaoFerramenta.setComprado(false);
+
 		indexTab=0;
+	}
+	
+	public void editar(){
+		cotacaoFerramenta = (CotacaoFerramenta) cotacoes.buscaPorId(cotacaoSelecionada.getIdcotacao());
+		
+		List<ParticipanteFerramenta>lista = new ArrayList<ParticipanteFerramenta>();
+		for (ParticipanteFerramenta p : cotacaoFerramenta.getParticipantesFerramentas()) {
+			lista.add(participantes.buscaPorId(p.getIdparticipanteFerramenta()));
+		}
+		cotacaoFerramenta.setParticipantesFerramentas(lista);
+		indexTab=0;
+
 	}
 
 	public List<FornecedorFerramenta> completarFornecedor(String nome) {
@@ -73,6 +100,16 @@ public class CotacaoFerramentaBean implements Serializable {
 		ferramentaEdicao.setParticipanteFerramenta(participanteSelecionado);
 		participanteSelecionado.getFerramentas().add(ferramentaEdicao);
 		ferramentaEdicao = new Ferramenta();
+	}
+	
+	public void concluir(){
+		cotacaoFerramenta.setDataTermino(new Date());
+		cotacaoFerramenta.setConcluida(true);
+	}
+	
+	public void desmarcar(){
+		cotacaoFerramenta.setDataTermino(null);
+		cotacaoFerramenta.setConcluida(false);
 	}
 
 	public void salvarCotacao() {
@@ -92,7 +129,7 @@ public class CotacaoFerramentaBean implements Serializable {
 			RequestContext.getCurrentInstance().update("frm:growl");
 
 		} else if (!contemParticipante(participanteFerramenta,cotacaoFerramenta.getParticipantesFerramentas())) {
-			
+				
 			//Referência bidirecional
 			participanteFerramenta.setCotacaoFerramenta(cotacaoFerramenta);
 			cotacaoFerramenta.getParticipantesFerramentas().add(
@@ -117,7 +154,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	}
 
 	public boolean contemParticipante(ParticipanteFerramenta participante,
-			Set<ParticipanteFerramenta> lista) {
+			List<ParticipanteFerramenta> lista) {
 		boolean contem = false;
 		for (ParticipanteFerramenta p : lista) {
 			if(p.getFornecedor().getIdfornecedor()
@@ -128,12 +165,18 @@ public class CotacaoFerramentaBean implements Serializable {
 		}
 		return contem;
 	}
+	
 
 	// getters e setters
+	
+	public List<CotacaoFerramenta> getTodas(){
+		return cotacoes.todasCotacoesFerramentas(); 
+	}
 
 	public Ferramenta getFerramentaEdicao() {
 		return ferramentaEdicao;
 	}
+
 
 	public Ferramenta getFerramentaSelecionado() {
 		return ferramentaSelecionado;
@@ -180,6 +223,16 @@ public class CotacaoFerramentaBean implements Serializable {
 	public void setIndexTab(Integer indexTab) {
 		this.indexTab = indexTab;
 	}
+
+	public CotacaoFerramenta getCotacaoSelecionada() {
+		return cotacaoSelecionada;
+	}
+
+	public void setCotacaoSelecionada(CotacaoFerramenta cotacaoSelecionada) {
+		this.cotacaoSelecionada = cotacaoSelecionada;
+	}
+	
+	
 	
 
 }
