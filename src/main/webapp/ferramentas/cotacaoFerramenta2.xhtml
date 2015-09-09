@@ -11,20 +11,19 @@
 		<h:form id="frm">
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:commandButton value="Editar" icon="ui-icon-folder-open"
-						update="cotacao-dialog :frm:tabView" process="@this"
-						oncomplete="PF('edicaoCotacaoDialog').show()" action="#{cotacaoFerramentaBean.editar}"
-						disabled="#{cotacaoFerramentaBean.cotacaoSelecionada==null}">
-						
-					</p:commandButton>
+					<p:commandButton value="Editar" icon="ui-icon-folder-open" 
+						update="cotacao-dialog" process="@this"
+						oncomplete="PF('edicaoCotacaoDialog').show()"
+						action="#{cotacaoFerramentaBean.editar}"
+						disabled="#{cotacaoFerramentaBean.cotacaoSelecionada==null}"/>
 				</f:facet>
 			</p:toolbar>
 
-			<p:dataTable value="#{cotacaoFerramentaBean.todas}" var="cotacao"
+			<p:dataTable value="#{cotacaoFerramentaBean.todas}"
 				emptyMessage="Nenhuma cotação cadastrada." id="cotacoes-table"
-				paginator="true" paginatorPosition="bottom" rows="20"
+				paginator="true" paginatorPosition="bottom" rows="10"
 				selection="#{cotacaoFerramentaBean.cotacaoSelecionada}"
-				selectionMode="single" rowKey="#{cotacao.idcotacao}">
+				selectionMode="single" var="cotacao" rowKey="#{cotacao.idcotacao}">
 
 				<!-- Quando selecionar disparar evento -->
 				<p:ajax event="rowSelect" update=":frm:toolbar" />
@@ -52,14 +51,13 @@
 
 			</p:dataTable>
 			<p:dialog widgetVar="edicaoCotacaoDialog" id="cotacao-dialog"
-				modal="true"  closeOnEscape="true"  
-				header="Cotação" resizable="false">
-				<p:scrollPanel mode="native"  style="height:450px">
-				<h1>Editor de Cotação Ferramenta</h1>
-				
-				<ui:include src="/ferramentas/template/editarCotacao.xhtml" />
+				modal="true" closeOnEscape="true" header="Cotação" resizable="false">
+				<p:scrollPanel mode="native" style="height:450px">
+					<h1>Editor de Cotação Ferramenta</h1>
+
+					<ui:include src="/ferramentas/template/editarCotacao.xhtml" />
 				</p:scrollPanel>
-			
+
 			</p:dialog>
 
 		</h:form>

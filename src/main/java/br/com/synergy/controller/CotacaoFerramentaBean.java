@@ -59,14 +59,12 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public CotacaoFerramentaBean() {
 		limpar();
-		
 	}
 	
-	public void onRowSelection(){
-		indexTab=1;
-	}
+
 
 	private void limpar() {
+		System.out.println("DEBUG: executando Limpar");
 		cotacaoFerramenta = new CotacaoFerramenta();
 		participanteFerramenta = new ParticipanteFerramenta();
 		ferramentaEdicao = new Ferramenta();
@@ -81,8 +79,13 @@ public class CotacaoFerramentaBean implements Serializable {
 	}
 	
 	public void editar(){
+		System.out.println("DEBUG: Executando editar");
+		//Busca por id para resgatar o objeto com a coleção de fornecedores
+		//evitando uma Lazy exception
 		cotacaoFerramenta = (CotacaoFerramenta) cotacoes.buscaPorId(cotacaoSelecionada.getIdcotacao());
 		
+		//faz a busca (o fetch join) da coleção de ferramentas de cada fornecedor
+		//evitar a Lazy exception
 		List<ParticipanteFerramenta>lista = new ArrayList<ParticipanteFerramenta>();
 		for (ParticipanteFerramenta p : cotacaoFerramenta.getParticipantesFerramentas()) {
 			lista.add(participantes.buscaPorId(p.getIdparticipanteFerramenta()));
@@ -91,28 +94,37 @@ public class CotacaoFerramentaBean implements Serializable {
 		indexTab=0;
 
 	}
-
+	
+	//preenche o auto-completar de fornecedores
 	public List<FornecedorFerramenta> completarFornecedor(String nome) {
+		System.out.println("DEBUG: executando CompletarFornecedor");
 		return fornecedores.buscaPorFornecedorFerramenta(nome);
 	}
-
+	
+	//faz a referencia bidirecional ao adicionar as ferramentas
 	public void adicionarFerramenta() {
+		System.out.println("DEBUG: executando adcionarFerramenta");
 		ferramentaEdicao.setParticipanteFerramenta(participanteSelecionado);
 		participanteSelecionado.getFerramentas().add(ferramentaEdicao);
 		ferramentaEdicao = new Ferramenta();
 	}
 	
+	//conclui a cotação
 	public void concluir(){
+		System.out.println("DEBUG: executando concluir");
 		cotacaoFerramenta.setDataTermino(new Date());
 		cotacaoFerramenta.setConcluida(true);
 	}
 	
+	//desfaz a conclusão da cotação e marca como em andamento
 	public void desmarcar(){
+		System.out.println("DEBUG: executando desmarcar");
 		cotacaoFerramenta.setDataTermino(null);
 		cotacaoFerramenta.setConcluida(false);
 	}
 
 	public void salvarCotacao() {
+		System.out.println("DEBUG: executando salvarCotaçao");
 		cadastro.salvar(cotacaoFerramenta);
 		messages.info("Cotação salva com sucesso!");
 		
@@ -121,13 +133,15 @@ public class CotacaoFerramentaBean implements Serializable {
 				Arrays.asList("frm:messages", "frm"));
 	}
 
+	//adiciona o fornecedor na lista da cotação
 	public void adicionarFornecedor() {
-		System.out.println(participanteFerramenta.getFornecedor());
+		System.out.println("DEBUG: executando adicionarFornecedor");
 		if (participanteFerramenta.getFornecedor() == null) {
 
 			messages.error("Fornecedor de Ferramentas deve ser selecionado!");
 			RequestContext.getCurrentInstance().update("frm:growl");
-
+			
+			//verifica se o participante já foi adicionado
 		} else if (!contemParticipante(participanteFerramenta,cotacaoFerramenta.getParticipantesFerramentas())) {
 				
 			//Referência bidirecional
@@ -135,7 +149,7 @@ public class CotacaoFerramentaBean implements Serializable {
 			cotacaoFerramenta.getParticipantesFerramentas().add(
 					participanteFerramenta);
 			
-			//limpa a instancia do bean
+			//limpa a instância do bean
 			participanteFerramenta = new ParticipanteFerramenta();
 		} else {
 			messages.error("Fornecedor já foi adicionado!");
@@ -144,17 +158,21 @@ public class CotacaoFerramentaBean implements Serializable {
 	}
 	
 	public void removerFornecedor(){
+		System.out.println("DEBUG: executando removerFornecedor");
 		cotacaoFerramenta.getParticipantesFerramentas().remove(participanteSelecionado);
 		participanteSelecionado=null; 
 	}
 	
 	public void removerFerramenta(){
+		System.out.println("DEBUG: executando removerFerramenta");
 		participanteSelecionado.getFerramentas().remove(ferramentaSelecionado);
 		ferramentaSelecionado=null;
 	}
 
+	//metodo para verificar se o participante já consta na lista
 	public boolean contemParticipante(ParticipanteFerramenta participante,
 			List<ParticipanteFerramenta> lista) {
+		System.out.println("DEBUG: executando contemParticipante");
 		boolean contem = false;
 		for (ParticipanteFerramenta p : lista) {
 			if(p.getFornecedor().getIdfornecedor()
@@ -170,6 +188,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	// getters e setters
 	
 	public List<CotacaoFerramenta> getTodas(){
+		System.out.println("DEBUG: todas sendo executado");
 		return cotacoes.todasCotacoesFerramentas(); 
 	}
 

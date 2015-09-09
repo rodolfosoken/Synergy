@@ -100,11 +100,10 @@
 			id="fornecedores-table"
 			selection="#{cotacaoFerramentaBean.participanteSelecionado}"
 			selectionMode="single"
-			rowKey="#{participante.fornecedor.idfornecedor}">
+			rowKey="#{participante.idparticipanteFerramenta}">
 
 			<!-- Quando selecionar disparar evento -->
-			<p:ajax event="rowSelect" update=":frm:tabView"
-				listener="#{cotacaoFerramentaBean.onRowSelection}" />
+			<p:ajax event="rowSelect" update=":frm:tabView"/>
 			<p:ajax event="rowUnselect" update=":frm:tabView" />
 
 			<p:column headerText="ID" style="text-align: center; width: 60px">
@@ -156,7 +155,7 @@
 			</f:facet>
 		</p:toolbar>
 		<p:dialog id="ferramenta-dialog" widgetVar="ferramenta-dialog"
-			modal="true" closeOnEscape="true" resizable="false" >
+			modal="true" closeOnEscape="true" resizable="false">
 			<ui:include src="/ferramentas/template/adicionarFerramenta.xhtml" />
 		</p:dialog>
 
@@ -164,7 +163,7 @@
 			value="#{cotacaoFerramentaBean.participanteSelecionado.ferramentas}"
 			var="ferramenta" id="produtos-table"
 			selection="#{cotacaoFerramentaBean.ferramentaSelecionado}"
-			selectionMode="single" rowKey="#{ferramenta}"
+			selectionMode="single" rowKey="#{ferramenta.idferramenta}"
 			emptyMessage="Nenhum produto associado ao fornecedor.">
 
 			<!-- Quando selecionar disparar evento -->
