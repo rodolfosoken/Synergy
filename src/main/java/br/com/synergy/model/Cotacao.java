@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +32,7 @@ public abstract class Cotacao implements java.io.Serializable {
 	private Boolean concluida;
 	private Boolean comprado;
 	private Usuario usuario;
+	private Usuario responsavel;
 
 	public Cotacao() {
 	}
@@ -99,16 +100,6 @@ public abstract class Cotacao implements java.io.Serializable {
 		this.concluida = concluida;
 	}
 
-	@ManyToOne
-	@JoinColumn(name="usuario_idusuario")
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	@Column(name="comprado")
 	public Boolean getComprado() {
 		return comprado;
@@ -116,6 +107,26 @@ public abstract class Cotacao implements java.io.Serializable {
 
 	public void setComprado(Boolean comprado) {
 		this.comprado = comprado;
+	}
+
+	@OneToOne
+	@JoinColumn(name="usuario_idusuario")
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "usuario_responsavel", nullable = false)
+	public Usuario getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(Usuario responsavel) {
+		this.responsavel = responsavel;
 	}
 
 	

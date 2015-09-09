@@ -1,17 +1,16 @@
 package br.com.synergy.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -33,29 +32,16 @@ public class Conjunto implements java.io.Serializable {
 	private String desc;
 	private String upcFna;
 	private String fnaDesc;
-	private Set<Montagem> montagems = new HashSet<Montagem>(0);
-	private Set<Projeto> projetos = new HashSet<Projeto>(0);
-	private Set<RiskAssesment> riskAssesments = new HashSet<RiskAssesment>(0);
+	private List<Montagem> montagems = new ArrayList<Montagem>(0);
+	private List<Projeto> projetos = new ArrayList<Projeto>(0);
+	private List<Ferramenta> ferramentas = new ArrayList<Ferramenta>();
+	private List<Peca> pecas = new ArrayList<Peca>();
+	private List<RiskAssesment> riskAssesments = new ArrayList<RiskAssesment>(0);
 
 	public Conjunto() {
 	}
 
-	public Conjunto(String pnLess) {
-		this.pnLess = pnLess;
-	}
-
-	public Conjunto(String pnLess, String desc, String upcFna, String fnaDesc,
-			Set<Montagem> montagems, Set<Projeto> projetos,
-			Set<RiskAssesment> riskAssesments) {
-		this.pnLess = pnLess;
-		this.desc = desc;
-		this.upcFna = upcFna;
-		this.fnaDesc = fnaDesc;
-		this.montagems = montagems;
-		this.projetos = projetos;
-		this.riskAssesments = riskAssesments;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idconjunto", unique = true, nullable = false)
@@ -108,31 +94,55 @@ public class Conjunto implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade = CascadeType.ALL)
-	public Set<Montagem> getMontagems() {
+	public List<Montagem> getMontagems() {
 		return this.montagems;
 	}
 
-	public void setMontagems(Set<Montagem> montagems) {
+	public void setMontagems(List<Montagem> montagems) {
 		this.montagems = montagems;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "projeto_has_conjunto", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "projeto_idprojeto", nullable = false, updatable = false) })
-	public Set<Projeto> getProjetos() {
+	public List<Projeto> getProjetos() {
 		return this.projetos;
 	}
 
-	public void setProjetos(Set<Projeto> projetos) {
+	public void setProjetos(List<Projeto> projetos) {
 		this.projetos = projetos;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto")
-	public Set<RiskAssesment> getRiskAssesments() {
+	public List<RiskAssesment> getRiskAssesments() {
 		return this.riskAssesments;
 	}
 
-	public void setRiskAssesments(Set<RiskAssesment> riskAssesments) {
+	public void setRiskAssesments(List<RiskAssesment> riskAssesments) {
 		this.riskAssesments = riskAssesments;
 	}
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "conjunto_has_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) })
+	public List<Ferramenta> getFerramentas() {
+		return ferramentas;
+	}
+
+
+	public void setFerramentas(List<Ferramenta> ferramentas) {
+		this.ferramentas = ferramentas;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "conjunto_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) })
+	public List<Peca> getPecas() {
+		return pecas;
+	}
+
+
+	public void setPecas(List<Peca> pecas) {
+		this.pecas = pecas;
+	}
+	
+	
 
 }

@@ -1,20 +1,22 @@
 package br.com.synergy.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,34 +25,18 @@ public class Peca implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long idpeca;
-	private ParticipantePeca participantePeca;
-	private Material material;
+	private Fornecedor fornecedor;
+ 	private Material material;
 	private String pn;
 	private String partName;
 	private String descricao;
 	private String upcFna;
 	private Double valor;
-	private Set<CompraPeca> compraPecas = new HashSet<CompraPeca>(0);
-	private Set<Montagem> montagems = new HashSet<Montagem>(0);
+	private String responsavel;
+	private List<Conjunto> conjuntos = new ArrayList<Conjunto>();
+	private List<Montagem> montagems = new ArrayList<Montagem>(0);
 
 	public Peca() {
-	}
-
-	public Peca(Material material) {
-		this.material = material;
-	}
-
-	public Peca(ParticipantePeca participantePeca, Material material,
-			String pn, String partName, String descricao, String upcFna,
-			Set<CompraPeca> compraPecas, Set<Montagem> montagems) {
-		this.participantePeca = participantePeca;
-		this.material = material;
-		this.pn = pn;
-		this.partName = partName;
-		this.descricao = descricao;
-		this.upcFna = upcFna;
-		this.compraPecas = compraPecas;
-		this.montagems = montagems;
 	}
 
 	@Id
@@ -63,15 +49,15 @@ public class Peca implements java.io.Serializable {
 	public void setIdpeca(Long idpeca) {
 		this.idpeca = idpeca;
 	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "participante_peca_idparticipante_peca")
-	public ParticipantePeca getParticipantePeca() {
-		return this.participantePeca;
+	
+	@OneToOne
+	@JoinColumn(name = "fornecedor_idfornecedor", nullable = false)
+	public Fornecedor getFornecedor() {
+		return fornecedor;
 	}
 
-	public void setParticipantePeca(ParticipantePeca participantePeca) {
-		this.participantePeca = participantePeca;
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -128,22 +114,35 @@ public class Peca implements java.io.Serializable {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "peca")
-	public Set<CompraPeca> getCompraPecas() {
-		return this.compraPecas;
+	
+	
+	@Column(name="responsavel")
+	public String getResponsavel() {
+		return responsavel;
 	}
 
-	public void setCompraPecas(Set<CompraPeca> compraPecas) {
-		this.compraPecas = compraPecas;
+	public void setResponsavel(String responsavel) {
+		this.responsavel = responsavel;
+	}
+	
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "conjunto_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
+	public List<Conjunto> getConjuntos() {
+		return conjuntos;
+	}
+
+	public void setConjuntos(List<Conjunto> conjuntos) {
+		this.conjuntos = conjuntos;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "peca")
-	public Set<Montagem> getMontagems() {
+	public List<Montagem> getMontagems() {
 		return this.montagems;
 	}
 
-	public void setMontagems(Set<Montagem> montagems) {
+	public void setMontagems(List<Montagem> montagems) {
 		this.montagems = montagems;
 	}
 

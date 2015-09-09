@@ -1,16 +1,19 @@
 package br.com.synergy.model;
 
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,49 +25,32 @@ public class CompraMaterial implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = 1L;
-	private Integer idfornecimentoMaterial;
+	private Long idcompraMaterial;
 	private Pep pep;
-	private Material material;
 	private Boolean okPrazo;
 	private Boolean okEspec;
 	private Boolean okVisita;
 	private Boolean okAssist;
 	private Date dataAquisicao;
 	private Double preco;
+	private CotacaoMaterial cotacaoMaterial;
 
 	public CompraMaterial() {
 	}
 
-	public CompraMaterial(Pep pep, Material material) {
-		this.pep = pep;
-		this.material = material;
-	}
-
-	public CompraMaterial(Pep pep, Material material, Boolean okPrazo,
-			Boolean okEspec, Boolean okVisita, Boolean okAssist,
-			Date dataAquisicao, Double preco) {
-		this.pep = pep;
-		this.material = material;
-		this.okPrazo = okPrazo;
-		this.okEspec = okEspec;
-		this.okVisita = okVisita;
-		this.okAssist = okAssist;
-		this.dataAquisicao = dataAquisicao;
-		this.preco = preco;
-	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idfornecimento_material", unique = true, nullable = false)
-	public Integer getIdfornecimentoMaterial() {
-		return this.idfornecimentoMaterial;
+	public Long getIdcompraMaterial() {
+		return this.idcompraMaterial;
 	}
 
-	public void setIdfornecimentoMaterial(Integer idfornecimentoMaterial) {
-		this.idfornecimentoMaterial = idfornecimentoMaterial;
+	public void setIdcompraMaterial(Long idcompraMaterial) {
+		this.idcompraMaterial = idcompraMaterial;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false),
 			@JoinColumn(name = "pep_Conta_idConta", referencedColumnName = "Conta_idConta", nullable = false) })
@@ -74,16 +60,6 @@ public class CompraMaterial implements java.io.Serializable {
 
 	public void setPep(Pep pep) {
 		this.pep = pep;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "material_idmaterial", nullable = false)
-	public Material getMaterial() {
-		return this.material;
-	}
-
-	public void setMaterial(Material material) {
-		this.material = material;
 	}
 
 	@Column(name = "ok_prazo")
@@ -140,5 +116,17 @@ public class CompraMaterial implements java.io.Serializable {
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
+
+	@OneToOne(mappedBy="compraMaterial")
+	public CotacaoMaterial getCotacaoMaterial() {
+		return cotacaoMaterial;
+	}
+
+
+	public void setCotacaoMaterial(CotacaoMaterial cotacaoMaterial) {
+		this.cotacaoMaterial = cotacaoMaterial;
+	}
+	
+	
 
 }

@@ -2,15 +2,19 @@ package br.com.synergy.model;
 
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,8 +24,7 @@ import javax.persistence.TemporalType;
 public class CompraFerramenta implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Long idfornecimentoFerramenta;
-	private Ferramenta ferramenta;
+	private Long idcompraFerramenta;
 	private Pep pep;
 	private Boolean okPrazo;
 	private Boolean okEspec;
@@ -29,50 +32,35 @@ public class CompraFerramenta implements java.io.Serializable {
 	private Boolean okAssist;
 	private Date dataAquisicao;
 	private Double preco;
+	private CotacaoFerramenta cotacaoFerramenta;
 
 	public CompraFerramenta() {
+		
 	}
 
-	public CompraFerramenta(Ferramenta ferramenta, Pep pep) {
-		this.ferramenta = ferramenta;
-		this.pep = pep;
-	}
-
-	public CompraFerramenta(Ferramenta ferramenta, Pep pep, Boolean okPrazo,
-			Boolean okEspec, Boolean okVisita, Boolean okAssist,
-			Date dataAquisicao, Double preco) {
-		this.ferramenta = ferramenta;
-		this.pep = pep;
-		this.okPrazo = okPrazo;
-		this.okEspec = okEspec;
-		this.okVisita = okVisita;
-		this.okAssist = okAssist;
-		this.dataAquisicao = dataAquisicao;
-		this.preco = preco;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "idfornecimento_ferramenta", unique = true, nullable = false)
-	public Long getIdfornecimentoFerramenta() {
-		return this.idfornecimentoFerramenta;
+	@Column(name = "idcompra_ferramenta", unique = true, nullable = false)
+	public Long getIdcompraFerramenta() {
+		return this.idcompraFerramenta;
 	}
 
-	public void setIdfornecimentoFerramenta(Long idfornecimentoFerramenta) {
-		this.idfornecimentoFerramenta = idfornecimentoFerramenta;
+	public void setIdcompraFerramenta(Long idcompraFerramenta) {
+		this.idcompraFerramenta = idcompraFerramenta;
+	}
+	
+	@OneToOne(mappedBy = "compraFerramenta")
+	public CotacaoFerramenta getCotacaoFerramenta(){
+		return this.cotacaoFerramenta;
+	}
+	
+	public void setCotacaoFerramenta(CotacaoFerramenta cotacao){
+		this.cotacaoFerramenta = cotacao;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ferramenta_idferramenta", nullable = false)
-	public Ferramenta getFerramenta() {
-		return this.ferramenta;
-	}
 
-	public void setFerramenta(Ferramenta ferramenta) {
-		this.ferramenta = ferramenta;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false),
 			@JoinColumn(name = "pep_Conta_idConta", referencedColumnName = "Conta_idConta", nullable = false) })

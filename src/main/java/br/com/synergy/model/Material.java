@@ -3,17 +3,16 @@ package br.com.synergy.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,35 +26,15 @@ public class Material implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long idmaterial;
-	private ParticipanteMaterial participanteMaterial;
 	private String materialEspc;
 	private String material;
 	private String desc;
 	private Boolean disponibilidade;
 	private Double valor;
-	private Set<CompraMaterial> compraMaterials = new HashSet<CompraMaterial>(0);
-	private Set<Peca> pecas = new HashSet<Peca>(0);
+	private CotacaoMaterial cotacao;
+	private List<Peca> pecas = new ArrayList<Peca>(0);
 
 	public Material() {
-	}
-
-	public Material(ParticipanteMaterial participanteMaterial,
-			String materialEspc) {
-		this.participanteMaterial = participanteMaterial;
-		this.materialEspc = materialEspc;
-	}
-
-	public Material(ParticipanteMaterial participanteMaterial,
-			String materialEspc, String material, String desc,
-			Boolean disponibilidade, Set<CompraMaterial> compraMaterials,
-			Set<Peca> pecas) {
-		this.participanteMaterial = participanteMaterial;
-		this.materialEspc = materialEspc;
-		this.material = material;
-		this.desc = desc;
-		this.disponibilidade = disponibilidade;
-		this.compraMaterials = compraMaterials;
-		this.pecas = pecas;
 	}
 
 	@Id
@@ -67,17 +46,6 @@ public class Material implements java.io.Serializable {
 
 	public void setIdmaterial(Long idmaterial) {
 		this.idmaterial = idmaterial;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "participante_material_idparticipante", nullable = false)
-	public ParticipanteMaterial getParticipanteMaterial() {
-		return this.participanteMaterial;
-	}
-
-	public void setParticipanteMaterial(
-			ParticipanteMaterial participanteMaterial) {
-		this.participanteMaterial = participanteMaterial;
 	}
 	
 	@NotBlank
@@ -127,22 +95,22 @@ public class Material implements java.io.Serializable {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "material")
-	public Set<CompraMaterial> getCompraMaterials() {
-		return this.compraMaterials;
+	
+	@OneToOne(mappedBy="material")
+	public CotacaoMaterial getCotacao() {
+		return cotacao;
 	}
 
-	public void setCompraMaterials(Set<CompraMaterial> compraMaterials) {
-		this.compraMaterials = compraMaterials;
+	public void setCotacao(CotacaoMaterial cotacao) {
+		this.cotacao = cotacao;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "material")
-	public Set<Peca> getPecas() {
+	public List<Peca> getPecas() {
 		return this.pecas;
 	}
 
-	public void setPecas(Set<Peca> pecas) {
+	public void setPecas(List<Peca> pecas) {
 		this.pecas = pecas;
 	}
 

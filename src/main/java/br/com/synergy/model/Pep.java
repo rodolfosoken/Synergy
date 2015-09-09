@@ -26,7 +26,6 @@ public class Pep implements java.io.Serializable {
 	private String numero;
 	private Set<CompraFerramenta> compraFerramentas = new HashSet<CompraFerramenta>(
 			0);
-	private Set<CompraPeca> compraPecas = new HashSet<CompraPeca>(0);
 	private Set<CompraMaterial> compraMaterials = new HashSet<CompraMaterial>(0);
 
 	public Pep() {
@@ -35,17 +34,6 @@ public class Pep implements java.io.Serializable {
 	public Pep(PepId id, Conta conta) {
 		this.id = id;
 		this.conta = conta;
-	}
-
-	public Pep(PepId id, Conta conta, String numero,
-			Set<CompraFerramenta> compraFerramentas,
-			Set<CompraPeca> compraPecas, Set<CompraMaterial> compraMaterials) {
-		this.id = id;
-		this.conta = conta;
-		this.numero = numero;
-		this.compraFerramentas = compraFerramentas;
-		this.compraPecas = compraPecas;
-		this.compraMaterials = compraMaterials;
 	}
 
 	@EmbeddedId
@@ -88,14 +76,6 @@ public class Pep implements java.io.Serializable {
 		this.compraFerramentas = compraFerramentas;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
-	public Set<CompraPeca> getCompraPecas() {
-		return this.compraPecas;
-	}
-
-	public void setCompraPecas(Set<CompraPeca> compraPecas) {
-		this.compraPecas = compraPecas;
-	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
 	public Set<CompraMaterial> getCompraMaterials() {

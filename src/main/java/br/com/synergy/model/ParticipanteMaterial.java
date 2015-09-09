@@ -1,21 +1,15 @@
 package br.com.synergy.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -28,23 +22,11 @@ public class ParticipanteMaterial implements java.io.Serializable {
 	private Long idparticipante;
 	private CotacaoMaterial cotacaoMaterial;
 	private Fornecedor fornecedor;
-	private Set<Material> materiais = new HashSet<Material>(0);
+	private Double valor;
 
 	public ParticipanteMaterial() {
 	}
 
-	public ParticipanteMaterial(CotacaoMaterial cotacaoMaterial,
-			Fornecedor fornecedor) {
-		this.cotacaoMaterial = cotacaoMaterial;
-		this.fornecedor = fornecedor;
-	}
-
-	public ParticipanteMaterial(CotacaoMaterial cotacaoMaterial,
-			Fornecedor fornecedor, Set<Material> materiais) {
-		this.cotacaoMaterial = cotacaoMaterial;
-		this.fornecedor = fornecedor;
-		this.materiais = materiais;
-	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -77,16 +59,14 @@ public class ParticipanteMaterial implements java.io.Serializable {
 		this.fornecedor = fornecedor;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participanteMaterial", cascade= CascadeType.ALL)
-	public Set<Material> getMateriais() {
-		return this.materiais;
+	@Column(name = "valor", precision = 22, scale = 0)
+	public Double getValor() {
+		return this.valor;
 	}
 
-	public void setMateriais(Set<Material> materiais) {
-		this.materiais = materiais;
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
-
-	
 
 
 }

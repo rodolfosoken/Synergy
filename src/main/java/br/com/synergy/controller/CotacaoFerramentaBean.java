@@ -104,8 +104,8 @@ public class CotacaoFerramentaBean implements Serializable {
 	//faz a referencia bidirecional ao adicionar as ferramentas
 	public void adicionarFerramenta() {
 		System.out.println("DEBUG: executando adcionarFerramenta");
-		ferramentaEdicao.setParticipanteFerramenta(participanteSelecionado);
-		participanteSelecionado.getFerramentas().add(ferramentaEdicao);
+		//ferramentaEdicao.setParticipanteFerramenta(participanteSelecionado);
+		//participanteSelecionado.getFerramentas().add(ferramentaEdicao);
 		ferramentaEdicao = new Ferramenta();
 	}
 	
@@ -165,7 +165,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	
 	public void removerFerramenta(){
 		System.out.println("DEBUG: executando removerFerramenta");
-		participanteSelecionado.getFerramentas().remove(ferramentaSelecionado);
+		//participanteSelecionado.getFerramentas().remove(ferramentaSelecionado);
 		ferramentaSelecionado=null;
 	}
 

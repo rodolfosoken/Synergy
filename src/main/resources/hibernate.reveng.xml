@@ -2,16 +2,20 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
+	<table-filter match-name="cargo" match-catalog="sistema_gestao"></table-filter>
 	<table-filter match-name="compra_ferramenta"
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="compra_material"
 		match-catalog="sistema_gestao">
 	</table-filter>
-	<table-filter match-name="compra_peca"
+	<table-filter match-name="conjunto"
 		match-catalog="sistema_gestao">
 	</table-filter>
-	<table-filter match-name="conjunto"
+	<table-filter match-name="conjunto_has_ferramenta"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="conjunto_has_peca"
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="conta" match-catalog="sistema_gestao"></table-filter>
@@ -20,9 +24,6 @@
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="cotacao_material"
-		match-catalog="sistema_gestao">
-	</table-filter>
-	<table-filter match-name="cotacao_peca"
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="ferramenta"
@@ -43,9 +44,6 @@
 	<table-filter match-name="participante_material"
 		match-catalog="sistema_gestao">
 	</table-filter>
-	<table-filter match-name="participante_peca"
-		match-catalog="sistema_gestao">
-	</table-filter>
 	<table-filter match-name="peca" match-catalog="sistema_gestao"></table-filter>
 	<table-filter match-name="pep" match-catalog="sistema_gestao"></table-filter>
 	<table-filter match-name="pfmea" match-catalog="sistema_gestao"></table-filter>
@@ -54,6 +52,10 @@
 		match-catalog="sistema_gestao">
 	</table-filter>
 	<table-filter match-name="risk_assesment"
+		match-catalog="sistema_gestao">
+	</table-filter>
+	<table-filter match-name="usuario" match-catalog="sistema_gestao"></table-filter>
+	<table-filter match-name="usuario_has_cargo"
 		match-catalog="sistema_gestao">
 	</table-filter>
 </hibernate-reverse-engineering>

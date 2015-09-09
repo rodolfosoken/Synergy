@@ -1,19 +1,20 @@
 package br.com.synergy.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -22,9 +23,9 @@ import javax.validation.constraints.NotNull;
 public class Ferramenta implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Boolean disponivel;
 	private Long idferramenta;
-	private ParticipanteFerramenta participanteFerramenta;
+	private Usuario planejador;
+	private Boolean disponivel;
 	private String idEquipament;
 	private String nome;
 	private Double length;
@@ -38,9 +39,9 @@ public class Ferramenta implements java.io.Serializable {
 	private Integer maxStack;
 	private String descricao;
 	private Double valor;
-	private Set<Montagem> montagems = new HashSet<Montagem>(0);
-	private Set<CompraFerramenta> compraFerramentas = new HashSet<CompraFerramenta>(
-			0);
+	private CotacaoFerramenta cotacao;
+	private List<Montagem> montagems = new ArrayList<Montagem>(0);
+	private List<Conjunto> conjuntos = new ArrayList<Conjunto>();
 
 	public Ferramenta() {
 	}
@@ -56,15 +57,14 @@ public class Ferramenta implements java.io.Serializable {
 		this.idferramenta = idferramenta;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idparticipante_ferramenta", nullable = false)
-	public ParticipanteFerramenta getParticipanteFerramenta() {
-		return this.participanteFerramenta;
+	@OneToOne
+	@JoinColumn(name = "usuario_idusuario", nullable = false)
+	public Usuario getPlanejador() {
+		return planejador;
 	}
 
-	public void setParticipanteFerramenta(
-			ParticipanteFerramenta participanteFerramenta) {
-		this.participanteFerramenta = participanteFerramenta;
+	public void setPlanejador(Usuario planejador) {
+		this.planejador = planejador;
 	}
 
 	@NotNull
@@ -194,23 +194,36 @@ public class Ferramenta implements java.io.Serializable {
 	public void setDisponivel(Boolean disponivel) {
 		this.disponivel = disponivel;
 	}
+	
+	@OneToOne(mappedBy="ferramenta")
+	public CotacaoFerramenta getCotacao() {
+		return cotacao;
+	}
+
+	public void setCotacao(CotacaoFerramenta cotacao) {
+		this.cotacao = cotacao;
+	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ferramenta")
-	public Set<Montagem> getMontagems() {
+	public List<Montagem> getMontagems() {
 		return this.montagems;
 	}
 
-	public void setMontagems(Set<Montagem> montagems) {
+	public void setMontagems(List<Montagem> montagems) {
 		this.montagems = montagems;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ferramenta")
-	public Set<CompraFerramenta> getCompraFerramentas() {
-		return this.compraFerramentas;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "conjunto_has_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
+	public List<Conjunto> getConjuntos() {
+		return conjuntos;
 	}
 
-	public void setCompraFerramentas(Set<CompraFerramenta> compraFerramentas) {
-		this.compraFerramentas = compraFerramentas;
+	public void setConjuntos(List<Conjunto> conjuntos) {
+		this.conjuntos = conjuntos;
 	}
+	
+
+
 
 }

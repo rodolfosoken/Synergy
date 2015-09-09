@@ -1,21 +1,15 @@
 package br.com.synergy.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -28,23 +22,11 @@ public class ParticipanteFerramenta implements java.io.Serializable {
 	private Long idparticipanteFerramenta;
 	private CotacaoFerramenta cotacaoFerramenta;
 	private Fornecedor fornecedor;
-	private Set<Ferramenta> ferramentas = new HashSet<Ferramenta>(0);
+	private Double valor;
 
 	public ParticipanteFerramenta() {
 	}
 
-	public ParticipanteFerramenta(CotacaoFerramenta cotacaoFerramenta,
-			Fornecedor fornecedor) {
-		this.cotacaoFerramenta = cotacaoFerramenta;
-		this.fornecedor = fornecedor;
-	}
-
-	public ParticipanteFerramenta(CotacaoFerramenta cotacaoFerramenta,
-			Fornecedor fornecedor, Set<Ferramenta> ferramentas) {
-		this.cotacaoFerramenta = cotacaoFerramenta;
-		this.fornecedor = fornecedor;
-		this.ferramentas = ferramentas;
-	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -76,14 +58,15 @@ public class ParticipanteFerramenta implements java.io.Serializable {
 	public void setFornecedor(Fornecedor fornecedor) {
 		this.fornecedor = fornecedor;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participanteFerramenta", cascade= CascadeType.ALL)
-	public Set<Ferramenta> getFerramentas() {
-		return this.ferramentas;
+	
+	@Column(name = "valor", precision = 22, scale = 0)
+	public Double getValor() {
+		return this.valor;
 	}
 
-	public void setFerramentas(Set<Ferramenta> ferramentas) {
-		this.ferramentas = ferramentas;
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
+
 
 }

@@ -3,7 +3,6 @@ package br.com.synergy.controller;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -66,8 +65,8 @@ public class CotacaoMaterialBean implements Serializable {
 	}
 
 	public void adicionarMaterial() {
-		materialEdicao.setParticipanteMaterial(participanteSelecionado);
-		participanteSelecionado.getMateriais().add(materialEdicao);
+		//materialEdicao.setParticipanteMaterial(participanteSelecionado);
+		//participanteSelecionado.getMateriais().add(materialEdicao);
 		System.out.println("Adicionando material: "
 				+ materialEdicao.getMaterialEspc());
 		materialEdicao = new Material();
@@ -115,12 +114,12 @@ public class CotacaoMaterialBean implements Serializable {
 	}
 
 	public void removerMaterial() {
-		participanteSelecionado.getMateriais().remove(materialSelecionado);
+		//participanteSelecionado.getMateriais().remove(materialSelecionado);
 		materialSelecionado = null;
 	}
 
 	public boolean contemParticipante(ParticipanteMaterial participante,
-			Set<ParticipanteMaterial> lista) {
+			List<ParticipanteMaterial> lista) {
 		boolean contem = false;
 		for (ParticipanteMaterial p : lista) {
 			if(p.getFornecedor().getIdfornecedor()

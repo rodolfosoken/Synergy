@@ -1,12 +1,18 @@
 package br.com.synergy.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,6 +24,7 @@ public class Cargo implements Serializable {
 	private Long id;
 	private String nome;
 	private String descricao;
+	private List<Usuario> usuarios = new ArrayList<Usuario>();
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -44,6 +51,16 @@ public class Cargo implements Serializable {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "usuario_has_cargo", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "cargo_idcargo", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "usuario_idusuario", nullable = false, updatable = false) })
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+	
 
 	
 }
