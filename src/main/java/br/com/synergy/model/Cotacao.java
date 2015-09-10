@@ -82,7 +82,7 @@ public abstract class Cotacao implements java.io.Serializable {
 		this.dataPrevisao = dataPrevisao;
 	}
 
-	@Column(name = "descricao", nullable = false, length = 45)
+	@Column(name = "descricao", nullable = false, length = 255)
 	public String getDescricao() {
 		return this.descricao;
 	}

@@ -57,8 +57,6 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	private ParticipanteFerramenta participanteSelecionado;
 	private ParticipanteFerramenta participanteFerramenta;
-	private Ferramenta ferramentaEdicao;
-	private Ferramenta ferramentaSelecionado;
 	private Integer indexTab=0;
 	
 
@@ -72,13 +70,12 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: executando Limpar");
 		cotacaoFerramenta = new CotacaoFerramenta();
 		participanteFerramenta = new ParticipanteFerramenta();
-		ferramentaEdicao = new Ferramenta();
 		participanteSelecionado=null;
-		ferramentaSelecionado=null;
 		cotacaoFerramenta.setUsuario(UsuarioPrincipal.getUsuarioLogado().getUsuario());
 		cotacaoFerramenta.setDataInicio(new Date());
 		cotacaoFerramenta.setConcluida(false);
 		cotacaoFerramenta.setComprado(false);
+		cotacaoFerramenta.setFerramenta(new Ferramenta());
 
 		indexTab=0;
 	}
@@ -102,7 +99,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	
 	//preenche o auto-completar de usuários
 	public List<Usuario> completarUsuario(String nome) {
-		System.out.println("DEBUG: executando CompletarFornecedor");
+		System.out.println("DEBUG: executando CompletarUsuario");
 		return usuarios.buscaPorNome(nome);
 	}
 	
@@ -115,9 +112,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	//faz a referencia bidirecional ao adicionar as ferramentas
 	public void adicionarFerramenta() {
 		System.out.println("DEBUG: executando adcionarFerramenta");
-		//ferramentaEdicao.setParticipanteFerramenta(participanteSelecionado);
-		//participanteSelecionado.getFerramentas().add(ferramentaEdicao);
-		ferramentaEdicao = new Ferramenta();
+		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
 	}
 	
 	//conclui a cotação
@@ -135,7 +130,10 @@ public class CotacaoFerramentaBean implements Serializable {
 	}
 
 	public void salvarCotacao() {
-		System.out.println("DEBUG: executando salvarCotaçao");
+		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
+		System.out.println("id usuario:"+ cotacaoFerramenta.getUsuario().getId());
+		System.out.println("DEBUG: executando salvarCotaçao : "+ cotacaoFerramenta.getDescricao());
+		
 		cadastro.salvar(cotacaoFerramenta);
 		messages.info("Cotação salva com sucesso!");
 		
@@ -174,11 +172,6 @@ public class CotacaoFerramentaBean implements Serializable {
 		participanteSelecionado=null; 
 	}
 	
-	public void removerFerramenta(){
-		System.out.println("DEBUG: executando removerFerramenta");
-		//participanteSelecionado.getFerramentas().remove(ferramentaSelecionado);
-		ferramentaSelecionado=null;
-	}
 
 	//metodo para verificar se o participante já consta na lista
 	public boolean contemParticipante(ParticipanteFerramenta participante,
@@ -203,22 +196,6 @@ public class CotacaoFerramentaBean implements Serializable {
 		return cotacoes.todasCotacoesFerramentas(); 
 	}
 
-	public Ferramenta getFerramentaEdicao() {
-		return ferramentaEdicao;
-	}
-
-
-	public Ferramenta getFerramentaSelecionado() {
-		return ferramentaSelecionado;
-	}
-
-	public void setFerramentaSelecionado(Ferramenta ferramentaSelecionado) {
-		this.ferramentaSelecionado = ferramentaSelecionado;
-	}
-
-	public void setFerramentaEdicao(Ferramenta ferramentaEdicao) {
-		this.ferramentaEdicao = ferramentaEdicao;
-	}
 
 	public ParticipanteFerramenta getParticipanteFerramenta() {
 		return participanteFerramenta;

@@ -35,7 +35,8 @@ public class Usuarios implements Serializable {
 	}
 	
 	public List<Usuario> buscaPorNome(String nome){
-		return null;
+		return em.createQuery("from Usuario" + " where nome like :nome",
+				Usuario.class).setParameter("nome", "%"+nome.toUpperCase() + "%").getResultList();
 	}
 
 	public List<Usuario> getTodos(){

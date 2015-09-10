@@ -38,7 +38,7 @@
 
 					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk"
 						action="#{cotacaoFerramentaBean.salvarCotacao}"
-						process="cotacao-grid @this" update="frm">
+						process="frm @this" update="frm messages">
 					</p:commandButton>
 
 				</f:facet>
@@ -59,9 +59,10 @@
 						</h:outputText>
 
 						<p:outputLabel value="Responsável:" for="responsavel" />
-						<p:autoComplete id="responsavel"
+						<p:autoComplete id="responsavel" style="margin-right:30px"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.responsavel}"
-							var="usuario"
+							var="usuario" converter="usuarioConverter" dropdown="true" 
+							itemLabel="#{usuario.nome}" forceSelection="true" itemValue="#{usuario}"
 							completeMethod="#{cotacaoFerramentaBean.completarUsuario}" />
 
 
@@ -70,7 +71,7 @@
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataPrevisao}" />
 					</p:panelGrid>
 					
-					<h:panelGrid columns="2" style="margin-left:20px">
+					<h:panelGrid columns="2" style="margin-left:10px">
 						<p:outputLabel value=" Descrição da Cotação" for="descricao" />
 						<p:inputTextarea id="descricao" name="descricao" rows="4"
 							cols="40"
@@ -82,94 +83,15 @@
 
 			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true"
 				activeIndex="#{cotacaoFerramentaBean.indexTab}">
+				
 				<p:tab title="1-Ferramenta" id="tabProduto">
-
 					<ui:include src="/ferramentas/templates/adicionarFerramenta.xhtml" />
-
-
-
-
 				</p:tab>
 
 				<p:tab title="2-Fornecedores" id="tabFornecedor">
-					<p:defaultCommand target="adicionar-fornecedor"
-						scope="tabFornecedor" />
-					<h:panelGrid columns="4" style="margin-bottom:10px">
-
-						<p:outputLabel value="Fornecedor: " for="pesquisaFornecedor" />
-						<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
-							completeMethod="#{cotacaoFerramentaBean.completarFornecedor}"
-							var="fornecedor" itemLabel="#{fornecedor.nome}"
-							itemValue="#{fornecedor}" forceSelection="true"
-							converter="fornecedorConverter" required="true"
-							value="#{cotacaoFerramentaBean.participanteFerramenta.fornecedor}">
-						</p:autoComplete>
-
-						<p:spacer width="100" height="10" />
-
-
-						<p:commandButton id="adicionar-fornecedor" value="Adicionar"
-							icon="ui-icon-plus"
-							action="#{cotacaoFerramentaBean.adicionarFornecedor}"
-							process="tabFornecedor"
-							update="pesquisaFornecedor fornecedores-table :frm:messages" />
-
-
-					</h:panelGrid>
-
-					<p:commandButton id="remover-fornecedor" value="Remover"
-						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoFerramentaBean.removerFornecedor}"
-						process="@this" update="tabView"
-						disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}" />
-					<p:outputLabel />
-
-					<p:dataTable
-						value="#{cotacaoFerramentaBean.cotacaoFerramenta.participantesFerramentas}"
-						var="participante" emptyMessage="Nenhum fornecedor cadastrado."
-						id="fornecedores-table"
-						selection="#{cotacaoFerramentaBean.participanteSelecionado}"
-						selectionMode="single"
-						rowKey="#{participante.fornecedor.idfornecedor}">
-
-						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView"
-							listener="#{cotacaoFerramentaBean.onRowSelection}" />
-						<p:ajax event="rowUnselect" update=":frm:tabView" />
-
-						<p:column headerText="ID" style="text-align: center; width: 60px">
-							<h:outputText value="#{participante.fornecedor.idfornecedor}" />
-						</p:column>
-
-						<p:column headerText="CNPJ"
-							style="text-align: center; width: 160px">
-							<h:outputText value="#{participante.fornecedor.cnpj}" />
-						</p:column>
-
-						<p:column headerText="Nome da Empresa"
-							style="text-align: center; width: 250px">
-							<h:outputText value="#{participante.fornecedor.nome}" />
-						</p:column>
-
-						<p:column headerText="Contato"
-							style="text-align: center; width: 100px">
-							<h:outputText value="#{participante.fornecedor.contato}" />
-						</p:column>
-
-						<p:column headerText="Telefone"
-							style="text-align: center; width: 100px">
-							<h:outputText value="#{participante.fornecedor.telefone}" />
-						</p:column>
-
-						<p:column headerText="Link"
-							style="text-align: center; width: 100px">
-							<h:outputText value="#{participante.fornecedor.linkSharepoint}" />
-						</p:column>
-
-
-					</p:dataTable>
-
+					<ui:include src="/ferramentas/templates/selecionarFornecedor.xhtml"/>
 				</p:tab>
+				
 				<p:tab title="3-Compra da Ferramenta"
 					disabled="#{!cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
 					<h:panelGrid columns="2" cellpadding="10">

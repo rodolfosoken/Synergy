@@ -8,18 +8,25 @@
 
 <p:panelGrid columns="2">
 	<h:panelGrid columns="2" style="margin-right: 20px">
+		<p:outputLabel value="Planejador" for="planejador" />
+		<p:autoComplete id="planejador" style="margin-right:30px"
+			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.planejador}"
+			var="usuario" converter="usuarioConverter" dropdown="true"
+			itemLabel="#{usuario.nome}" forceSelection="true"
+			itemValue="#{usuario}" required="true"
+			completeMethod="#{cotacaoFerramentaBean.completarUsuario}" />
 		<p:outputLabel value="Id Equipament" for="idEquip" />
 		<p:inputText id="idEquip" required="true" size="30"
-			value="#{cotacaoFerramentaBean.ferramentaEdicao.idEquipament}" />
+			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.idEquipament}" />
 		<p:outputLabel value="Nome ferramenta:" for="ferramenta" />
 		<p:inputText id="ferramenta" required="true" size="30"
-			value="#{cotacaoFerramentaBean.ferramentaEdicao.nome}" />
+			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.nome}" />
 		<p:outputLabel value="Descrição" for="descricao" />
 		<p:inputText id="descricao" size="30"
-			value="#{cotacaoFerramentaBean.ferramentaEdicao.descricao}" />
+			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.descricao}" />
 		<p:outputLabel value="Utilidade" for="utilidade" />
 		<p:inputText id="utilidade" size="30"
-			value="#{cotacaoFerramentaBean.ferramentaEdicao.utilidade}" />
+			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.utilidade}" />
 	</h:panelGrid>
 
 	<p:panelGrid>
@@ -28,30 +35,30 @@
 			<f:facet name="header">Dimensões</f:facet>
 			<p:outputLabel value="Comprimento" for="length" />
 			<p:inputText id="length" size="5"
-				value="#{cotacaoFerramentaBean.ferramentaEdicao.length}" />
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.length}" />
 
 			<p:outputLabel value="Altura" for="height" />
 			<p:inputText id="height" size="5"
-				value="#{cotacaoFerramentaBean.ferramentaEdicao.height}" />
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.height}" />
 			<p:outputLabel value="Largura" for="width" />
 			<p:inputText id="width" size="5"
-				value="#{cotacaoFerramentaBean.ferramentaEdicao.width}" />
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.width}" />
 		</p:panelGrid>
-		<p:panelGrid columns="4" >
+		<p:panelGrid columns="4">
 			<f:facet name="header">Especificações</f:facet>
 			<p:outputLabel value="Part-per-hour" for="partPerHour" />
 			<p:inputText id="partPerHour" size="14"
-				value="#{cotacaoFerramentaBean.ferramentaEdicao.partPerHour}" />
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.partPerHour}" />
 			<p:outputLabel value="Cycle" for="cycle" />
 			<p:inputText id="cycle" size="14"
-				value="#{cotacaoFerramentaBean.ferramentaEdicao.cycle}" />
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.cycle}" />
 
 			<p:outputLabel value="Area Stack" for="areaStack" />
 			<p:inputText id="areaStack" size="14"
-				value="#{cotacaoFerramentaBean.ferramentaEdicao.areaStack}" />
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.areaStack}" />
 			<p:outputLabel value="Max Stack" for="maxStack" />
 			<p:inputText id="maxStack" size="14"
-				value="#{cotacaoFerramentaBean.ferramentaEdicao.maxStack}" />
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.maxStack}" />
 
 		</p:panelGrid>
 	</p:panelGrid>

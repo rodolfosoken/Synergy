@@ -43,7 +43,7 @@ public class CompraMaterial implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "idfornecimento_material", unique = true, nullable = false)
+	@Column(name = "idcompra_material", unique = true, nullable = false)
 	public Long getIdcompraMaterial() {
 		return this.idcompraMaterial;
 	}
