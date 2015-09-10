@@ -33,6 +33,10 @@ public class Usuarios implements Serializable {
 		return usuario;
 
 	}
+	
+	public List<Usuario> buscaPorNome(String nome){
+		return null;
+	}
 
 	public List<Usuario> getTodos(){
 		return em.createQuery("from Usuario", Usuario.class).getResultList();

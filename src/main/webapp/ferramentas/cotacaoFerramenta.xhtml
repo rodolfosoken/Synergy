@@ -15,7 +15,7 @@
 			<p:messages id="messages" />
 			<p:growl id="growl" />
 
-			<p:toolbar id="toolbar">
+			<p:toolbar id="toolbar" style="margin-bottom:20px">
 
 				<f:facet name="left">
 					<p:commandButton value="Concluir Cotação"
@@ -23,9 +23,10 @@
 						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 						process="@this" update="toolbar tabView" />
 
-					<p:commandButton value="Não Concluida" action="#{cotacaoFerramentaBean.desmarcar}"
-						disabled="#{!cotacaoFerramentaBean.cotacaoFerramenta.concluida}" 
-						process="@this" update="toolbar tabView"/>
+					<p:commandButton value="Não Concluida"
+						action="#{cotacaoFerramentaBean.desmarcar}"
+						disabled="#{!cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+						process="@this" update="toolbar tabView" />
 
 				</f:facet>
 
@@ -42,33 +43,55 @@
 
 				</f:facet>
 			</p:toolbar>
+			<p:fieldset legend="Dados da Cotação" toggleable="true"
+				toggleSpeed="500">
+				<p:panelGrid columns="2">
+				
+					<p:panelGrid columns="4" style="margin-top:20px" id="cotacao-grid">
+						<p:outputLabel value=" Usuário " for="usuario" />
+						<p:inputText id="usuario" name="usuario" readonly="true"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.usuario.nome}" />
 
-			<p:panelGrid columns="4" style="margin-top:20px" id="cotacao-grid">
+						<p:outputLabel value=" Data Início: " for="dataInicio" />
+						<h:outputText id="dataInicio" size="15" disabled="true"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataInicio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
 
-				<p:outputLabel value=" Usuário " for="usuario" />
-				<p:outputLabel id="usuario" name="usuario" size="25"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.usuario.nome}" />
+						<p:outputLabel value="Responsável:" for="responsavel" />
+						<p:autoComplete id="responsavel"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.responsavel}"
+							var="usuario"
+							completeMethod="#{cotacaoFerramentaBean.completarUsuario}" />
 
-				<p:outputLabel value=" Data Início: " for="dataInicio" />
-				<h:outputText id="dataInicio" size="15" disabled="true"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataInicio}">
-					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-				</h:outputText>
 
-				<p:outputLabel value=" Descrição da Ferramenta " for="descricao" />
-				<p:inputText id="descricao" name="descricao" size="30"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.descricao}" />
-
-				<p:outputLabel value=" Data Prevista: " for="dataPrevisao" />
-				<p:calendar id="dataPrevisao" size="15" pattern="dd/MM/yyyy"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataPrevisao}" />
-
-			</p:panelGrid>
-
+						<p:outputLabel value=" Data Prevista: " for="dataPrevisao" />
+						<p:calendar id="dataPrevisao" size="16" pattern="dd/MM/yyyy"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataPrevisao}" />
+					</p:panelGrid>
+					
+					<h:panelGrid columns="2" style="margin-left:20px">
+						<p:outputLabel value=" Descrição da Cotação" for="descricao" />
+						<p:inputTextarea id="descricao" name="descricao" rows="4"
+							cols="40"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.descricao}" />
+					</h:panelGrid>
+					
+				</p:panelGrid>
+			</p:fieldset>
 
 			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true"
 				activeIndex="#{cotacaoFerramentaBean.indexTab}">
-				<p:tab title="1-Fornecedor" id="tabFornecedor">
+				<p:tab title="1-Ferramenta" id="tabProduto">
+
+					<ui:include src="/ferramentas/templates/adicionarFerramenta.xhtml" />
+
+
+
+
+				</p:tab>
+
+				<p:tab title="2-Fornecedores" id="tabFornecedor">
 					<p:defaultCommand target="adicionar-fornecedor"
 						scope="tabFornecedor" />
 					<h:panelGrid columns="4" style="margin-bottom:10px">
@@ -145,84 +168,6 @@
 
 
 					</p:dataTable>
-
-				</p:tab>
-				<p:tab title="2-Produtos do Fornecedor"
-					disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}"
-					id="tabProdutos">
-
-
-					<h:panelGrid columns="2" id="cadastro-ferramenta"
-						style="margin-bottom: 20px">
-
-						<p:defaultCommand target="salvar-ferramentaButton"
-							scope="tabProdutos" />
-						<p:outputLabel />
-
-
-						<p:outputLabel value="Id Equipament" for="idEquip" />
-						<p:inputText id="idEquip" required="true"
-							value="#{cotacaoFerramentaBean.ferramentaEdicao.idEquipament}" />
-
-						<p:outputLabel value="Ferramenta" for="ferramenta" />
-						<p:inputText id="ferramenta" size="45" required="true"
-							value="#{cotacaoFerramentaBean.ferramentaEdicao.nome}" />
-
-						<p:outputLabel value="Descrição" for="descricao" />
-						<p:inputText id="descricao" size="45"
-							value="#{cotacaoFerramentaBean.ferramentaEdicao.descricao}" />
-
-						<p:outputLabel value="Utilidade" for="utilidade" />
-						<p:inputText id="utilidade" size="45"
-							value="#{cotacaoFerramentaBean.ferramentaEdicao.utilidade}" />
-
-
-						<!-- Botão adicionar produto -->
-						<p:commandButton value="Adicionar"
-							action="#{cotacaoFerramentaBean.adicionarFerramenta}"
-							update="produtos-table cadastro-ferramenta :frm:messages"
-							process="@this tabProdutos" id="salvar-ferramentaButton" />
-
-
-
-					</h:panelGrid>
-
-					<p:commandButton id="remover-ferramenta" value="Remover"
-						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoFerramentaBean.removerFerramenta}"
-						process="@this" update="@this produtos-table"
-						disabled="#{cotacaoFerramentaBean.ferramentaSelecionado==null}" />
-					<p:outputLabel />
-
-
-					<p:dataTable
-						value="#{cotacaoFerramentaBean.participanteSelecionado.ferramentas}"
-						var="ferramenta" id="produtos-table"
-						selection="#{cotacaoFerramentaBean.ferramentaSelecionado}"
-						selectionMode="single" rowKey="#{ferramenta}"
-						emptyMessage="Nenhum produto associado ao fornecedor.">
-
-						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView:remover-ferramenta" />
-						<p:ajax event="rowUnselect"
-							update=":frm:tabView:remover-ferramenta" />
-
-
-						<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}">
-							<h:outputText value="#{ferramenta.nome}" />
-						</p:column>
-
-						<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}">
-							<h:outputText value="#{ferramenta.descricao}" />
-						</p:column>
-
-						<p:column headerText="Utilidade" sortBy="#{ferramenta.utilidade}">
-							<h:outputText value="#{ferramenta.utilidade}" />
-						</p:column>
-
-					</p:dataTable>
-
-
 
 				</p:tab>
 				<p:tab title="3-Compra da Ferramenta"

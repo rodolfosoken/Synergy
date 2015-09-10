@@ -16,9 +16,11 @@ import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.model.Ferramenta;
 import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.model.ParticipanteFerramenta;
+import br.com.synergy.model.Usuario;
 import br.com.synergy.repository.Cotacoes;
 import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.repository.Participantes;
+import br.com.synergy.repository.Usuarios;
 import br.com.synergy.security.UsuarioPrincipal;
 import br.com.synergy.service.CadastroCotacaoFerramentaService;
 import br.com.synergy.util.FacesMessages;
@@ -34,6 +36,9 @@ public class CotacaoFerramentaBean implements Serializable {
 	@Inject
 	private FacesMessages messages;
 
+	@Inject
+	private Usuarios usuarios;
+	
 	@Inject
 	private Fornecedores fornecedores;
 
@@ -93,6 +98,12 @@ public class CotacaoFerramentaBean implements Serializable {
 		cotacaoFerramenta.setParticipantesFerramentas(lista);
 		indexTab=0;
 
+	}
+	
+	//preenche o auto-completar de usuários
+	public List<Usuario> completarUsuario(String nome) {
+		System.out.println("DEBUG: executando CompletarFornecedor");
+		return usuarios.buscaPorNome(nome);
 	}
 	
 	//preenche o auto-completar de fornecedores
