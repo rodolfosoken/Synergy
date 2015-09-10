@@ -67,6 +67,8 @@ public class ParticipanteMaterial implements java.io.Serializable {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
+	
+	
 
 
 }

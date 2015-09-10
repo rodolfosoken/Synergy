@@ -33,6 +33,7 @@ public class CompraFerramenta implements java.io.Serializable {
 	private Date dataAquisicao;
 	private Double preco;
 	private CotacaoFerramenta cotacaoFerramenta;
+	private ParticipanteFerramenta participante;
 
 	public CompraFerramenta() {
 		
@@ -126,5 +127,18 @@ public class CompraFerramenta implements java.io.Serializable {
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
+
+	@OneToOne
+	@JoinColumn(name="idfornecedor")
+	public ParticipanteFerramenta getParticipante() {
+		return participante;
+	}
+
+
+	public void setParticipante(ParticipanteFerramenta participante) {
+		this.participante = participante;
+	}
+	
+	
 
 }

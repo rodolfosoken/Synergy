@@ -67,29 +67,33 @@
 			<p:dataTable value="#{ferramentaBean.todasFerramentas}"
 				var="ferramenta" emptyMessage="Nenhum ferramenta cadastrada."
 				rows="10" id="ferramentas-table" paginator="true"
-				paginatorPosition="bottom" rowStyleClass="#{ferramenta.disponivel ? 'disponivel' : ''}"
+				paginatorPosition="bottom"
+				rowStyleClass="#{ferramenta.disponivel ? 'disponivel' : ''}"
 				selection="#{ferramentaBean.ferramentaSelecionado}"
-				 selectionMode="single"
-				rowKey="#{ferramenta.idferramenta}">
+				selectionMode="single" rowKey="#{ferramenta.idferramenta}">
 
 				<!-- Quando selecionar disparar evento -->
 				<p:ajax event="rowSelect" update=":frm:toolbar" />
 				<p:ajax event="rowUnselect" update=":frm:toolbar" />
 
-				<p:column headerText="Disponível" sortBy="#{ferramenta.disponivel}" style="text-align: center; width:10px">
-					<p:selectBooleanCheckbox value="#{ferramenta.disponivel}" disabled="true"
-						offLabel="Não" onLabel="Sim" />
+				<p:column headerText="Disponível" sortBy="#{ferramenta.disponivel}"
+					style="text-align: center; width:10px">
+					<p:selectBooleanCheckbox value="#{ferramenta.disponivel}"
+						disabled="true" offLabel="Não" onLabel="Sim" />
 				</p:column>
 
-				<p:column headerText="ID" sortBy="#{ferramenta.idferramenta}" style="text-align: center; width: 10px">
+				<p:column headerText="ID" sortBy="#{ferramenta.idferramenta}"
+					style="text-align: center; width: 10px">
 					<h:outputText value="#{ferramenta.idferramenta}" />
 				</p:column>
 
-				<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}" style="text-align: center; width: 60px">
+				<p:column headerText="Ferramenta" sortBy="#{ferramenta.nome}"
+					style="text-align: center; width: 60px">
 					<h:outputText value="#{ferramenta.nome}" />
 				</p:column>
 
-				<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}" style="text-align: center; width: 60px">
+				<p:column headerText="Descrição" sortBy="#{ferramenta.descricao}"
+					style="text-align: center; width: 60px">
 					<h:outputText value="#{ferramenta.descricao}" />
 				</p:column>
 
@@ -112,7 +116,7 @@
 
 					<p:outputLabel value="Fornecedor" for="ferramenta" />
 					<p:outputLabel
-						value="#{ferramentaBean.ferramentaEdicao.participanteFerramenta.fornecedor.nome}" />
+						value="#{ferramentaBean.ferramentaEdicao.cotacao.compraFerramenta.participante.fornecedor.nome}" />
 
 					<p:outputLabel value="Id Equipament" for="idEquip" />
 					<p:inputText id="idEquip"
@@ -127,12 +131,12 @@
 						value="#{ferramentaBean.ferramentaEdicao.descricao}" />
 
 					<p:outputLabel value="Utilidade" for="utilidade" />
-					<p:inputText id="utilidade" 
+					<p:inputText id="utilidade"
 						value="#{ferramentaBean.ferramentaEdicao.utilidade}" />
 
 
 					<p:outputLabel value="Disponibilidade" for="disponivel" />
-					<p:selectBooleanCheckbox id="disponivel" 
+					<p:selectBooleanCheckbox id="disponivel"
 						value="#{ferramentaBean.ferramentaEdicao.disponivel}" />
 
 

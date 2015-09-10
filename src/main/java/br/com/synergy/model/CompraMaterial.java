@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -34,6 +35,7 @@ public class CompraMaterial implements java.io.Serializable {
 	private Date dataAquisicao;
 	private Double preco;
 	private CotacaoMaterial cotacaoMaterial;
+	private ParticipanteMaterial participante;
 
 	public CompraMaterial() {
 	}
@@ -126,6 +128,19 @@ public class CompraMaterial implements java.io.Serializable {
 	public void setCotacaoMaterial(CotacaoMaterial cotacaoMaterial) {
 		this.cotacaoMaterial = cotacaoMaterial;
 	}
+
+	@NotNull
+	@OneToOne
+	@JoinColumn(name="idfornecedor")
+	public ParticipanteMaterial getParticipante() {
+		return participante;
+	}
+
+
+	public void setParticipante(ParticipanteMaterial participante) {
+		this.participante = participante;
+	}
+	
 	
 	
 
