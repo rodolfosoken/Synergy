@@ -12,44 +12,69 @@
 		<h1>Cotação para Ferramenta</h1>
 
 		<h:form id="frm">
-			<p:messages id="messages" />
-			<p:growl id="growl" />
+			<p:messages id="messages" closable="true" />
+			<p:growl id="growl" showDetail="true" />
 
 			<p:toolbar id="toolbar" style="margin-bottom:20px">
 
 				<f:facet name="left">
-					<p:commandButton value="Concluir Cotação"
-						action="#{cotacaoFerramentaBean.concluir}"
+					<p:commandButton icon="fa fa-check-square-o" value="Concluído"
+						action="#{cotacaoFerramentaBean.concluir}" 
 						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
-						process="@this" update="toolbar tabView" />
+						process="@this" update="frm" />
 
-					<p:commandButton value="Não Concluida"
+					<p:commandButton icon="fa fa-square-o" value="Não Concluído"
 						action="#{cotacaoFerramentaBean.desmarcar}"
 						disabled="#{!cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
-						process="@this" update="toolbar tabView" />
+						process="@this" update="frm" />
+
+					<p:outputLabel value="Concluído em: " style="margin-left:20px"
+						rendered="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}" />
+					<h:outputText
+						rendered="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+						value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataTermino}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
 
 				</f:facet>
 
 				<f:facet name="right">
+
+					<p:commandButton icon="fa fa-eraser" value="Limpar" process="@this"
+						update="frm" action="#{cotacaoFerramentaBean.limpar}"
+						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
+						<p:confirm icon="ui-icon-alert" header="Limpar Campos"
+							message="Deseja limpar todos os campos?" />
+					</p:commandButton>
+
+					<p:confirmDialog global="true">
+						<p:commandButton value="Ok" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Cancelar" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+
 					<span class="ui-separator"> <span
 						class="ui-icon ui-icon-grip-dotted-vertical" />
 					</span>
 
 
-					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk"
+					<p:commandButton value="Salvar Cotação" icon="fa fa-floppy-o"
 						action="#{cotacaoFerramentaBean.salvarCotacao}"
-						process="frm @this" update="frm messages">
+						process="dados-cotacao :frm:tabView:tabProduto :frm:tabView:fornecedores-table @this"
+						update="frm">
 					</p:commandButton>
 
 				</f:facet>
 			</p:toolbar>
 			<p:fieldset legend="Dados da Cotação" toggleable="true"
-				toggleSpeed="500">
+				toggleSpeed="500" id="dados-cotacao">
 				<p:panelGrid columns="2">
-				
+
 					<p:panelGrid columns="4" style="margin-top:20px" id="cotacao-grid">
 						<p:outputLabel value=" Usuário " for="usuario" />
 						<p:inputText id="usuario" name="usuario" readonly="true"
+							disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.usuario.nome}" />
 
 						<p:outputLabel value=" Data Início: " for="dataInicio" />
@@ -60,38 +85,41 @@
 
 						<p:outputLabel value="Responsável:" for="responsavel" />
 						<p:autoComplete id="responsavel" style="margin-right:30px"
+							disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.responsavel}"
-							var="usuario" converter="usuarioConverter" dropdown="true" 
-							itemLabel="#{usuario.nome}" forceSelection="true" itemValue="#{usuario}"
+							var="usuario" converter="usuarioConverter" dropdown="true"
+							itemLabel="#{usuario.nome}" forceSelection="true"
+							itemValue="#{usuario}" required="true"
 							completeMethod="#{cotacaoFerramentaBean.completarUsuario}" />
 
 
 						<p:outputLabel value=" Data Prevista: " for="dataPrevisao" />
 						<p:calendar id="dataPrevisao" size="16" pattern="dd/MM/yyyy"
+							disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataPrevisao}" />
 					</p:panelGrid>
-					
+
 					<h:panelGrid columns="2" style="margin-left:10px">
 						<p:outputLabel value=" Descrição da Cotação" for="descricao" />
 						<p:inputTextarea id="descricao" name="descricao" rows="4"
 							cols="40"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.descricao}" />
 					</h:panelGrid>
-					
+
 				</p:panelGrid>
 			</p:fieldset>
 
 			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true"
 				activeIndex="#{cotacaoFerramentaBean.indexTab}">
-				
+
 				<p:tab title="1-Ferramenta" id="tabProduto">
 					<ui:include src="/ferramentas/templates/adicionarFerramenta.xhtml" />
 				</p:tab>
 
 				<p:tab title="2-Fornecedores" id="tabFornecedor">
-					<ui:include src="/ferramentas/templates/selecionarFornecedor.xhtml"/>
+					<ui:include src="/ferramentas/templates/selecionarFornecedor.xhtml" />
 				</p:tab>
-				
+
 				<p:tab title="3-Compra da Ferramenta"
 					disabled="#{!cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
 					<h:panelGrid columns="2" cellpadding="10">

@@ -7,25 +7,26 @@
 
 
 <p:defaultCommand target="adicionar-fornecedor" scope="tabFornecedor" />
-<h:panelGrid columns="4" style="margin-bottom:10px">
+<h:panelGrid columns="6" style="margin-bottom:10px">
 
 	<p:outputLabel value="Fornecedor: " for="pesquisaFornecedor" />
 	<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
 		completeMethod="#{cotacaoFerramentaBean.completarFornecedor}"
 		var="fornecedor" itemLabel="#{fornecedor.nome}"
-		itemValue="#{fornecedor}" forceSelection="true"
-		converter="fornecedorConverter"
+		itemValue="#{fornecedor}" forceSelection="true" required="true"
+		converter="fornecedorConverter" style="margin-right:50px"
 		value="#{cotacaoFerramentaBean.participanteFerramenta.fornecedor}">
 	</p:autoComplete>
-
-	<p:spacer width="100" height="10" />
-
-
+	
+	<p:outputLabel value="Preço" for="valor"/>
+	<p:inputText id="valor" required="true"
+	value="#{cotacaoFerramentaBean.participanteFerramenta.valor}"/>
+	
 	<p:commandButton id="adicionar-fornecedor" value="Adicionar"
 		icon="ui-icon-plus"
 		action="#{cotacaoFerramentaBean.adicionarFornecedor}"
 		process="tabFornecedor"
-		update="pesquisaFornecedor fornecedores-table :frm:messages" />
+		update="pesquisaFornecedor fornecedores-table :frm:messages valor" />
 
 
 </h:panelGrid>
@@ -70,8 +71,8 @@
 		<h:outputText value="#{participante.fornecedor.telefone}" />
 	</p:column>
 
-	<p:column headerText="Link" style="text-align: center; width: 100px">
-		<h:outputText value="#{participante.fornecedor.linkSharepoint}" />
+	<p:column headerText="Preço" style="text-align: center; width: 100px">
+		<h:outputText value="#{participante.valor}" />
 	</p:column>
 
 

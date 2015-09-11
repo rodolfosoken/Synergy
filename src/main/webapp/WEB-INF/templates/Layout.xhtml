@@ -22,31 +22,32 @@
 		<p:menubar id="menuBar">
 
 
-			<p:menuitem icon="ui-icon-home" value="Home" outcome="/index.xhtml" />
+			<p:menuitem icon="fa fa-home" value="Home" outcome="/index.xhtml" />
 
-			<p:menuitem value="Financeiro" outcome="/financeiro.xhtml" />
+			<p:menuitem value="Financeiro" icon="fa fa-usd"
+				outcome="/financeiro.xhtml" />
 
-			<p:submenu icon="ui-icon-cart" label="Cotações">
-
-				<p:menuitem value="Cotação Material"
-					outcome="/materiais/cotacaoMaterial.xhtml" />
+			<p:submenu icon="fa fa-shopping-cart" label="Cotações">
 
 				<p:menuitem value="Cotação Ferramenta"
 					outcome="/ferramentas/cotacaoFerramenta.xhtml" />
 
-				<p:menuitem value="Pesquisa" outcome="/ferramentas/pesquisaCotacao.xhtml" />
+				<p:menuitem value="Cotação Material (em manutenção)" url="#" />
+
+				<p:menuitem value="Pesquisa"
+					outcome="/ferramentas/pesquisaCotacao.xhtml" />
 
 			</p:submenu>
 
 
-			<p:menuitem icon="ui-icon-folder-open" value="Projetos" url="#" />
+			<p:menuitem icon="fa fa-tasks" value="Projetos" url="#" />
 
-			<p:menuitem icon="ui-icon-circle-plus" value="Conjuntos"
+			<p:menuitem icon="fa fa-gears" value="Conjuntos"
 				outcome="/conjuntos.xhtml" />
 
 
 
-			<p:submenu label="Fornecedores" icon="ui-icon-contact">
+			<p:submenu label="Fornecedores" icon="fa fa-truck">
 
 				<p:menuitem value="Ferramentas"
 					outcome="/ferramentas/fornecedorFerramenta.xhtml" />
@@ -61,20 +62,21 @@
 
 
 
-			<p:menuitem icon="ui-icon-gear" value="Peças"
+			<p:menuitem icon="fa fa-gear" value="Peças"
 				outcome="/pecas/pecas.xhtml" />
 
-			<p:menuitem icon="ui-icon-wrench" value="Ferramentas"
+			<p:menuitem icon="fa fa-wrench" value="Ferramentas"
 				outcome="/ferramentas/ferramentas.xhtml" />
 
-			<p:menuitem icon="ui-icon-star" value="Materiais"
+			<p:menuitem icon="fa fa-flask" value="Materiais"
 				outcome="/materiais/materiais.xhtml" />
 
-		
 
-			<p:submenu label="Olá #{usuarioPrincipal.nomeUsuarioLogado}!" style="float:right">
+
+			<p:submenu icon="fa fa-user" label="Olá #{usuarioPrincipal.nomeUsuarioLogado}!"
+				style="float:right; margin-right:20px">
 				<p:menuitem value="Logout" icon="ui-icon-extlink" url="/logout" />
-				<p:menuitem value="Usuários" outcome="/seguranca/usuarios.xhtml" />
+				<p:menuitem value="Usuários" icon="fa fa-users" outcome="/seguranca/usuarios.xhtml" />
 			</p:submenu>
 
 			<f:facet name="options">
@@ -90,7 +92,9 @@
 
 	<header>
 		<h:graphicImage library="synergy" name="logoSynergy.png"
-			id="imgCabecalho" />
+			 id="logo-synergy" />
+			<h:graphicImage library="synergy" name="GM-logo.jpeg"
+			id="logo-gm" />
 	</header>
 
 	<div id="conteudo">

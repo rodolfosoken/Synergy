@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,164 +40,178 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	@Inject
 	private Usuarios usuarios;
-	
+
 	@Inject
 	private Fornecedores fornecedores;
 
 	@Inject
 	private CadastroCotacaoFerramentaService cadastro;
-	
+
 	@Inject
 	private Cotacoes cotacoes;
-	
+
 	@Inject
 	private Participantes participantes;
-	
-	
+
 	private CotacaoFerramenta cotacaoFerramenta;
 	private CotacaoFerramenta cotacaoSelecionada;
 
 	private ParticipanteFerramenta participanteSelecionado;
 	private ParticipanteFerramenta participanteFerramenta;
-	private Integer indexTab=0;
-	
+	private Integer indexTab = 0;
 
 	public CotacaoFerramentaBean() {
 		limpar();
 	}
-	
 
-
-	private void limpar() {
+	public void limpar() {
 		System.out.println("DEBUG: executando Limpar");
 		cotacaoFerramenta = new CotacaoFerramenta();
 		participanteFerramenta = new ParticipanteFerramenta();
-		participanteSelecionado=null;
-		cotacaoFerramenta.setUsuario(UsuarioPrincipal.getUsuarioLogado().getUsuario());
+		participanteSelecionado = null;
+		cotacaoFerramenta.setUsuario(UsuarioPrincipal.getUsuarioLogado()
+				.getUsuario());
 		cotacaoFerramenta.setDataInicio(new Date());
 		cotacaoFerramenta.setConcluida(false);
 		cotacaoFerramenta.setComprado(false);
 		cotacaoFerramenta.setFerramenta(new Ferramenta());
 
-		indexTab=0;
+		indexTab = 0;
 	}
-	
-	public void editar(){
+
+	public void editar() {
 		System.out.println("DEBUG: Executando editar");
-		//Busca por id para resgatar o objeto com a coleção de fornecedores
-		//evitando uma Lazy exception
-		cotacaoFerramenta = (CotacaoFerramenta) cotacoes.buscaPorId(cotacaoSelecionada.getIdcotacao());
-		
-		//faz a busca (o fetch join) da coleção de ferramentas de cada fornecedor
-		//evitar a Lazy exception
-		List<ParticipanteFerramenta>lista = new ArrayList<ParticipanteFerramenta>();
-		for (ParticipanteFerramenta p : cotacaoFerramenta.getParticipantesFerramentas()) {
+		// Busca por id para resgatar o objeto com a coleção de fornecedores
+		// evitando uma Lazy exception
+		cotacaoFerramenta = (CotacaoFerramenta) cotacoes
+				.buscaPorId(cotacaoSelecionada.getIdcotacao());
+
+		// faz a busca (o fetch join) da coleção de ferramentas de cada
+		// fornecedor
+		// evitar a Lazy exception
+		List<ParticipanteFerramenta> lista = new ArrayList<ParticipanteFerramenta>();
+		for (ParticipanteFerramenta p : cotacaoFerramenta
+				.getParticipantesFerramentas()) {
 			lista.add(participantes.buscaPorId(p.getIdparticipanteFerramenta()));
 		}
 		cotacaoFerramenta.setParticipantesFerramentas(lista);
-		indexTab=0;
+		indexTab = 0;
 
 	}
-	
-	//preenche o auto-completar de usuários
+
+	// preenche o auto-completar de usuários
 	public List<Usuario> completarUsuario(String nome) {
 		System.out.println("DEBUG: executando CompletarUsuario");
 		return usuarios.buscaPorNome(nome);
 	}
-	
-	//preenche o auto-completar de fornecedores
+
+	// preenche o auto-completar de fornecedores
 	public List<FornecedorFerramenta> completarFornecedor(String nome) {
 		System.out.println("DEBUG: executando CompletarFornecedor");
 		return fornecedores.buscaPorFornecedorFerramenta(nome);
 	}
-	
-	//faz a referencia bidirecional ao adicionar as ferramentas
+
+	// referencia a cotação na ferramenta da cotação
 	public void adicionarFerramenta() {
 		System.out.println("DEBUG: executando adcionarFerramenta");
 		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
 	}
-	
-	//conclui a cotação
-	public void concluir(){
-		System.out.println("DEBUG: executando concluir");
-		cotacaoFerramenta.setDataTermino(new Date());
-		cotacaoFerramenta.setConcluida(true);
-	}
-	
-	//desfaz a conclusão da cotação e marca como em andamento
-	public void desmarcar(){
-		System.out.println("DEBUG: executando desmarcar");
-		cotacaoFerramenta.setDataTermino(null);
-		cotacaoFerramenta.setConcluida(false);
-	}
 
 	public void salvarCotacao() {
-		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
-		System.out.println("id usuario:"+ cotacaoFerramenta.getUsuario().getId());
-		System.out.println("DEBUG: executando salvarCotaçao : "+ cotacaoFerramenta.getDescricao());
-		
-		cadastro.salvar(cotacaoFerramenta);
-		messages.info("Cotação salva com sucesso!");
-		
-		limpar();
-		RequestContext.getCurrentInstance().update(
-				Arrays.asList("frm:messages", "frm"));
+		System.out.println("DEBUG: executando salvarCotaçao");
+		if (!cotacaoFerramenta.getParticipantesFerramentas().isEmpty()) {
+			adicionarFerramenta();
+			cadastro.salvar(cotacaoFerramenta);
+			messages.info("Cotação salva com sucesso!");
+
+			limpar();
+			RequestContext.getCurrentInstance().update(
+					Arrays.asList("frm:messages", "frm"));
+		} else {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR, "Fornecedor Vazio",
+					"Nenhum Fornecedor selecionado");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			indexTab = 1;
+		}
+
 	}
 
-	//adiciona o fornecedor na lista da cotação
+	// adiciona o fornecedor na lista da cotação
 	public void adicionarFornecedor() {
 		System.out.println("DEBUG: executando adicionarFornecedor");
-		if (participanteFerramenta.getFornecedor() == null) {
+		if (participanteFerramenta.getFornecedor() == null || participanteFerramenta.getValor() == null) {
 
-			messages.error("Fornecedor de Ferramentas deve ser selecionado!");
+			messages.error("Preencha os campos corretamenta");
 			RequestContext.getCurrentInstance().update("frm:growl");
-			
-			//verifica se o participante já foi adicionado
-		} else if (!contemParticipante(participanteFerramenta,cotacaoFerramenta.getParticipantesFerramentas())) {
-				
-			//Referência bidirecional
+
+			// verifica se o participante já foi adicionado
+		} else if (!contemParticipante(participanteFerramenta,
+				cotacaoFerramenta.getParticipantesFerramentas())) {
+
+			// Referência bidirecional
 			participanteFerramenta.setCotacaoFerramenta(cotacaoFerramenta);
 			cotacaoFerramenta.getParticipantesFerramentas().add(
 					participanteFerramenta);
-			
-			//limpa a instância do bean
+
+			// limpa a instância do bean
 			participanteFerramenta = new ParticipanteFerramenta();
 		} else {
 			messages.error("Fornecedor já foi adicionado!");
 			RequestContext.getCurrentInstance().update("frm:growl");
 		}
 	}
-	
-	public void removerFornecedor(){
-		System.out.println("DEBUG: executando removerFornecedor");
-		cotacaoFerramenta.getParticipantesFerramentas().remove(participanteSelecionado);
-		participanteSelecionado=null; 
-	}
-	
 
-	//metodo para verificar se o participante já consta na lista
+	public void removerFornecedor() {
+		System.out.println("DEBUG: executando removerFornecedor");
+		cotacaoFerramenta.getParticipantesFerramentas().remove(
+				participanteSelecionado);
+		participanteSelecionado = null;
+	}
+
+	// metodo para verificar se o participante já consta na lista
 	public boolean contemParticipante(ParticipanteFerramenta participante,
 			List<ParticipanteFerramenta> lista) {
 		System.out.println("DEBUG: executando contemParticipante");
 		boolean contem = false;
 		for (ParticipanteFerramenta p : lista) {
-			if(p.getFornecedor().getIdfornecedor()
-					.equals(participante.getFornecedor().getIdfornecedor())){
+			if (p.getFornecedor().getIdfornecedor()
+					.equals(participante.getFornecedor().getIdfornecedor())) {
 				return !contem;
 			}
-		
+
 		}
 		return contem;
 	}
-	
 
-	// getters e setters
-	
-	public List<CotacaoFerramenta> getTodas(){
-		System.out.println("DEBUG: todas sendo executado");
-		return cotacoes.todasCotacoesFerramentas(); 
+	// conclui a cotação
+	public void concluir() {
+		System.out.println("DEBUG: executando concluir");
+		cotacaoFerramenta.setDataTermino(new Date());
+		cotacaoFerramenta.setConcluida(true);
+		// redireciona para a aba de compra
+		indexTab = 2;
 	}
 
+	// desfaz a conclusão da cotação e marca como em andamento
+	public void desmarcar() {
+		System.out.println("DEBUG: executando desmarcar");
+		cotacaoFerramenta.setDataTermino(null);
+		cotacaoFerramenta.setConcluida(false);
+		// redireciona para a aba inicial
+		indexTab = 0;
+	}
+	
+	public boolean isEditando(){
+		return cotacaoFerramenta.getIdcotacao()!=null;
+	}
+
+	// getters e setters
+
+	public List<CotacaoFerramenta> getTodas() {
+		System.out.println("DEBUG: todas sendo executado");
+		return cotacoes.todasCotacoesFerramentas();
+	}
 
 	public ParticipanteFerramenta getParticipanteFerramenta() {
 		return participanteFerramenta;
@@ -238,8 +254,5 @@ public class CotacaoFerramentaBean implements Serializable {
 	public void setCotacaoSelecionada(CotacaoFerramenta cotacaoSelecionada) {
 		this.cotacaoSelecionada = cotacaoSelecionada;
 	}
-	
-	
-	
 
 }

@@ -49,11 +49,11 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`ferramenta` (
   `descricao` VARCHAR(255) NULL COMMENT '',
   `disponibilidade` TINYINT(1) NULL COMMENT '',
   `valor` DOUBLE NULL COMMENT '',
-  `usuario_idusuario` BIGINT NOT NULL COMMENT '',
+  `usuario_planejador` BIGINT NOT NULL COMMENT '',
   PRIMARY KEY (`idferramenta`)  COMMENT '',
-  INDEX `fk_ferramenta_usuario1_idx` (`usuario_idusuario` ASC)  COMMENT '',
+  INDEX `fk_ferramenta_usuario1_idx` (`usuario_planejador` ASC)  COMMENT '',
   CONSTRAINT `fk_ferramenta_usuario1`
-    FOREIGN KEY (`usuario_idusuario`)
+    FOREIGN KEY (`usuario_planejador`)
     REFERENCES `sistema_gestao`.`usuario` (`idusuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`cotacao` (
   `data_inicio` DATE NULL COMMENT '',
   `data_previsao` DATE NULL COMMENT '',
   `data_termino` DATE NULL COMMENT '',
-  `descricao` VARCHAR(45) NOT NULL COMMENT '',
+  `descricao` VARCHAR(255) NULL COMMENT '',
   `concluida` TINYINT(1) NULL COMMENT '',
   `comprado` TINYINT(1) NULL COMMENT '',
   `usuario_responsavel` BIGINT NOT NULL COMMENT '',

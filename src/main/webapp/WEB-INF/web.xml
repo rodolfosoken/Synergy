@@ -5,19 +5,25 @@
 	version="2.5">
 	<display-name>Synergy</display-name>
 
-
- <context-param>
+	<!-- Contexto de parâmetros do Spring Security -->
+ 	<context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/*-context.xml
         </param-value>
     </context-param>
     
+    <!-- parâmetro para definir o tema do PrimeFaces -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>home</param-value>
 	</context-param>
 
+	<!-- Parâmetro que habilita o Font Awesome (icones)-->
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
 
 	<!-- Listeners do Spring Security -->
   <listener>

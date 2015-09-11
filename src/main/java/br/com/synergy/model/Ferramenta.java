@@ -58,7 +58,7 @@ public class Ferramenta implements java.io.Serializable {
 	}
 
 	@OneToOne
-	@JoinColumn(name = "usuario_idusuario", nullable = false)
+	@JoinColumn(name = "usuario_planejador", nullable = false)
 	public Usuario getPlanejador() {
 		return planejador;
 	}
