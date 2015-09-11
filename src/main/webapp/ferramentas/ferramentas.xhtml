@@ -26,7 +26,7 @@
 						<p:resetInput target="ferramenta-dialog" />
 						<f:setPropertyActionListener
 							value="#{ferramentaBean.ferramentaSelecionado}"
-							target="#{ferramentaBean.ferramentaEdicao}" />
+							target="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta}" />
 					</p:commandButton>
 
 					<span class="ui-separator"> <span
@@ -68,7 +68,7 @@
 				var="ferramenta" emptyMessage="Nenhum ferramenta cadastrada."
 				rows="10" id="ferramentas-table" paginator="true"
 				paginatorPosition="bottom"
-				rowStyleClass="#{ferramenta.disponivel ? 'disponivel' : ''}"
+				rowStyleClass="#{ferramenta.disponivel ? '' : 'indisponivel'}"
 				selection="#{ferramentaBean.ferramentaSelecionado}"
 				selectionMode="single" rowKey="#{ferramenta.idferramenta}">
 
@@ -114,36 +114,18 @@
 					<p:defaultCommand target="salvar-ferramentaButton"
 						scope="ferramenta-dialog" />
 
-					<p:outputLabel value="Fornecedor" for="ferramenta" />
-					<p:outputLabel
-						value="#{ferramentaBean.ferramentaEdicao.cotacao.compraFerramenta.participante.fornecedor.nome}" />
-
-					<p:outputLabel value="Id Equipament" for="idEquip" />
-					<p:inputText id="idEquip"
-						value="#{ferramentaBean.ferramentaEdicao.idEquipament}" />
-
-					<p:outputLabel value="Ferramenta" for="ferramenta" />
-					<p:inputText id="ferramenta" size="30"
-						value="#{ferramentaBean.ferramentaEdicao.nome}" />
-
-					<p:outputLabel value="Descrição" for="descricao" />
-					<p:inputText id="descricao" size="60"
-						value="#{ferramentaBean.ferramentaEdicao.descricao}" />
-
-					<p:outputLabel value="Utilidade" for="utilidade" />
-					<p:inputText id="utilidade"
-						value="#{ferramentaBean.ferramentaEdicao.utilidade}" />
-
-
-					<p:outputLabel value="Disponibilidade" for="disponivel" />
-					<p:selectBooleanCheckbox id="disponivel"
-						value="#{ferramentaBean.ferramentaEdicao.disponivel}" />
+						
+						<ui:include src="/ferramentas/templates/adicionarFerramenta.xhtml"></ui:include>
 
 
 					<p:commandButton value="Salvar" action="#{ferramentaBean.salvar}"
 						process="ferramenta-dialog" id="salvar-ferramentaButton"
 						update="msgs-dialog ferramenta-dialog"
-						oncomplete="if(!args.validationFailed) PF('ferramentaDialog').hide()" />
+						oncomplete="if(!args.validationFailed) PF('ferramentaDialog').hide()" >
+						<f:setPropertyActionListener
+							target="#{ferramentaBean.ferramentaEdicao}"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta}" />
+						</p:commandButton>
 
 
 				</h:panelGrid>

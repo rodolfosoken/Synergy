@@ -10,6 +10,7 @@ import javax.persistence.Query;
 
 import br.com.synergy.model.Cotacao;
 import br.com.synergy.model.CotacaoFerramenta;
+import br.com.synergy.model.CotacaoMaterial;
 
 public class Cotacoes implements Serializable {
 
@@ -25,6 +26,10 @@ public class Cotacoes implements Serializable {
 	
 	public List<CotacaoFerramenta> todasCotacoesFerramentas(){
 		return em.createQuery("from CotacaoFerramenta",CotacaoFerramenta.class).getResultList();
+	}
+	
+	public List<CotacaoMaterial> todasCotacoesMaterial(){
+		return em.createQuery("from CotacaoMaterial",CotacaoMaterial.class).getResultList();
 	}
 	
 	public void guardar(Cotacao cotacao){

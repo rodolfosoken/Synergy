@@ -8,6 +8,12 @@
 
 	<ui:define name="title">Contações Ferramentas</ui:define>
 	<ui:define name="body">
+	
+	<f:metadata>
+		<f:viewParam name="bug" />
+		<f:event listener="#{cotacaoFerramentaBean.verificaEdicao}" type="preRenderView" />
+	</f:metadata>
+	
 
 		<h1>Cotação para Ferramenta</h1>
 
@@ -18,13 +24,13 @@
 			<p:toolbar id="toolbar" style="margin-bottom:20px">
 
 				<f:facet name="left">
-					<p:commandButton icon="fa fa-check-square-o" value="Concluído"
-						action="#{cotacaoFerramentaBean.concluir}" 
+					<p:commandButton icon="fa fa-check-square-o" value="Marcar como Concluída"
+						action="#{cotacaoFerramentaBean.concluir}"  rendered="#{cotacaoFerramentaBean.editando}"
 						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 						process="@this" update="frm" />
 
-					<p:commandButton icon="fa fa-square-o" value="Não Concluído"
-						action="#{cotacaoFerramentaBean.desmarcar}"
+					<p:commandButton icon="fa fa-square-o" value="Não Concluída"
+						action="#{cotacaoFerramentaBean.desmarcar}" rendered="#{cotacaoFerramentaBean.editando}"
 						disabled="#{!cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 						process="@this" update="frm" />
 
@@ -41,7 +47,7 @@
 				<f:facet name="right">
 
 					<p:commandButton icon="fa fa-eraser" value="Limpar" process="@this"
-						update="frm" action="#{cotacaoFerramentaBean.limpar}"
+						update="frm" action="#{cotacaoFerramentaBean.limpar}" rendered="#{!cotacaoFerramentaBean.editando}"
 						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
 						<p:confirm icon="ui-icon-alert" header="Limpar Campos"
 							message="Deseja limpar todos os campos?" />

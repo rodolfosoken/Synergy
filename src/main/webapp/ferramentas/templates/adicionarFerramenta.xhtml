@@ -13,13 +13,13 @@
 			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.planejador}"
 			var="usuario" converter="usuarioConverter" dropdown="true"
 			itemLabel="#{usuario.nome}" forceSelection="true"
-			itemValue="#{usuario}" required="true"
+			itemValue="#{usuario}" 
 			completeMethod="#{cotacaoFerramentaBean.completarUsuario}" />
 		<p:outputLabel value="Id Equipament" for="idEquip" />
-		<p:inputText id="idEquip" required="true" size="30"
+		<p:inputText id="idEquip" size="30"
 			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.idEquipament}" />
 		<p:outputLabel value="Nome ferramenta:" for="ferramenta" />
-		<p:inputText id="ferramenta" required="true" size="30"
+		<p:inputText id="ferramenta" size="30"
 			value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.nome}" />
 		<p:outputLabel value="Descrição" for="descricao" />
 		<p:inputText id="descricao" size="30"

@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CNPJ;
 
 
 @Entity
@@ -56,7 +59,9 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setIdfornecedor(Long idfornecedor) {
 		this.idfornecedor = idfornecedor;
 	}
-
+	
+	@CNPJ
+	@NotNull
 	@Column(name = "cnpj", nullable = false, length = 18)
 	public String getCnpj() {
 		return this.cnpj;
@@ -65,7 +70,8 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
-
+	
+	@NotNull
 	@Column(name = "nome")
 	public String getNome() {
 		return this.nome;
@@ -74,7 +80,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
+	
 	@Column(name = "contato")
 	public String getContato() {
 		return this.contato;

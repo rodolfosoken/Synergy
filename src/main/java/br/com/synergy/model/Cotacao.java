@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -15,6 +16,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity
@@ -54,6 +60,7 @@ public abstract class Cotacao implements java.io.Serializable {
 		this.idcotacao = idcotacao;
 	}
 	
+	@Past
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_inicio")
 	public Date getDataInicio() {
@@ -63,7 +70,8 @@ public abstract class Cotacao implements java.io.Serializable {
 	public void setDataInicio(Date dataInicio) {
 		this.dataInicio = dataInicio;
 	}
-
+	
+	@Past
 	@Column(name = "data_termino")
 	public Date getDataTermino() {
 		return this.dataTermino;
@@ -72,7 +80,8 @@ public abstract class Cotacao implements java.io.Serializable {
 	public void setDataTermino(Date dataTermino) {
 		this.dataTermino = dataTermino;
 	}
-
+	
+	@Future
 	@Column(name="data_previsao")
 	public Date getDataPrevisao() {
 		return dataPrevisao;
@@ -81,7 +90,9 @@ public abstract class Cotacao implements java.io.Serializable {
 	public void setDataPrevisao(Date dataPrevisao) {
 		this.dataPrevisao = dataPrevisao;
 	}
-
+	
+	@NotBlank
+	@NotNull
 	@Column(name = "descricao", nullable = false, length = 255)
 	public String getDescricao() {
 		return this.descricao;
@@ -109,7 +120,7 @@ public abstract class Cotacao implements java.io.Serializable {
 		this.comprado = comprado;
 	}
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="usuario_idusuario")
 	public Usuario getUsuario() {
 		return usuario;
@@ -118,8 +129,9 @@ public abstract class Cotacao implements java.io.Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-	@OneToOne
+	
+	@NotNull
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_responsavel", nullable = false)
 	public Usuario getResponsavel() {
 		return responsavel;

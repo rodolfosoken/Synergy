@@ -18,7 +18,7 @@ public class Participantes implements Serializable {
 
 	public ParticipanteFerramenta buscaPorId(Long id) {
 		Query query = (Query) em
-				.createQuery("select c from ParticipanteFerramenta c join fetch c.ferramentas where c.id = :id");
+				.createQuery("select c from ParticipanteFerramenta c join fetch c.fornecedor where c.id = :id");
 		query.setParameter("id", id);
 
 		ParticipanteFerramenta result = null;

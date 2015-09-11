@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/templates/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Cotação Ferramenta</ui:define>
+	<ui:define name="body">
+
+		<f:metadata>
+			<f:viewAction action="#{cotacaoPesquisaBean.consultar}" />
+		</f:metadata>
+
+		<h1>Cotações de Ferramentas</h1>
+
+		<h:form id="frm">
+
+			<p:toolbar id="toolbar" style="margin-bottom:20px">
+				<f:facet name="left">
+					<p:commandButton value="Novo" icon="fa fa-file" process="@this"
+						action="cotacaoFerramenta?faces-redirect=true" />
+
+					<p:commandButton icon="fa fa-pencil-square-o" id="editar-button"
+						value="Editar"
+						disabled="#{cotacaoPesquisaBean.cotacaoSelecionada==null}"
+						action="#{cotacaoPesquisaBean.editarCotacaoFerramenta}" />
+
+				</f:facet>
+			</p:toolbar>
+
+			<p:panelGrid columns="8" style="margin-bottom: 20px">
+				<f:facet name="header"> Legenda de cores</f:facet>
+				<h:outputText value="Conluída" style="background-color:#33CC33" />
+				<h:outputText value="Em andamento"/>
+			</p:panelGrid>
+
+
+			<p:dataTable id="table-cotacaoFerramenta" paginator="true"
+				emptyMessage="nenhuma cotação encontrada" rows="10"
+				value="#{cotacaoPesquisaBean.todasCotacaoesFerramenta}"
+				var="cotacao" selectionMode="single" rowKey="#{cotacao.idcotacao}"
+				selection="#{cotacaoPesquisaBean.cotacaoSelecionada}"
+				style="text-align: center"
+				rowStyleClass="#{cotacao.concluida? 'disponivel':''}">
+
+				<!-- Quando selecionar disparar evento -->
+				<p:ajax event="rowSelect" update=":frm:toolbar" />
+
+				<p:column headerText="ID" sortBy="#{cotacao.idcotacao}" width="1">
+					<h:outputText value="#{cotacao.idcotacao}" />
+				</p:column>
+
+				<p:column headerText="Descrição" sortBy="#{cotacao.descricao}"
+					width="70">
+					<h:outputText value="#{cotacao.descricao}" />
+				</p:column>
+
+				<p:column headerText="Data de Início" sortBy="#{cotacao.dataInicio}"
+					width="15">
+					<h:outputText value="#{cotacao.dataInicio}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Data Prevista"
+					sortBy="#{cotacao.dataPrevisao}" width="15">
+					<h:outputText value="#{cotacao.dataPrevisao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Data de Conclusão"
+					sortBy="#{cotacao.dataTermino}" width="15">
+					<h:outputText value="#{cotacao.dataTermino}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Responsável"
+					sortBy="#{cotacao.responsavel.nome}" width="30">
+					<h:outputText value="#{cotacao.responsavel.nome}" />
+				</p:column>
+
+				<p:column headerText="Criado por" sortBy="#{cotacao.usuario}"
+					width="30">
+					<h:outputText value="#{cotacao.usuario.nome}" />
+				</p:column>
+
+			</p:dataTable>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

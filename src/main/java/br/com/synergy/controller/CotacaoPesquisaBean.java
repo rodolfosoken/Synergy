@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.synergy.model.Cotacao;
+import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.repository.Cotacoes;
 
 @Named
@@ -21,10 +22,29 @@ public class CotacaoPesquisaBean implements Serializable{
 	
 	private Cotacao cotacaoSelecionada;
 	
+	private List<CotacaoFerramenta> todasCotacoes;
 	
-	public List<Cotacao> getTodas(){
-		return cotacoes.todas();
+	public void consultar(){
+		todasCotacoes = cotacoes.todasCotacoesFerramentas();
 	}
+	
+	
+	public String editarCotacaoFerramenta(){
+		String url = "cotacaoFerramenta?edicao="+ cotacaoSelecionada.getIdcotacao() +"faces-redirect=true";
+		
+		return url;
+	}
+	
+	public String editarCotacaoMaterial(){
+		String url = "cotacaoMaterial?edicao="+ cotacaoSelecionada.getIdcotacao() +"faces-redirect=true";
+		
+		return url;
+	}
+	
+	public List<CotacaoFerramenta> getTodasCotacaoesFerramenta(){
+		return todasCotacoes;
+	}
+	
 
 	public Cotacao getCotacaoSelecionada() {
 		return cotacaoSelecionada;

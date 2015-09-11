@@ -6,15 +6,24 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
+
+	<ui:define name="title">Index</ui:define>
 	<ui:define name="body">
-	
-	
+
+
 		<h:form id="frm">
-			
+			<h:panelGrid columns="1" style="margin:auto auto; font-size:20px">
+				<f:facet name="header">Interfaces Implementadas:</f:facet>
+				<p:commandButton value="Cotação Ferramenta"	icon="fa fa-check-square" />
+				<p:commandButton value="Fornecedores" icon="fa fa-check-square" />
+				<p:commandButton value="Cotação Material" icon="fa fa-spinner fa-spin" />
+
+			</h:panelGrid>
+
 		</h:form>
-		
-		
-		
+
+
+
 		<h1 id="tituloIndex">Sistema para Gestão Colaborativa de Projetos</h1>
 		<h:graphicImage library="synergy" name="logo.gif" id="imgIndex" />
 		<p />

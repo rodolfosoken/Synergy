@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "ferramenta", catalog = "sistema_gestao")
@@ -56,7 +59,8 @@ public class Ferramenta implements java.io.Serializable {
 	public void setIdferramenta(Long idferramenta) {
 		this.idferramenta = idferramenta;
 	}
-
+	
+	@NotNull
 	@OneToOne
 	@JoinColumn(name = "usuario_planejador", nullable = false)
 	public Usuario getPlanejador() {
@@ -68,6 +72,7 @@ public class Ferramenta implements java.io.Serializable {
 	}
 
 	@NotNull
+	@NotBlank
 	@Column(name = "id_equipament", nullable = false)
 	public String getIdEquipament() {
 		return this.idEquipament;
@@ -78,6 +83,7 @@ public class Ferramenta implements java.io.Serializable {
 	}
 
 	@NotNull
+	@NotBlank
 	@Column(name = "nome")
 	public String getNome() {
 		return this.nome;
@@ -195,7 +201,7 @@ public class Ferramenta implements java.io.Serializable {
 		this.disponivel = disponivel;
 	}
 	
-	@OneToOne(mappedBy="ferramenta")
+	@OneToOne(mappedBy="ferramenta", cascade=CascadeType.ALL, orphanRemoval=true)
 	public CotacaoFerramenta getCotacao() {
 		return cotacao;
 	}

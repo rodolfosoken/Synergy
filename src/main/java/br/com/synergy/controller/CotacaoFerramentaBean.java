@@ -6,14 +6,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.synergy.model.Cotacao;
 import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.model.Ferramenta;
 import br.com.synergy.model.FornecedorFerramenta;
@@ -54,7 +55,6 @@ public class CotacaoFerramentaBean implements Serializable {
 	private Participantes participantes;
 
 	private CotacaoFerramenta cotacaoFerramenta;
-	private CotacaoFerramenta cotacaoSelecionada;
 
 	private ParticipanteFerramenta participanteSelecionado;
 	private ParticipanteFerramenta participanteFerramenta;
@@ -62,6 +62,16 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public CotacaoFerramentaBean() {
 		limpar();
+
+	}
+
+	public void verificaEdicao() {
+		HttpServletRequest request = (HttpServletRequest) FacesContext
+				.getCurrentInstance().getExternalContext().getRequest();
+		if (request.getParameter("edicao") != null) {
+			Long id = Long.parseLong(request.getParameter("edicao"));
+			editar(id);
+		}
 	}
 
 	public void limpar() {
@@ -79,23 +89,34 @@ public class CotacaoFerramentaBean implements Serializable {
 		indexTab = 0;
 	}
 
-	public void editar() {
+	public void editar(Long id) {
 		System.out.println("DEBUG: Executando editar");
 		// Busca por id para resgatar o objeto com a coleção de fornecedores
 		// evitando uma Lazy exception
-		cotacaoFerramenta = (CotacaoFerramenta) cotacoes
-				.buscaPorId(cotacaoSelecionada.getIdcotacao());
+		
+		Cotacao c = cotacoes.buscaPorId(id);
 
-		// faz a busca (o fetch join) da coleção de ferramentas de cada
-		// fornecedor
-		// evitar a Lazy exception
-		List<ParticipanteFerramenta> lista = new ArrayList<ParticipanteFerramenta>();
-		for (ParticipanteFerramenta p : cotacaoFerramenta
-				.getParticipantesFerramentas()) {
-			lista.add(participantes.buscaPorId(p.getIdparticipanteFerramenta()));
+		if (c != null) {
+			cotacaoFerramenta = (CotacaoFerramenta) c;
+
+			// faz a busca (o fetch join) da coleção de ferramentas de cada
+			// fornecedor
+			// evitar a Lazy exception
+			List<ParticipanteFerramenta> lista = new ArrayList<ParticipanteFerramenta>();
+			for (ParticipanteFerramenta p : cotacaoFerramenta
+					.getParticipantesFerramentas()) {
+				lista.add(participantes.buscaPorId(p
+						.getIdparticipanteFerramenta()));
+			}
+			cotacaoFerramenta.setParticipantesFerramentas(lista);
+			indexTab = 0;
+		} else {
+			limpar();
+			messages.error("Cotação não encontrada");
+			RequestContext.getCurrentInstance().update(
+					Arrays.asList("frm:messages", "frm"));
+			
 		}
-		cotacaoFerramenta.setParticipantesFerramentas(lista);
-		indexTab = 0;
 
 	}
 
@@ -117,7 +138,7 @@ public class CotacaoFerramentaBean implements Serializable {
 		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
 	}
 
-	public void salvarCotacao() {
+	public String salvarCotacao() {
 		System.out.println("DEBUG: executando salvarCotaçao");
 		if (!cotacaoFerramenta.getParticipantesFerramentas().isEmpty()) {
 			adicionarFerramenta();
@@ -127,20 +148,21 @@ public class CotacaoFerramentaBean implements Serializable {
 			limpar();
 			RequestContext.getCurrentInstance().update(
 					Arrays.asList("frm:messages", "frm"));
+			if (!isEditando())
+				return "pesquisaCotacaoFerramenta?faces-redirect=true";
 		} else {
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, "Fornecedor Vazio",
-					"Nenhum Fornecedor selecionado");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			messages.error("Fornecedor Vazio");
 			indexTab = 1;
 		}
+		return null;
 
 	}
 
 	// adiciona o fornecedor na lista da cotação
 	public void adicionarFornecedor() {
 		System.out.println("DEBUG: executando adicionarFornecedor");
-		if (participanteFerramenta.getFornecedor() == null || participanteFerramenta.getValor() == null) {
+		if (participanteFerramenta.getFornecedor() == null
+				|| participanteFerramenta.getValor() == null) {
 
 			messages.error("Preencha os campos corretamenta");
 			RequestContext.getCurrentInstance().update("frm:growl");
@@ -189,6 +211,7 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: executando concluir");
 		cotacaoFerramenta.setDataTermino(new Date());
 		cotacaoFerramenta.setConcluida(true);
+		cotacaoFerramenta.getFerramenta().setDisponivel(true);
 		// redireciona para a aba de compra
 		indexTab = 2;
 	}
@@ -198,12 +221,14 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: executando desmarcar");
 		cotacaoFerramenta.setDataTermino(null);
 		cotacaoFerramenta.setConcluida(false);
+		cotacaoFerramenta.getFerramenta().setDisponivel(false);
+		
 		// redireciona para a aba inicial
 		indexTab = 0;
 	}
-	
-	public boolean isEditando(){
-		return cotacaoFerramenta.getIdcotacao()!=null;
+
+	public boolean isEditando() {
+		return cotacaoFerramenta.getIdcotacao() != null;
 	}
 
 	// getters e setters
@@ -245,14 +270,6 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public void setIndexTab(Integer indexTab) {
 		this.indexTab = indexTab;
-	}
-
-	public CotacaoFerramenta getCotacaoSelecionada() {
-		return cotacaoSelecionada;
-	}
-
-	public void setCotacaoSelecionada(CotacaoFerramenta cotacaoSelecionada) {
-		this.cotacaoSelecionada = cotacaoSelecionada;
 	}
 
 }

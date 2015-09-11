@@ -35,6 +35,11 @@ header {
 	color: black;
 }
 
+.indisponivel{
+	background-color: #FFCCCC;
+	color: black;
+}
+
 #logo-synergy {
 	margin-top: -15px;
 	width: 200px;
