@@ -19,6 +19,9 @@ public class TransacionalInterceptor implements Serializable {
 
 	@Inject
 	private EntityManager manager;
+	
+	@Inject
+	private FacesMessages messages;
 
 	@AroundInvoke
 	public Object invoke(InvocationContext context) throws Exception {
@@ -44,6 +47,7 @@ public class TransacionalInterceptor implements Serializable {
 			if (trx != null && criador) {
 				System.out.println("rollback");
 				trx.rollback();
+				messages.error("Não foi possível executar a operação no Banco de Dados");
 			}
 
 			throw e;

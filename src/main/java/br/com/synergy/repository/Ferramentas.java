@@ -26,6 +26,7 @@ public class Ferramentas implements Serializable {
 	public void excluir(Ferramenta ferramenta) {
 		ferramenta = buscaPorId(ferramenta.getIdferramenta());
 		em.remove(ferramenta);
+		em.flush();
 	}
 
 	public Ferramenta buscaPorId(Long id) {

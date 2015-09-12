@@ -16,6 +16,7 @@
 
 
 	<h:form>
+	
 
 		<p:growl id="messages" />
 
@@ -24,8 +25,8 @@
 
 			<p:menuitem icon="fa fa-home" value="Home" outcome="/index.xhtml" />
 
-			<p:menuitem value="Financeiro" icon="fa fa-usd"
-				outcome="/financeiro.xhtml" />
+			<p:menuitem value="Financeiro" icon="fa fa-usd "
+				outcome="/financeiro/financeiro.xhtml" />
 
 			<p:submenu icon="fa fa-shopping-cart" label="Cotações">
 
@@ -68,7 +69,7 @@
 
 
 
-			<p:submenu icon="fa fa-user" label="Olá #{usuarioPrincipal.nomeUsuarioLogado}!"
+			<p:submenu icon="fa fa-user " label="Olá #{usuarioPrincipal.nomeUsuarioLogado}!"
 				style="float:right; margin-right:20px">
 				<p:menuitem value="Logout" icon="ui-icon-extlink" url="/logout" />
 				<p:menuitem value="Usuários" icon="fa fa-users" outcome="/seguranca/usuarios.xhtml" />

@@ -1,14 +1,15 @@
 package br.com.synergy.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -21,35 +22,31 @@ public class Pep implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = 1L;
-	private PepId id;
+	private Long id;
 	private Conta conta;
 	private String numero;
-	private Set<CompraFerramenta> compraFerramentas = new HashSet<CompraFerramenta>(
+	private Double valor;
+	private String descricao;
+	private List<CompraFerramenta> compraFerramentas = new ArrayList<CompraFerramenta>(
 			0);
-	private Set<CompraMaterial> compraMaterials = new HashSet<CompraMaterial>(0);
+	private List<CompraMaterial> compraMaterials = new ArrayList<CompraMaterial>(0);
 
 	public Pep() {
 	}
-
-	public Pep(PepId id, Conta conta) {
-		this.id = id;
-		this.conta = conta;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "idpep", unique = true, nullable = false)
+	public Long getId() {
+		return id;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idpep", column = @Column(name = "idpep", nullable = false)),
-			@AttributeOverride(name = "contaIdConta", column = @Column(name = "Conta_idConta", nullable = false)) })
-	public PepId getId() {
-		return this.id;
-	}
-
-	public void setId(PepId id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Conta_idConta", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "Conta_idConta")
 	public Conta getConta() {
 		return this.conta;
 	}
@@ -68,22 +65,43 @@ public class Pep implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
-	public Set<CompraFerramenta> getCompraFerramentas() {
+	public List<CompraFerramenta> getCompraFerramentas() {
 		return this.compraFerramentas;
 	}
 
-	public void setCompraFerramentas(Set<CompraFerramenta> compraFerramentas) {
+	public void setCompraFerramentas(List<CompraFerramenta> compraFerramentas) {
 		this.compraFerramentas = compraFerramentas;
 	}
 
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pep")
-	public Set<CompraMaterial> getCompraMaterials() {
+	public List<CompraMaterial> getCompraMaterials() {
 		return this.compraMaterials;
 	}
 
-	public void setCompraMaterials(Set<CompraMaterial> compraMaterials) {
+	public void setCompraMaterials(List<CompraMaterial> compraMaterials) {
 		this.compraMaterials = compraMaterials;
 	}
+
+	@Column(name="valor")
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+	
+	@Column(name="descricao")
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
+	
+	
 
 }

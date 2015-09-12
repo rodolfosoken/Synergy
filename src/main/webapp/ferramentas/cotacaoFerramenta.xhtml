@@ -18,6 +18,7 @@
 		<h1>Cotação para Ferramenta</h1>
 
 		<h:form id="frm">
+		
 			<p:messages id="messages" closable="true" />
 			<p:growl id="growl" showDetail="true" />
 
@@ -63,6 +64,9 @@
 					<span class="ui-separator"> <span
 						class="ui-icon ui-icon-grip-dotted-vertical" />
 					</span>
+					
+					<p:commandButton value="Cancelar" action="pesquisaCotacaoFerramenta?faces-redirect=true"
+					style="margin-right:10px" process="@this"/>
 
 
 					<p:commandButton value="Salvar Cotação" icon="fa fa-floppy-o"
@@ -73,7 +77,7 @@
 
 				</f:facet>
 			</p:toolbar>
-			<p:fieldset legend="Dados da Cotação" toggleable="true"
+			<p:fieldset legend="Dados da Cotação" toggleable="true"	
 				toggleSpeed="500" id="dados-cotacao">
 				<p:panelGrid columns="2">
 

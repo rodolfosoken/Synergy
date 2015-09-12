@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -53,9 +52,7 @@ public class CompraMaterial implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumns({
-			@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false),
-			@JoinColumn(name = "pep_Conta_idConta", referencedColumnName = "Conta_idConta", nullable = false) })
+	@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false)
 	public Pep getPep() {
 		return this.pep;
 	}

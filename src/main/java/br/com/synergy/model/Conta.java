@@ -1,8 +1,9 @@
 package br.com.synergy.model;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,19 +19,14 @@ public class Conta implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private long idConta;
 	private String numeroConta;
-	private Set<Pep> peps = new HashSet<Pep>(0);
+	private String descricao;
+	private List<Pep> peps = new ArrayList<Pep>();
 
 	public Conta() {
 	}
 
 	public Conta(long idConta) {
 		this.idConta = idConta;
-	}
-
-	public Conta(long idConta, String numeroConta, Set<Pep> peps) {
-		this.idConta = idConta;
-		this.numeroConta = numeroConta;
-		this.peps = peps;
 	}
 
 	@Id
@@ -53,12 +49,23 @@ public class Conta implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conta")
-	public Set<Pep> getPeps() {
+	public List<Pep> getPeps() {
 		return this.peps;
 	}
 
-	public void setPeps(Set<Pep> peps) {
+	public void setPeps(List<Pep> peps) {
 		this.peps = peps;
 	}
+	
+	@Column(name="descricao")
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
+	
 
 }

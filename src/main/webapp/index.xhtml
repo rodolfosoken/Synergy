@@ -6,7 +6,6 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-
 	<ui:define name="title">Index</ui:define>
 	<ui:define name="body">
 
@@ -14,9 +13,16 @@
 		<h:form id="frm">
 			<h:panelGrid columns="1" style="margin:auto auto; font-size:20px">
 				<f:facet name="header">Interfaces Implementadas:</f:facet>
-				<p:commandButton value="Cotação Ferramenta"	icon="fa fa-check-square" />
-				<p:commandButton value="Fornecedores" icon="fa fa-check-square" />
-				<p:commandButton value="Cotação Material" icon="fa fa-spinner fa-spin" />
+				<p:commandButton value="Cotação Ferramenta"
+					icon="fa fa-check-square" disabled="true" />
+				<p:commandButton value="Financeiro(Conta e PEP)"
+					icon="fa fa-spinner fa-spin" disabled="true"  />
+					<p:commandButton value="Compra ferramenta/material"
+					icon="fa fa-spinner fa-spin" disabled="true" />
+					<p:commandButton value="Ferramentas Listagem/Edição" icon="fa fa-check-square" disabled="true" />
+				<p:commandButton value="Fornecedores" icon="fa fa-check-square" disabled="true" />
+					<p:commandButton value="Cotação Material"
+					icon="fa fa-spinner fa-spin" disabled="true"  />
 
 			</h:panelGrid>
 

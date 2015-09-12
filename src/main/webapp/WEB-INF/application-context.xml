@@ -14,11 +14,11 @@
 	<http auto-config="false" use-expressions="true">
 		<intercept-url pattern="/**" access="isAuthenticated()" />
 
-		<form-login login-page="/seguranca/login.xhtml" authentication-failure-url="/seguranca/login.xhtml?invalid=true" 
-			default-target-url="/" always-use-default-target="true" />
+		<form-login login-page="/seguranca/login.xhtml"
+			authentication-failure-url="/seguranca/login.xhtml?invalid=true" />
 		<logout logout-url="/logout" invalidate-session="true" />
-		
-		<csrf disabled="true"/>
+
+		<csrf disabled="true" />
 
 	</http>
 

@@ -16,10 +16,10 @@
 		<h:form id="frm">
 			<p:messages id="messages" closable="true" />
 
-			<p:toolbar id="toolbar">
+			<p:toolbar id="toolbar" style="margin-bottom:10px; font-size:15px">
 				<f:facet name="left">
 
-					<p:commandButton value="Editar" icon="ui-icon-folder-open"
+					<p:commandButton value="Editar" icon="fa fa-folder-open"
 						process="@this" update="ferramenta-dialog"
 						oncomplete="PF('ferramentaDialog').show()"
 						disabled="#{ferramentaBean.ferramentaSelecionado==null}">
@@ -33,12 +33,13 @@
 						class="ui-icon ui-icon-grip-dotted-vertical" />
 					</span>
 
-					<p:commandButton icon="ui-icon-trash" title="Excluir"
+					<p:commandButton icon="fa fa-trash" title="Excluir"
 						process="@this" update="ferramentas-table messages toolbar"
 						action="#{ferramentaBean.excluir}"
 						disabled="#{ferramentaBean.ferramentaSelecionado == null}">
-						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
-							message="Tem certeza que deseja excluir o ferramenta?" />
+						<p:confirm icon="fa fa-exclamation-triangle fa-2x fa-fw" header="Confirmação de exclusão"
+							message="Ao excluir esta ferramenta, a cotação referente
+							também será apagada. Deseja continuar?"/>
 
 					</p:commandButton>
 
@@ -66,8 +67,7 @@
 
 			<p:dataTable value="#{ferramentaBean.todasFerramentas}"
 				var="ferramenta" emptyMessage="Nenhum ferramenta cadastrada."
-				rows="10" id="ferramentas-table" paginator="true"
-				paginatorPosition="bottom"
+				rows="15" id="ferramentas-table" paginator="true"
 				rowStyleClass="#{ferramenta.disponivel ? '' : 'indisponivel'}"
 				selection="#{ferramentaBean.ferramentaSelecionado}"
 				selectionMode="single" rowKey="#{ferramenta.idferramenta}">
@@ -114,18 +114,18 @@
 					<p:defaultCommand target="salvar-ferramentaButton"
 						scope="ferramenta-dialog" />
 
-						
-						<ui:include src="/ferramentas/templates/adicionarFerramenta.xhtml"></ui:include>
+
+					<ui:include src="/ferramentas/templates/adicionarFerramenta.xhtml"></ui:include>
 
 
 					<p:commandButton value="Salvar" action="#{ferramentaBean.salvar}"
 						process="ferramenta-dialog" id="salvar-ferramentaButton"
 						update="msgs-dialog ferramenta-dialog"
-						oncomplete="if(!args.validationFailed) PF('ferramentaDialog').hide()" >
+						oncomplete="if(!args.validationFailed) PF('ferramentaDialog').hide()">
 						<f:setPropertyActionListener
 							target="#{ferramentaBean.ferramentaEdicao}"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta}" />
-						</p:commandButton>
+					</p:commandButton>
 
 
 				</h:panelGrid>

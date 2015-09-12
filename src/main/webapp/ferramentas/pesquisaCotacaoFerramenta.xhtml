@@ -16,11 +16,14 @@
 		<h1>Cotações de Ferramentas</h1>
 
 		<h:form id="frm">
-
+			
+			 <p:hotkey bind="f2" action="cotacaoFerramenta?faces-redirect=true"/>
+			
 			<p:toolbar id="toolbar" style="margin-bottom:20px">
 				<f:facet name="left">
-					<p:commandButton value="Novo" icon="fa fa-file" process="@this"
+					<p:commandButton id="novo-button" value="Novo (F2)" icon="fa fa-file" process="@this"
 						action="cotacaoFerramenta?faces-redirect=true" />
+						
 
 					<p:commandButton icon="fa fa-pencil-square-o" id="editar-button"
 						value="Editar"

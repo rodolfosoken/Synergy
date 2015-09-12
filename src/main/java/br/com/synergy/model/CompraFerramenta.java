@@ -1,5 +1,6 @@
 package br.com.synergy.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
 
@@ -7,12 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,10 +33,9 @@ public class CompraFerramenta implements java.io.Serializable {
 	private ParticipanteFerramenta participante;
 
 	public CompraFerramenta() {
-		
+
 	}
 
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idcompra_ferramenta", unique = true, nullable = false)
@@ -50,21 +46,18 @@ public class CompraFerramenta implements java.io.Serializable {
 	public void setIdcompraFerramenta(Long idcompraFerramenta) {
 		this.idcompraFerramenta = idcompraFerramenta;
 	}
-	
+
 	@OneToOne(mappedBy = "compraFerramenta")
-	public CotacaoFerramenta getCotacaoFerramenta(){
+	public CotacaoFerramenta getCotacaoFerramenta() {
 		return this.cotacaoFerramenta;
 	}
-	
-	public void setCotacaoFerramenta(CotacaoFerramenta cotacao){
+
+	public void setCotacaoFerramenta(CotacaoFerramenta cotacao) {
 		this.cotacaoFerramenta = cotacao;
 	}
 
-
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumns({
-			@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false),
-			@JoinColumn(name = "pep_Conta_idConta", referencedColumnName = "Conta_idConta", nullable = false) })
+	@JoinColumn(name = "pep_idpep", referencedColumnName = "idpep", nullable = false)
 	public Pep getPep() {
 		return this.pep;
 	}
@@ -129,16 +122,13 @@ public class CompraFerramenta implements java.io.Serializable {
 	}
 
 	@OneToOne
-	@JoinColumn(name="idfornecedor")
+	@JoinColumn(name = "idfornecedor")
 	public ParticipanteFerramenta getParticipante() {
 		return participante;
 	}
 
-
 	public void setParticipante(ParticipanteFerramenta participante) {
 		this.participante = participante;
 	}
-	
-	
 
 }
