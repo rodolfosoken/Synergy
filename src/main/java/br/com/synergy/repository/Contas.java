@@ -16,8 +16,13 @@ public class Contas implements Serializable{
 	@Inject
 	private EntityManager em;
 	
+	
 	public List<Conta> todasContas(){
 		return em.createQuery("from Conta", Conta.class).getResultList();
+	}
+	
+	public void salvar(Conta conta){
+		em.merge(conta);
 	}
 
 }

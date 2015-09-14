@@ -9,10 +9,11 @@
 	<ui:define name="title">Financeiro</ui:define>
 	<ui:define name="body">
 
-
-		<h1>Conta</h1>
+		<h1>Financeiro - Contas e PEP's</h1>
 
 		<h:form>
+			<p:messages id="messages" />
+
 			<p:toolbar id="toolbar" style="margin-bottom:10px; font-size:15px">
 				<f:facet name="left">
 					<p:commandButton value="Novo" icon="fa fa-file-o"
@@ -22,10 +23,6 @@
 					</p:commandButton>
 
 				</f:facet>
-				<f:facet name="right">
-					<p:commandButton value="Salvar Conta" />
-
-				</f:facet>
 			</p:toolbar>
 			<p:panelGrid name="conta" columns="2">
 
@@ -33,16 +30,14 @@
 			</p:panelGrid>
 
 			<p:dataTable value="#{financeiroBean.todas}" var="conta"
-				emptyMessage="Nenhuma conta encontrada"
-				selection="#{financeiroBean.contaSelecionada}"
-				selectionMode="single" rowKey="#{conta.idConta}" paginator="true"
-				rows="20">
+				emptyMessage="Nenhuma conta encontrada" id="contas-table"
+				rowKey="#{conta.idConta}" paginator="true" rows="2">
 
-				<p:column headerText="ID" sortBy="#{conta.idConta}">
+				<p:column headerText="ID" sortBy="#{conta.idConta}" width="15">
 					<h:outputText value="#{conta.idConta}" />
 				</p:column>
 
-				<p:column headerText="Número da Conta">
+				<p:column headerText="Número da Conta" width="150">
 					<h:outputText value="#{conta.numeroConta}" />
 				</p:column>
 
@@ -51,24 +46,27 @@
 				</p:column>
 
 				<p:column>
-					<p:dataList value="#{conta.peps}" var="pep"
-						emptyMessage="Nenhuma Pep">
-						<p:panelGrid columns="3">
-							<h:outputText value="#{pep.numero}" />
-							<h:outputText value="#{pep.valor}" />
-							<h:outputText value="#{pep.descricao}" />
-						</p:panelGrid>
-
-					</p:dataList>
+					<p:accordionPanel activeIndex="none" dynamic="true">
+						<p:tab title="Pep">
+							<p:dataList value="#{conta.peps}" var="pep"
+								emptyMessage="Nenhuma Pep" type="unordered" itemType="none">
+								<h:panelGrid columns="3">
+									<h:outputText value="#{pep.numero}" />
+									<h:outputText value="#{pep.valor}" />
+									<h:outputText value="#{pep.descricao}" />
+								</h:panelGrid>
+							</p:dataList>
+						</p:tab>
+					</p:accordionPanel>
 				</p:column>
 			</p:dataTable>
 
-			<p:dialog widgetVar="contaDialog" id="conta-dialog" modal="true"
-				closeOnEscape="true" draggable="false" resizable="false"
-				header="Conta" closable="true" >
-				
-				<ui:include src="/financeiro/templates/cadastroConta.xhtml"/>
-				
+			<p:dialog widgetVar="contaDialog" id="conta-dialog"
+				header="Nova Conta" resizable="false" modal="true"
+				closeOnEscape="true">
+
+				<ui:include src="/financeiro/templates/cadastroConta.xhtml" />
+
 			</p:dialog>
 
 

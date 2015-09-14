@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity
@@ -54,7 +57,9 @@ public class Pep implements java.io.Serializable {
 	public void setConta(Conta conta) {
 		this.conta = conta;
 	}
-
+	
+	@NotNull
+	@NotBlank
 	@Column(name = "numero", length = 45)
 	public String getNumero() {
 		return this.numero;
@@ -82,7 +87,8 @@ public class Pep implements java.io.Serializable {
 	public void setCompraMaterials(List<CompraMaterial> compraMaterials) {
 		this.compraMaterials = compraMaterials;
 	}
-
+	
+	@NotNull
 	@Column(name="valor")
 	public Double getValor() {
 		return valor;
@@ -92,6 +98,8 @@ public class Pep implements java.io.Serializable {
 		this.valor = valor;
 	}
 	
+	@NotNull
+	@NotBlank
 	@Column(name="descricao")
 	public String getDescricao() {
 		return descricao;

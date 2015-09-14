@@ -7,55 +7,73 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.context.RequestContext;
+
 import br.com.synergy.model.Conta;
 import br.com.synergy.model.Pep;
 import br.com.synergy.repository.Contas;
+import br.com.synergy.service.CadastroContaService;
+import br.com.synergy.util.FacesMessages;
 
 @Named
 @ViewScoped
-public class FinanceiroBean implements Serializable{
+public class FinanceiroBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private Contas contas;
-	
+
+	@Inject
+	private CadastroContaService cadastro;
+
+	@Inject
+	private FacesMessages messages;
+
 	private List<Conta> todas;
 	private Conta contaSelecionada;
 	private Conta contaEdicao;
-	
+
 	private Pep pepEdicao;
 	private Pep pepSelecionada;
-	
-	
-	public void consultar(){
-	this.todas = contas.todasContas();
+
+	public void consultar() {
+		this.todas = contas.todasContas();
 	}
-	
-	public void prepararNovoCadastro(){
-		contaEdicao=new Conta();
-		contaSelecionada =null;
+
+	public void prepararNovoCadastro() {
+		consultar();
+		contaEdicao = new Conta();
+		contaSelecionada = null;
 		pepEdicao = new Pep();
-		pepSelecionada=null;
-		
+		pepSelecionada = null;
+
 	}
-	
-	public void adicionarPep(){
+
+	public void adicionarPep() {
 		pepEdicao.setConta(contaEdicao);
 		contaEdicao.getPeps().add(pepEdicao);
-		System.out.println("pep"+pepEdicao.getDescricao());
+		System.out.println("pep" + pepEdicao.getDescricao());
 		pepEdicao = new Pep();
-		pepSelecionada= null;
+		pepSelecionada = null;
 	}
-	
-	public void removerPep(){
+
+	public void removerPep() {
 		contaEdicao.getPeps().remove(pepSelecionada);
-		pepSelecionada= null;
+		pepSelecionada = null;
 	}
+
+	public void salvarConta() {
+		cadastro.salvar(contaEdicao);
+		prepararNovoCadastro();
+		messages.info("Conta salva com sucesso!");
+		RequestContext.getCurrentInstance().update("messages");
+	}
+
 	
-	//getters e setters
-	public List<Conta> getTodas(){
-		return todas;
+	// getters e setters
+	public List<Conta> getTodas() {
+		return contas.todasContas();
 	}
 
 	public Conta getContaSelecionada() {
@@ -89,8 +107,5 @@ public class FinanceiroBean implements Serializable{
 	public void setPepSelecionada(Pep pepSelecionada) {
 		this.pepSelecionada = pepSelecionada;
 	}
-	
-	
-	
-	
+
 }

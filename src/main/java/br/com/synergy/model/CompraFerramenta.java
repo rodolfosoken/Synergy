@@ -122,7 +122,7 @@ public class CompraFerramenta implements java.io.Serializable {
 	}
 
 	@OneToOne
-	@JoinColumn(name = "idfornecedor")
+	@JoinColumn(name = "idparticipante")
 	public ParticipanteFerramenta getParticipante() {
 		return participante;
 	}

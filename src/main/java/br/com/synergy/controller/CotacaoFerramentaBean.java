@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.synergy.model.CompraFerramenta;
 import br.com.synergy.model.Cotacao;
 import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.model.Ferramenta;
@@ -55,6 +56,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	private Participantes participantes;
 
 	private CotacaoFerramenta cotacaoFerramenta;
+	private CompraFerramenta compra;
 
 	private ParticipanteFerramenta participanteSelecionado;
 	private ParticipanteFerramenta participanteFerramenta;
@@ -62,6 +64,7 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public CotacaoFerramentaBean() {
 		limpar();
+		compra=new CompraFerramenta();
 
 	}
 
@@ -93,7 +96,7 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: Executando editar");
 		// Busca por id para resgatar o objeto com a coleção de fornecedores
 		// evitando uma Lazy exception
-		
+
 		Cotacao c = cotacoes.buscaPorId(id);
 
 		if (c != null) {
@@ -115,7 +118,7 @@ public class CotacaoFerramentaBean implements Serializable {
 			messages.error("Cotação não encontrada");
 			RequestContext.getCurrentInstance().update(
 					Arrays.asList("frm:messages", "frm"));
-			
+
 		}
 
 	}
@@ -140,14 +143,21 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public String salvarCotacao() {
 		System.out.println("DEBUG: executando salvarCotaçao");
+
+		// verifica se foi adicionado algum fornecedor antes de salvar
 		if (!cotacaoFerramenta.getParticipantesFerramentas().isEmpty()) {
+
+			// faz as referências da ferramenta para a cotação
 			adicionarFerramenta();
 			cadastro.salvar(cotacaoFerramenta);
 			messages.info("Cotação salva com sucesso!");
 
 			limpar();
+
 			RequestContext.getCurrentInstance().update(
 					Arrays.asList("frm:messages", "frm"));
+
+			// se estiver editando, voltar para a tela pesquisa de cotações
 			if (!isEditando())
 				return "pesquisaCotacaoFerramenta?faces-redirect=true";
 		} else {
@@ -161,6 +171,9 @@ public class CotacaoFerramentaBean implements Serializable {
 	// adiciona o fornecedor na lista da cotação
 	public void adicionarFornecedor() {
 		System.out.println("DEBUG: executando adicionarFornecedor");
+
+		// ao adicionar o fornecedor, verificar se o valor foi preenchido e o
+		// fornecedor selecionado
 		if (participanteFerramenta.getFornecedor() == null
 				|| participanteFerramenta.getValor() == null) {
 
@@ -211,9 +224,8 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: executando concluir");
 		cotacaoFerramenta.setDataTermino(new Date());
 		cotacaoFerramenta.setConcluida(true);
-		cotacaoFerramenta.getFerramenta().setDisponivel(true);
 		// redireciona para a aba de compra
-		indexTab = 2;
+		indexTab = 1;
 	}
 
 	// desfaz a conclusão da cotação e marca como em andamento
@@ -221,14 +233,33 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: executando desmarcar");
 		cotacaoFerramenta.setDataTermino(null);
 		cotacaoFerramenta.setConcluida(false);
-		cotacaoFerramenta.getFerramenta().setDisponivel(false);
-		
+
 		// redireciona para a aba inicial
 		indexTab = 0;
 	}
 
 	public boolean isEditando() {
 		return cotacaoFerramenta.getIdcotacao() != null;
+	}
+
+	public void comprar() {
+		compra.setCotacaoFerramenta(cotacaoFerramenta);
+		cotacaoFerramenta.setCompraFerramenta(compra);
+		
+		//passa o preço do participante para compra da cotação
+		cotacaoFerramenta.getCompraFerramenta().setPreco(compra.getParticipante().getValor());
+		
+		// seta a data atual para a aquisição do produto
+		cotacaoFerramenta.getCompraFerramenta().setDataAquisicao(new Date());
+
+		// Faz a ferramenta ficar disponivel
+		cotacaoFerramenta.getFerramenta().setDisponivel(true);
+		
+		//muda a cotação para comprado
+		cotacaoFerramenta.setComprado(true);
+
+		// redireciona para a aba de compra
+		indexTab = 2;
 	}
 
 	// getters e setters
@@ -270,6 +301,14 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public void setIndexTab(Integer indexTab) {
 		this.indexTab = indexTab;
+	}
+
+	public CompraFerramenta getCompra() {
+		return compra;
+	}
+
+	public void setCompra(CompraFerramenta compra) {
+		this.compra = compra;
 	}
 
 }

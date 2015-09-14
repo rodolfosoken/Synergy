@@ -7,47 +7,51 @@
 
 
 <p:defaultCommand target="adicionar-fornecedor" scope="tabFornecedor" />
+<p:commandButton value="Cadastrar" icon="fa fa-file-text-o"
+	action="#{fornecedorFerramentaBean.prepararNovoCadastro}"
+	process="@this" update="fornecedor-dialog"
+	oncomplete="PF('edicaoFornecedorDialog').show()"
+	disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
+	<p:resetInput target="fornecedor-dialog" />
+</p:commandButton>
+<p:dialog header="Novo Fornecedor" widgetVar="edicaoFornecedorDialog"
+	id="fornecedor-dialog" resizable="false" modal="true"
+	closeOnEscape="true">
+
+	<ui:include src="/ferramentas/templates/cadastroFornecedor.xhtml" />
+</p:dialog>
+
 <h:panelGrid columns="6" style="margin-bottom:10px">
 
 	<p:outputLabel value="Fornecedor: " for="pesquisaFornecedor" />
 	<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
 		completeMethod="#{cotacaoFerramentaBean.completarFornecedor}"
-		var="fornecedor" itemLabel="#{fornecedor.nome}"
+		var="fornecedor" itemLabel="#{fornecedor.idfornecedor} #{fornecedor.nome}"
 		itemValue="#{fornecedor}" forceSelection="true" required="true"
 		converter="fornecedorConverter" style="margin-right:50px"
-		value="#{cotacaoFerramentaBean.participanteFerramenta.fornecedor}">
+		value="#{cotacaoFerramentaBean.participanteFerramenta.fornecedor}"
+		disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
 	</p:autoComplete>
-	
-	<p:outputLabel value="Preço" for="valor"/>
+
+	<p:outputLabel value="Preço" for="valor" />
 	<p:inputText id="valor" required="true"
-	value="#{cotacaoFerramentaBean.participanteFerramenta.valor}"/>
-	
+		disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+		value="#{cotacaoFerramentaBean.participanteFerramenta.valor}" />
+
 	<p:commandButton id="adicionar-fornecedor" value="Adicionar"
+		disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 		icon="ui-icon-plus"
 		action="#{cotacaoFerramentaBean.adicionarFornecedor}"
-		process="tabFornecedor"
+		process="@this pesquisaFornecedor valor"
 		update="pesquisaFornecedor fornecedores-table :frm:messages valor" />
 
 
 </h:panelGrid>
 
-<p:commandButton id="remover-fornecedor" value="Remover"
-	icon="ui-icon-minus" style="margin-bottom:10px"
-	action="#{cotacaoFerramentaBean.removerFornecedor}" process="@this"
-	update="tabView"
-	disabled="#{cotacaoFerramentaBean.participanteSelecionado==null}" />
-<p:outputLabel />
-
 <p:dataTable
 	value="#{cotacaoFerramentaBean.cotacaoFerramenta.participantesFerramentas}"
 	var="participante" emptyMessage="Nenhum fornecedor adicionado."
-	id="fornecedores-table"
-	selection="#{cotacaoFerramentaBean.participanteSelecionado}"
-	selectionMode="single" rowKey="#{participante.fornecedor.idfornecedor}">
-
-	<!-- Quando selecionar disparar evento -->
-	<p:ajax event="rowSelect" update=":frm:tabView" />
-	<p:ajax event="rowUnselect" update=":frm:tabView" />
+	id="fornecedores-table">
 
 	<p:column headerText="ID" style="text-align: center; width: 60px">
 		<h:outputText value="#{participante.fornecedor.idfornecedor}" />
@@ -58,8 +62,8 @@
 	</p:column>
 
 	<p:column headerText="Nome da Empresa"
-		style="text-align: center; width: 250px">
-		<h:outputText value="#{participante.fornecedor.nome}" />
+		style="text-align: left; width: 250px">
+		<h:outputText value="#{participante.fornecedor.nome}"  />
 	</p:column>
 
 	<p:column headerText="Contato" style="text-align: center; width: 100px">
@@ -73,6 +77,27 @@
 
 	<p:column headerText="Preço" style="text-align: center; width: 100px">
 		<h:outputText value="#{participante.valor}" />
+	</p:column>
+
+	<p:column headerText="Remover" width="50" style="text-align:center">
+		<p:commandButton icon="fa fa-trash"
+			action="#{cotacaoFerramentaBean.removerFornecedor}" process="@this"
+			disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			update=":frm:tabView">
+			<f:setPropertyActionListener value="#{participante}"
+				target="#{cotacaoFerramentaBean.participanteSelecionado}" />
+		</p:commandButton>
+	</p:column>
+
+	<p:column headerText="Comprar" width="100">
+		<p:commandButton value="Comprar" icon="fa fa-shopping-cart"
+			action="#{cotacaoFerramentaBean.comprar}"
+			process="@this fornecedores-table" update=":frm:tabView"
+			disabled="#{!cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
+			<f:setPropertyActionListener value="#{participante}"
+				target="#{cotacaoFerramentaBean.compra.participante}" />
+		</p:commandButton>
+
 	</p:column>
 
 

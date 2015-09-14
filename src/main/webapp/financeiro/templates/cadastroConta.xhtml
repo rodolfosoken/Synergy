@@ -5,11 +5,14 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<p:messages id="messages-dialog" closable="true" autoUpdate="true" />
+<p:messages id="messages-dialog" closable="true" />
 
 <p:toolbar style="margin-bottom:10px">
 	<f:facet name="right">
-		<p:commandButton value="Salvar" />
+		<p:commandButton value="Salvar" process="@this dados-conta pep-table"
+			update="dados-conta pep-table contas-table messages-dialog"
+			action="#{financeiroBean.salvarConta}"
+			oncomplete="if (!args.validationFailed) PF('contaDialog').hide()"/>
 	</f:facet>
 </p:toolbar>
 
@@ -44,13 +47,13 @@
 		</p:panelGrid>
 
 		<p:commandButton value="Adicionar" icon="fa fa-plus"
-			process="@this dados-pep" update="dados-pep pep-table"
+			process="@this dados-pep" update="dados-pep pep-table messages-dialog"
 			action="#{financeiroBean.adicionarPep}" id="adicionarPep" />
 	</p:panelGrid>
 
 	<p:dataTable id="pep-table" value="#{financeiroBean.contaEdicao.peps}"
-		var="pep" selection="#{financeiroBean.pepSelecionada}"
-		rowKey="#{financeiroBean.contaEdicao.peps}" selectionMode="single" style="width:720px">
+		var="pep" 	rowKey="#{financeiroBean.contaEdicao.peps}"
+		style="width:720px">
 
 		<p:column headerText="Número" sortBy="#{pep.numero}">
 			<h:outputText id="numero" value="#{pep.numero}" />
@@ -64,9 +67,10 @@
 			<h:outputText value="#{pep.valor}" />
 		</p:column>
 
-		<p:column>
+		<p:column width="50">
 			<p:commandButton icon="fa fa-trash"
-				action="#{financeiroBean.removerPep}" process="@this" update="pep-table">
+				action="#{financeiroBean.removerPep}" process="@this"
+				update="pep-table">
 				<f:setPropertyActionListener value="#{pep}"
 					target="#{financeiroBean.pepSelecionada}" />
 			</p:commandButton>
