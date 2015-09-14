@@ -5,55 +5,65 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:body>
-<p:panelGrid columns="1">
-	<f:facet name="header">Detalhes da Compra</f:facet>
-	<p:autoComplete disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.comprado}"
-							value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.pep}"
-							var="pep" converter="pepConverter" dropdown="true"
-							itemLabel="#{pep.numero}" forceSelection="true"
-							itemValue="#{usuario}" required="true"
-							completeMethod="#{cotacaoFerramentaBean.completarUsuario}"/>
-	<p:panelGrid columns="2">
+	<p:panelGrid columns="1">
+		<f:facet name="header">Detalhes da Compra</f:facet>
 		<p:panelGrid columns="2">
-		<f:facet name="header">Dados da Compra</f:facet>
-			<p:outputLabel value="Fornecedor" for="fornecedor-compra" />
-			<p:outputLabel id="fornecedor-compra" readonly="true"
-				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.participante.fornecedor.nome}" />
-			<p:outputLabel value="Data de Aquisição" for="data" />
-			<h:outputText
-				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.dataAquisicao}"
-				id="data">
-				<f:convertDateTime pattern="dd/MM/yyyy" />
-			</h:outputText>
-			<p:outputLabel value="Preço" for="preco" />
-			<p:outputLabel id="preco" readonly="true"
-				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.preco}" />
+			<p:autoComplete style="margin-right:30px"
+				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.pep}"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.comprado}"
+				var="pep" converter="pepConverter" dropdown="true"
+				itemLabel="#{pep.numero} #{pep.descricao}" forceSelection="true"
+				itemValue="#{pep}" required="true"
+				completeMethod="#{cotacaoFerramentaBean.completarPep}" id="pep"
+				onselect="alert('selecionada')" />
+
+			<p:commandButton action="#{cotacaoFerramentaBean.okPep}" value="OK"
+				process="@this pep" update="grid-dados-compra" />
 		</p:panelGrid>
-		
-		<p:panelGrid columns="3">
-		<f:facet name="header">Avaliação de Compra</f:facet>
-			<p:outputLabel value="Prazo" for="prazo" />
-			<p:selectBooleanCheckbox id="prazo"
-				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okPrazo}" />
-			<p:outputLabel value="Ok" />
+		<p:panelGrid columns="2">
+			<p:panelGrid columns="2" id="grid-dados-compra">
+				<f:facet name="header">Dados da Compra</f:facet>
+				<p:outputLabel value="Fornecedor" for="fornecedor-compra" />
+				<p:outputLabel id="fornecedor-compra" readonly="true"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.participante.fornecedor.nome}" />
+				<p:outputLabel value="Data de Aquisição" for="data" />
+				<h:outputText
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.dataAquisicao}"
+					id="data">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				<p:outputLabel value="Preço" for="preco" />
+				<p:outputLabel id="preco" readonly="true"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.preco}" />
+				<p:outputLabel value="PEP" />
+				<p:outputLabel value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.pep.numero}" />
 
-			<p:outputLabel value="Especificações" for="espec" />
-			<p:selectBooleanCheckbox id="espec"
-				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okEspec}" />
-			<p:outputLabel value="Ok" />
+			</p:panelGrid>
 
-			<p:outputLabel value="Visita" for="visita" />
-			<p:selectBooleanCheckbox id="visita"
-				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okVisita}" />
-			<p:outputLabel value="Ok" />
+			<p:panelGrid columns="3">
+				<f:facet name="header">Avaliação de Compra</f:facet>
+				<p:outputLabel value="Prazo" for="prazo" />
+				<p:selectBooleanCheckbox id="prazo"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okPrazo}" />
+				<p:outputLabel value="Ok" />
 
-			<p:outputLabel value="Assistência" for="assist" />
-			<p:selectBooleanCheckbox id="assist"
-				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okAssist}" />
-			<p:outputLabel value="Ok" />
+				<p:outputLabel value="Especificações" for="espec" />
+				<p:selectBooleanCheckbox id="espec"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okEspec}" />
+				<p:outputLabel value="Ok" />
+
+				<p:outputLabel value="Visita" for="visita" />
+				<p:selectBooleanCheckbox id="visita"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okVisita}" />
+				<p:outputLabel value="Ok" />
+
+				<p:outputLabel value="Assistência" for="assist" />
+				<p:selectBooleanCheckbox id="assist"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okAssist}" />
+				<p:outputLabel value="Ok" />
+			</p:panelGrid>
 		</p:panelGrid>
 	</p:panelGrid>
-</p:panelGrid>
 
 </h:body>
 

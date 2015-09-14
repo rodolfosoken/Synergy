@@ -30,19 +30,14 @@ public class FinanceiroBean implements Serializable {
 	@Inject
 	private FacesMessages messages;
 
-	private List<Conta> todas;
 	private Conta contaSelecionada;
 	private Conta contaEdicao;
 
 	private Pep pepEdicao;
 	private Pep pepSelecionada;
 
-	public void consultar() {
-		this.todas = contas.todasContas();
-	}
 
 	public void prepararNovoCadastro() {
-		consultar();
 		contaEdicao = new Conta();
 		contaSelecionada = null;
 		pepEdicao = new Pep();
@@ -67,12 +62,18 @@ public class FinanceiroBean implements Serializable {
 		cadastro.salvar(contaEdicao);
 		prepararNovoCadastro();
 		messages.info("Conta salva com sucesso!");
-		RequestContext.getCurrentInstance().update("messages");
+		RequestContext.getCurrentInstance().update("frm");
+	}
+	
+	public void editar(){
+		pepEdicao = new Pep();
+		contaEdicao = contaSelecionada;
 	}
 
 	
 	// getters e setters
 	public List<Conta> getTodas() {
+		System.out.println("DEBUG: Executando Todas");
 		return contas.todasContas();
 	}
 

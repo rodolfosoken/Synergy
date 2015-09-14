@@ -7,15 +7,6 @@
 
 <p:messages id="messages-dialog" closable="true" />
 
-<p:toolbar style="margin-bottom:10px">
-	<f:facet name="right">
-		<p:commandButton value="Salvar" process="@this dados-conta pep-table"
-			update="dados-conta pep-table contas-table messages-dialog"
-			action="#{financeiroBean.salvarConta}"
-			oncomplete="if (!args.validationFailed) PF('contaDialog').hide()"/>
-	</f:facet>
-</p:toolbar>
-
 <p:fieldset id="dados-conta" toggleSpeed="500" toggleable="true"
 	legend="Dados da Conta">
 
@@ -31,8 +22,9 @@
 </p:fieldset>
 
 <p:fieldset id="dados-pep" toggleSpeed="500" toggleable="true"
-	legend="Peps da Conta">
+	legend="Peps da Conta" style="margin-bottom:20px">
 	<p:panelGrid columns="2">
+	<f:facet name="header">Adicionar Nova PEP</f:facet>
 		<p:panelGrid columns="2">
 
 			<p:outputLabel value="Número PEP" for="numero" />
@@ -47,12 +39,13 @@
 		</p:panelGrid>
 
 		<p:commandButton value="Adicionar" icon="fa fa-plus"
-			process="@this dados-pep" update="dados-pep pep-table messages-dialog"
+			process="@this dados-pep"
+			update="dados-pep pep-table messages-dialog"
 			action="#{financeiroBean.adicionarPep}" id="adicionarPep" />
 	</p:panelGrid>
 
 	<p:dataTable id="pep-table" value="#{financeiroBean.contaEdicao.peps}"
-		var="pep" 	rowKey="#{financeiroBean.contaEdicao.peps}"
+		var="pep" rowKey="#{financeiroBean.contaEdicao.peps}" emptyMessage="Nenhuma PEP adicionada ainda."
 		style="width:720px">
 
 		<p:column headerText="Número" sortBy="#{pep.numero}">
@@ -80,6 +73,13 @@
 	</p:dataTable>
 
 </p:fieldset>
+
+
+<p:commandButton value="Salvar" process="@this dados-conta pep-table"
+	update="dados-conta pep-table contas-table messages-dialog"
+	action="#{financeiroBean.salvarConta}" style="float:right; font-size:17px"
+	oncomplete="if (!args.validationFailed) PF('contaDialog').hide()" 
+	icon="fa fa-save"/>
 
 
 </html>

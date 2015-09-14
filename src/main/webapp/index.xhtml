@@ -11,20 +11,57 @@
 
 
 		<h:form id="frm">
-			<h:panelGrid columns="1" style="margin:auto auto; font-size:20px">
-				<f:facet name="header">Interfaces Implementadas:</f:facet>
-				<p:commandButton value="Cotação Ferramenta"
-					icon="fa fa-check-square" disabled="true" />
-				<p:commandButton value="Financeiro(Conta e PEP)"
-					icon="fa fa-spinner fa-spin" disabled="true"  />
-					<p:commandButton value="Compra ferramenta/material"
-					icon="fa fa-spinner fa-spin" disabled="true" />
-					<p:commandButton value="Ferramentas Listagem/Edição" icon="fa fa-check-square" disabled="true" />
-				<p:commandButton value="Fornecedores" icon="fa fa-check-square" disabled="true" />
-					<p:commandButton value="Cotação Material"
-					icon="fa fa-spinner fa-spin" disabled="true"  />
+			<p:panelGrid columns="2" style="margin:auto auto">
 
-			</h:panelGrid>
+				<p:panelGrid columns="2" id="chat" style="margin:auto auto">
+					<f:facet name="header">Mensagem visível para todos enquanto o sistema estiver on-line</f:facet>
+					<p:inputTextarea readonly="false" value="#{chatBean.chat}"
+						cols="50" rows="10" id="texto">
+					</p:inputTextarea>
+					<f:facet name="footer">
+						<p:commandButton update="@this texto" value="Atualizar"
+							process="@this texto"
+							style="float:right; margin-bottom:5px; margin-top:5px"
+							icon="fa fa-refresh">
+						</p:commandButton>
+
+						<p:ajaxStatus style="margin-top:10px">
+							<f:facet name="default">
+								<h:outputText value="Status: StandBy" />
+							</f:facet>
+
+							<f:facet name="start">
+								<h:outputText value="Status: Enviando" />
+							</f:facet>
+
+							<f:facet name="complete">
+								<h:outputText value="Status: Enviado!" />
+							</f:facet>
+
+						</p:ajaxStatus>
+
+					</f:facet>
+				</p:panelGrid>
+
+				<h:panelGrid columns="1" style="margin:auto auto; font-size:20px">
+					<f:facet name="header">Interfaces Implementadas:</f:facet>
+					<p:commandButton value="Cotação Ferramenta"
+						icon="fa fa-check-square" disabled="true" />
+					<p:commandButton value="Financeiro(Conta e PEP)"
+						icon="fa fa-spinner fa-spin" disabled="true" />
+					<p:commandButton value="Compra ferramenta/material"
+						icon="fa fa-spinner fa-spin" disabled="true" />
+					<p:commandButton value="Ferramentas Listagem/Edição"
+						icon="fa fa-check-square" disabled="true" />
+					<p:commandButton value="Fornecedores" icon="fa fa-check-square"
+						disabled="true" />
+					<p:commandButton value="Cotação Material"
+						icon="fa fa-spinner fa-spin" disabled="true" />
+
+				</h:panelGrid>
+				
+				
+			</p:panelGrid>
 
 		</h:form>
 

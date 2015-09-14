@@ -20,10 +20,12 @@ import br.com.synergy.model.CotacaoFerramenta;
 import br.com.synergy.model.Ferramenta;
 import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.model.ParticipanteFerramenta;
+import br.com.synergy.model.Pep;
 import br.com.synergy.model.Usuario;
 import br.com.synergy.repository.Cotacoes;
 import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.repository.Participantes;
+import br.com.synergy.repository.Peps;
 import br.com.synergy.repository.Usuarios;
 import br.com.synergy.security.UsuarioPrincipal;
 import br.com.synergy.service.CadastroCotacaoFerramentaService;
@@ -55,6 +57,9 @@ public class CotacaoFerramentaBean implements Serializable {
 	@Inject
 	private Participantes participantes;
 
+	@Inject
+	private Peps peps;
+
 	private CotacaoFerramenta cotacaoFerramenta;
 	private CompraFerramenta compra;
 
@@ -64,11 +69,24 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	public CotacaoFerramentaBean() {
 		limpar();
-		compra=new CompraFerramenta();
+		compra = new CompraFerramenta();
+
+	}
+
+	public void okPep() {
+		System.out.println("debug: teste executando");
+
+		cotacaoFerramenta
+				.getCompraFerramenta()
+				.getPep()
+				.setId(cotacaoFerramenta.getCompraFerramenta().getPep().getId());
+		System.out.println(cotacaoFerramenta.getCompraFerramenta().getPep().getId());
 
 	}
 
 	public void verificaEdicao() {
+
+		// recebe a Id da cotação a ser editada pela url
 		HttpServletRequest request = (HttpServletRequest) FacesContext
 				.getCurrentInstance().getExternalContext().getRequest();
 		if (request.getParameter("edicao") != null) {
@@ -123,6 +141,11 @@ public class CotacaoFerramentaBean implements Serializable {
 
 	}
 
+	// preenche o auto-completar da PEP
+	public List<Pep> completarPep(String pep) {
+		return peps.buscarPorNumero(pep);
+	}
+
 	// preenche o auto-completar de usuários
 	public List<Usuario> completarUsuario(String nome) {
 		System.out.println("DEBUG: executando CompletarUsuario");
@@ -147,6 +170,14 @@ public class CotacaoFerramentaBean implements Serializable {
 		// verifica se foi adicionado algum fornecedor antes de salvar
 		if (!cotacaoFerramenta.getParticipantesFerramentas().isEmpty()) {
 
+			if (cotacaoFerramenta.getConcluida()
+					&& cotacaoFerramenta.getCompraFerramenta() != null) {
+
+				// coloca a cotação como comprada
+				cotacaoFerramenta.setComprado(true);
+
+			}
+
 			// faz as referências da ferramenta para a cotação
 			adicionarFerramenta();
 			cadastro.salvar(cotacaoFerramenta);
@@ -159,7 +190,7 @@ public class CotacaoFerramentaBean implements Serializable {
 
 			// se estiver editando, voltar para a tela pesquisa de cotações
 			if (!isEditando())
-				return "pesquisaCotacaoFerramenta?faces-redirect=true";
+				return "pesquisaCotacaoFerramenta?ok=true faces-redirect=true";
 		} else {
 			messages.error("Fornecedor Vazio");
 			indexTab = 1;
@@ -233,6 +264,9 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: executando desmarcar");
 		cotacaoFerramenta.setDataTermino(null);
 		cotacaoFerramenta.setConcluida(false);
+		cotacaoFerramenta.getFerramenta().setDisponivel(false);
+		cotacaoFerramenta.setComprado(false);
+		cotacaoFerramenta.setCompraFerramenta(null);
 
 		// redireciona para a aba inicial
 		indexTab = 0;
@@ -245,18 +279,16 @@ public class CotacaoFerramentaBean implements Serializable {
 	public void comprar() {
 		compra.setCotacaoFerramenta(cotacaoFerramenta);
 		cotacaoFerramenta.setCompraFerramenta(compra);
-		
-		//passa o preço do participante para compra da cotação
-		cotacaoFerramenta.getCompraFerramenta().setPreco(compra.getParticipante().getValor());
-		
+
+		// passa o preço do participante para compra da cotação
+		cotacaoFerramenta.getCompraFerramenta().setPreco(
+				compra.getParticipante().getValor());
+
 		// seta a data atual para a aquisição do produto
 		cotacaoFerramenta.getCompraFerramenta().setDataAquisicao(new Date());
 
 		// Faz a ferramenta ficar disponivel
 		cotacaoFerramenta.getFerramenta().setDisponivel(true);
-		
-		//muda a cotação para comprado
-		cotacaoFerramenta.setComprado(true);
 
 		// redireciona para a aba de compra
 		indexTab = 2;

@@ -42,7 +42,7 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 	}
 	
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "compra_ferramenta_idcompra_ferramenta")
 	public CompraFerramenta getCompraFerramenta() {
 		return this.compraFerramenta;

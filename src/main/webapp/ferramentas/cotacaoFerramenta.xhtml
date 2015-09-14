@@ -19,7 +19,7 @@
 		<h1>Cotação para Ferramenta</h1>
 
 		<h:form id="frm">
-					
+
 			<p:messages id="messages" closable="true" />
 			<p:growl id="growl" />
 
@@ -51,7 +51,8 @@
 
 				<f:facet name="right">
 
-					<p:commandButton icon="fa fa-eraser" value="Limpar" ajax="false" action="#{cotacaoFerramentaBean.limpar}"
+					<p:commandButton icon="fa fa-eraser" value="Limpar" ajax="false"
+						action="#{cotacaoFerramentaBean.limpar}"
 						rendered="#{!cotacaoFerramentaBean.editando}"
 						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
 						<p:confirm icon="ui-icon-alert" header="Limpar Campos"
@@ -71,7 +72,7 @@
 
 					<p:commandButton value="Cancelar"
 						action="pesquisaCotacaoFerramenta?faces-redirect=true"
-						style="margin-right:10px" process="@this" id="cancelar"/>
+						style="margin-right:10px" process="@this" id="cancelar" />
 
 					<p:commandButton value="Salvar Cotação" icon="fa fa-floppy-o"
 						action="#{cotacaoFerramentaBean.salvarCotacao}"

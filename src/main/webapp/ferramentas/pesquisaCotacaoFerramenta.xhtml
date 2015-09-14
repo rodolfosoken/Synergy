@@ -8,22 +8,27 @@
 
 	<ui:define name="title">Cotação Ferramenta</ui:define>
 	<ui:define name="body">
-
 		<f:metadata>
+			<f:viewParam name="bug" />
 			<f:viewAction action="#{cotacaoPesquisaBean.consultar}" />
+			<f:event listener="#{cotacaoPesquisaBean.okMessage}"
+				type="preRenderView" />
 		</f:metadata>
 
 		<h1>Cotações de Ferramentas</h1>
 
 		<h:form id="frm">
-			
-			 <p:hotkey bind="f2" action="cotacaoFerramenta?faces-redirect=true"/>
-			
+
+			<p:messages id="messages" closable="true" />
+
+			<p:hotkey bind="f2" action="cotacaoFerramenta?faces-redirect=true" />
+
 			<p:toolbar id="toolbar" style="margin-bottom:20px">
 				<f:facet name="left">
-					<p:commandButton id="novo-button" value="Novo (F2)" icon="fa fa-file" process="@this"
+					<p:commandButton id="novo-button" value="Novo (F2)"
+						icon="fa fa-file" process="@this"
 						action="cotacaoFerramenta?faces-redirect=true" />
-						
+
 
 					<p:commandButton icon="fa fa-pencil-square-o" id="editar-button"
 						value="Editar"
@@ -33,12 +38,6 @@
 				</f:facet>
 			</p:toolbar>
 
-			<p:panelGrid columns="8" style="margin-bottom: 20px">
-				<f:facet name="header"> Legenda de cores</f:facet>
-				<h:outputText value="Conluída" style="background-color:#33CC33" />
-				<h:outputText value="Em andamento"/>
-			</p:panelGrid>
-
 
 			<p:dataTable id="table-cotacaoFerramenta" paginator="true"
 				emptyMessage="nenhuma cotação encontrada" rows="10"
@@ -46,7 +45,16 @@
 				var="cotacao" selectionMode="single" rowKey="#{cotacao.idcotacao}"
 				selection="#{cotacaoPesquisaBean.cotacaoSelecionada}"
 				style="text-align: center"
-				rowStyleClass="#{cotacao.concluida? 'disponivel':''}">
+				rowStyleClass="#{cotacao.comprado ? 'verde':''} 
+				#{!cotacao.comprado and cotacao.concluida ? 'roxo':''}">
+				<f:facet name="header">
+					<p:panelGrid columns="3" style="margin-bottom:20px">
+						<f:facet name="header"> STATUS DAS COTAÇÕES</f:facet>
+						<h:outputText value="Conluída" styleClass="roxo" />
+						<h:outputText value="Em andamento" />
+						<h:outputText value="Comprada" styleClass="verde" />
+					</p:panelGrid>
+				</f:facet>
 
 				<!-- Quando selecionar disparar evento -->
 				<p:ajax event="rowSelect" update=":frm:toolbar" />
@@ -89,6 +97,14 @@
 				<p:column headerText="Criado por" sortBy="#{cotacao.usuario}"
 					width="30">
 					<h:outputText value="#{cotacao.usuario.nome}" />
+				</p:column>
+
+				<p:column headerText="Concluido" width="16">
+					<p:selectBooleanCheckbox value="#{cotacao.concluida}" disabled="true"/>
+				</p:column>
+
+				<p:column headerText="Comprado" width="16">
+					<p:selectBooleanCheckbox value="#{cotacao.comprado}" disabled="true"/>
 				</p:column>
 
 			</p:dataTable>

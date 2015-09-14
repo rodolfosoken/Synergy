@@ -11,8 +11,8 @@
 
 		<h1>Financeiro - Contas e PEP's</h1>
 
-		<h:form>
-			<p:messages id="messages" />
+		<h:form id="frm">
+			<p:messages id="messages"/>
 
 			<p:toolbar id="toolbar" style="margin-bottom:10px; font-size:15px">
 				<f:facet name="left">
@@ -31,7 +31,8 @@
 
 			<p:dataTable value="#{financeiroBean.todas}" var="conta"
 				emptyMessage="Nenhuma conta encontrada" id="contas-table"
-				rowKey="#{conta.idConta}" paginator="true" rows="2">
+				rowKey="#{conta.idConta}" scrollHeight="431" scrollable="true"
+				liveScroll="true" scrollRows="10">
 
 				<p:column headerText="ID" sortBy="#{conta.idConta}" width="15">
 					<h:outputText value="#{conta.idConta}" />
@@ -46,8 +47,8 @@
 				</p:column>
 
 				<p:column>
-					<p:accordionPanel activeIndex="none" dynamic="true">
-						<p:tab title="Pep">
+					<p:accordionPanel activeIndex="false">
+						<p:tab title="PEP's">
 							<p:dataList value="#{conta.peps}" var="pep"
 								emptyMessage="Nenhuma Pep" type="unordered" itemType="none">
 								<h:panelGrid columns="3">
@@ -59,11 +60,20 @@
 						</p:tab>
 					</p:accordionPanel>
 				</p:column>
+
+				<p:column headerText="Editar" width="80">
+					<p:commandButton action="#{financeiroBean.editar}"
+						icon="fa fa-pencil-square-o" process="@this" update=":frm:conta-dialog"
+						oncomplete="PF('contaDialog').show()">
+						<f:setPropertyActionListener value="#{conta}" target="#{financeiroBean.contaSelecionada}"/>
+					</p:commandButton>
+				</p:column>
+
+
 			</p:dataTable>
 
-			<p:dialog widgetVar="contaDialog" id="conta-dialog"
-				header="Nova Conta" resizable="false" modal="true"
-				closeOnEscape="true">
+			<p:dialog widgetVar="contaDialog" id="conta-dialog" header="Conta"
+				resizable="false" modal="true" closeOnEscape="true">
 
 				<ui:include src="/financeiro/templates/cadastroConta.xhtml" />
 

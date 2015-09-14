@@ -68,7 +68,7 @@
 			<p:dataTable value="#{ferramentaBean.todasFerramentas}"
 				var="ferramenta" emptyMessage="Nenhum ferramenta cadastrada."
 				rows="15" id="ferramentas-table" paginator="true"
-				rowStyleClass="#{ferramenta.disponivel ? '' : 'indisponivel'}"
+				rowStyleClass="#{ferramenta.disponivel ? '' : 'vermelho'}"
 				selection="#{ferramentaBean.ferramentaSelecionado}"
 				selectionMode="single" rowKey="#{ferramenta.idferramenta}">
 

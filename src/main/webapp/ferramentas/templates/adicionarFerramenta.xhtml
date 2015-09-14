@@ -39,30 +39,37 @@
 		<p:panelGrid columns="6" style="margin-bottom: 20px">
 			<f:facet name="header">Dimensões</f:facet>
 			<p:outputLabel value="Comprimento" for="length" />
-			<p:inputText id="length" size="5"  disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			<p:inputText id="length" size="5"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.length}" />
 
 			<p:outputLabel value="Altura" for="height" />
-			<p:inputText id="height" size="5"  disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			<p:inputText id="height" size="5"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.height}" />
 			<p:outputLabel value="Largura" for="width" />
-			<p:inputText id="width" size="5"  disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			<p:inputText id="width" size="5"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.width}" />
 		</p:panelGrid>
 		<p:panelGrid columns="4">
 			<f:facet name="header">Especificações</f:facet>
 			<p:outputLabel value="Part-per-hour" for="partPerHour" />
-			<p:inputText id="partPerHour" size="14"  disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			<p:inputText id="partPerHour" size="14"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.partPerHour}" />
 			<p:outputLabel value="Cycle" for="cycle" />
-			<p:inputText id="cycle" size="14"  disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			<p:inputText id="cycle" size="14"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.cycle}" />
 
 			<p:outputLabel value="Area Stack" for="areaStack" />
-			<p:inputText id="areaStack" size="14"  disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			<p:inputText id="areaStack" size="14"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.areaStack}" />
 			<p:outputLabel value="Max Stack" for="maxStack" />
-			<p:inputText id="maxStack" size="14"  disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
+			<p:inputText id="maxStack" size="14"
+				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.ferramenta.maxStack}" />
 
 		</p:panelGrid>

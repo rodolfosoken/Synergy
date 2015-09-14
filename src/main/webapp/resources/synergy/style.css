@@ -30,15 +30,20 @@ header {
 	padding: 10px
 }
 
-.disponivel {
+.verde {
 	background-color: #33CC33;
 	color: black;
 }
 
-.indisponivel{
+.vermelho{
 	background-color: #FFCCCC;
 	color: black;
 }
+.roxo{
+	background-color: #C390D4;
+	color: black;
+}
+
 
 #logo-synergy {
 	margin-top: -15px;
