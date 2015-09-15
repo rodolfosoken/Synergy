@@ -20,6 +20,7 @@ public class UsuarioBean implements Serializable {
 	@Inject
 	private Usuarios usuarios;
 	
+	@SuppressWarnings("unused")
 	@Inject
 	private FacesMessages messages;
 	

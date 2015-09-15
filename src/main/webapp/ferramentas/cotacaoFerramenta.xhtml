@@ -51,7 +51,7 @@
 
 				<f:facet name="right">
 
-					<p:commandButton icon="fa fa-eraser" value="Limpar" ajax="false"
+					<p:commandButton icon="fa fa-eraser" value="Limpar" process="@this" update="frm" 
 						action="#{cotacaoFerramentaBean.limpar}"
 						rendered="#{!cotacaoFerramentaBean.editando}"
 						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}">

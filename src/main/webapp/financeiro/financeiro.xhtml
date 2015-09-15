@@ -12,11 +12,11 @@
 		<h1>Financeiro - Contas e PEP's</h1>
 
 		<h:form id="frm">
-			<p:messages id="messages"/>
+			<p:messages id="messages" />
 
 			<p:toolbar id="toolbar" style="margin-bottom:10px; font-size:15px">
 				<f:facet name="left">
-					<p:commandButton value="Novo" icon="fa fa-file-o"
+					<p:commandButton value="Novo" icon="fa fa-file"
 						action="#{financeiroBean.prepararNovoCadastro}" process="@this"
 						update="conta-dialog" oncomplete="PF('contaDialog').show()">
 						<p:resetInput target="conta-dialog" />
@@ -63,9 +63,10 @@
 
 				<p:column headerText="Editar" width="80">
 					<p:commandButton action="#{financeiroBean.editar}"
-						icon="fa fa-pencil-square-o" process="@this" update=":frm:conta-dialog"
-						oncomplete="PF('contaDialog').show()">
-						<f:setPropertyActionListener value="#{conta}" target="#{financeiroBean.contaSelecionada}"/>
+						icon="fa fa-pencil-square-o" process="@this"
+						update=":frm:conta-dialog" oncomplete="PF('contaDialog').show()">
+						<f:setPropertyActionListener value="#{conta}"
+							target="#{financeiroBean.contaSelecionada}" />
 					</p:commandButton>
 				</p:column>
 

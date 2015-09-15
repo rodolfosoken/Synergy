@@ -7,18 +7,19 @@
 <h:body>
 	<p:panelGrid columns="1">
 		<f:facet name="header">Detalhes da Compra</f:facet>
-		<p:panelGrid columns="2">
+		<p:panelGrid columns="3" id="dados-pep">
+			<p:outputLabel value="PEP" for="pep" />
 			<p:autoComplete style="margin-right:30px"
 				value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.pep}"
 				disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.comprado}"
 				var="pep" converter="pepConverter" dropdown="true"
 				itemLabel="#{pep.numero} #{pep.descricao}" forceSelection="true"
 				itemValue="#{pep}" required="true"
-				completeMethod="#{cotacaoFerramentaBean.completarPep}" id="pep"
-				onselect="alert('selecionada')" />
+				completeMethod="#{cotacaoFerramentaBean.completarPep}" id="pep">
+				<p:ajax event="itemSelect" action="#{cotacoaFerramentaBean.okPep}"
+					update="grid-dados-compra dados-pep :frm:messages" />
+			</p:autoComplete>
 
-			<p:commandButton action="#{cotacaoFerramentaBean.okPep}" value="OK"
-				process="@this pep" update="grid-dados-compra" />
 		</p:panelGrid>
 		<p:panelGrid columns="2">
 			<p:panelGrid columns="2" id="grid-dados-compra">
@@ -36,31 +37,48 @@
 				<p:outputLabel id="preco" readonly="true"
 					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.preco}" />
 				<p:outputLabel value="PEP" />
-				<p:outputLabel value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.pep.numero}" />
+				<p:outputLabel
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.pep.numero}" />
 
 			</p:panelGrid>
 
 			<p:panelGrid columns="3">
 				<f:facet name="header">Avaliação de Compra</f:facet>
 				<p:outputLabel value="Prazo" for="prazo" />
-				<p:selectBooleanCheckbox id="prazo"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okPrazo}" />
-				<p:outputLabel value="Ok" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="prazo" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.comprado}"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okPrazo}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoFerramentaBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
 
 				<p:outputLabel value="Especificações" for="espec" />
-				<p:selectBooleanCheckbox id="espec"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okEspec}" />
-				<p:outputLabel value="Ok" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="espec" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.comprado}"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okEspec}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoFerramentaBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
 
 				<p:outputLabel value="Visita" for="visita" />
-				<p:selectBooleanCheckbox id="visita"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okVisita}" />
-				<p:outputLabel value="Ok" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="visita" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.comprado}"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okVisita}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoFerramentaBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
 
 				<p:outputLabel value="Assistência" for="assist" />
-				<p:selectBooleanCheckbox id="assist"
-					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okAssist}" />
-				<p:outputLabel value="Ok" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="assist" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.comprado}"
+					value="#{cotacaoFerramentaBean.cotacaoFerramenta.compraFerramenta.okAssist}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoFerramentaBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
 			</p:panelGrid>
 		</p:panelGrid>
 	</p:panelGrid>

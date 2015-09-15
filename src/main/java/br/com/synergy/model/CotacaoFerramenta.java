@@ -31,7 +31,7 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 	public CotacaoFerramenta() {
 	}
 	
-	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name = "ferramenta_idferramenta", nullable = false)
 	public Ferramenta getFerramenta() {
 		return this.ferramenta;
@@ -42,7 +42,7 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 	}
 	
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval= true)
 	@JoinColumn(name = "compra_ferramenta_idcompra_ferramenta")
 	public CompraFerramenta getCompraFerramenta() {
 		return this.compraFerramenta;
@@ -52,7 +52,7 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 		this.compraFerramenta = compraFerramenta;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta", cascade= CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta", cascade= CascadeType.ALL, orphanRemoval=true)
 	public List<ParticipanteFerramenta> getParticipantesFerramentas() {
 		return this.participantesFerramentas;
 	}

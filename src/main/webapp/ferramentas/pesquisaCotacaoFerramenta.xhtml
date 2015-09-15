@@ -29,12 +29,6 @@
 						icon="fa fa-file" process="@this"
 						action="cotacaoFerramenta?faces-redirect=true" />
 
-
-					<p:commandButton icon="fa fa-pencil-square-o" id="editar-button"
-						value="Editar"
-						disabled="#{cotacaoPesquisaBean.cotacaoSelecionada==null}"
-						action="#{cotacaoPesquisaBean.editarCotacaoFerramenta}" />
-
 				</f:facet>
 			</p:toolbar>
 
@@ -42,11 +36,12 @@
 			<p:dataTable id="table-cotacaoFerramenta" paginator="true"
 				emptyMessage="nenhuma cotação encontrada" rows="10"
 				value="#{cotacaoPesquisaBean.todasCotacaoesFerramenta}"
-				var="cotacao" selectionMode="single" rowKey="#{cotacao.idcotacao}"
-				selection="#{cotacaoPesquisaBean.cotacaoSelecionada}"
+				var="cotacao" rowKey="#{cotacao.idcotacao}"
 				style="text-align: center"
 				rowStyleClass="#{cotacao.comprado ? 'verde':''} 
 				#{!cotacao.comprado and cotacao.concluida ? 'roxo':''}">
+							
+				
 				<f:facet name="header">
 					<p:panelGrid columns="3" style="margin-bottom:20px">
 						<f:facet name="header"> STATUS DAS COTAÇÕES</f:facet>
@@ -55,9 +50,6 @@
 						<h:outputText value="Comprada" styleClass="verde" />
 					</p:panelGrid>
 				</f:facet>
-
-				<!-- Quando selecionar disparar evento -->
-				<p:ajax event="rowSelect" update=":frm:toolbar" />
 
 				<p:column headerText="ID" sortBy="#{cotacao.idcotacao}" width="1">
 					<h:outputText value="#{cotacao.idcotacao}" />
@@ -94,17 +86,45 @@
 					<h:outputText value="#{cotacao.responsavel.nome}" />
 				</p:column>
 
-				<p:column headerText="Criado por" sortBy="#{cotacao.usuario}"
+				<p:column headerText="Criado por" sortBy="#{cotacao.usuario.nome}"
 					width="30">
 					<h:outputText value="#{cotacao.usuario.nome}" />
 				</p:column>
 
 				<p:column headerText="Concluido" width="16">
-					<p:selectBooleanCheckbox value="#{cotacao.concluida}" disabled="true"/>
+					<p:selectBooleanCheckbox value="#{cotacao.concluida}"
+						disabled="true" />
 				</p:column>
 
 				<p:column headerText="Comprado" width="16">
-					<p:selectBooleanCheckbox value="#{cotacao.comprado}" disabled="true"/>
+					<p:selectBooleanCheckbox value="#{cotacao.comprado}"
+						disabled="true" />
+				</p:column>
+
+				<p:column headerText="Editar" width="15">
+					<p:commandButton icon="fa fa-pencil-square-o" id="editar-button"
+						action="#{cotacaoPesquisaBean.editarCotacaoFerramenta}">
+						<f:setPropertyActionListener value="#{cotacao}"
+							target="#{cotacaoPesquisaBean.cotacaoSelecionada}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Excluir" width="15">
+					<p:commandButton icon="fa fa-trash" process="@this" update="frm"
+						action="#{cotacaoPesquisaBean.excluir}">
+						<f:setPropertyActionListener value="#{cotacao}"
+							target="#{cotacaoPesquisaBean.cotacaoSelecionada}" />
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão" 
+							message="Ao excluir uma cotação a ferramenta também será excluida, deseja continuar?" />
+					</p:commandButton>
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Ok" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Cancelar" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+
 				</p:column>
 
 			</p:dataTable>

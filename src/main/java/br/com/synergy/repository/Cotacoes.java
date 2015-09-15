@@ -39,10 +39,11 @@ public class Cotacoes implements Serializable {
 	public void excluir(Cotacao cotacao){
 		cotacao = buscaPorId(cotacao.getIdcotacao());
 		em.remove(cotacao);
+		em.flush();
 	}
 	
 	
-	public CotacaoFerramenta buscaFetchCotacaoFerramenta(Long id){
+	public CotacaoFerramenta buscaFetchParticipantesCotacaoFerramenta(Long id){
 		
 		Query query = (Query) em.createQuery("select c from CotacaoFerramenta c join fetch c.participantesFerramentas where c.id = :id");
 	    query.setParameter("id", id);
@@ -56,9 +57,23 @@ public class Cotacoes implements Serializable {
 		
 		return result;
 	}
+
+	public CotacaoFerramenta buscaFetchCompraFerramenta(Long id) {
+		Query query = (Query) em.createQuery("select c from CotacaoFerramenta c join fetch c.compraFerramenta where c.id = :id");
+	    query.setParameter("id", id);
+	 
+	    CotacaoFerramenta result = null;
+	    try {
+	        result = (CotacaoFerramenta) query.getSingleResult();
+	    } catch (NoResultException e) {
+	        System.out.println("DEBUG:nenhuma pep encontrada");
+	    }
+		
+		return result;
+	}
+
 	
 	public Cotacao buscaPorId(Long id){
 		return em.find(Cotacao.class, id);
 	}
-
 }

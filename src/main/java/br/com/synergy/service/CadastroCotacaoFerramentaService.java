@@ -20,4 +20,10 @@ public class CadastroCotacaoFerramentaService implements Serializable{
 		cotacoes.guardar(cotacao);
 	}
 	
+	@Transacional
+	public void excluir(Cotacao cotacao){
+		cotacoes.excluir(cotacao);
+	}
+	
+	
 }

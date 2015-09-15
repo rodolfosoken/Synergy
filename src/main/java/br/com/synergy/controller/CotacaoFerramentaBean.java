@@ -1,7 +1,6 @@
 package br.com.synergy.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +23,6 @@ import br.com.synergy.model.Pep;
 import br.com.synergy.model.Usuario;
 import br.com.synergy.repository.Cotacoes;
 import br.com.synergy.repository.Fornecedores;
-import br.com.synergy.repository.Participantes;
 import br.com.synergy.repository.Peps;
 import br.com.synergy.repository.Usuarios;
 import br.com.synergy.security.UsuarioPrincipal;
@@ -55,9 +53,6 @@ public class CotacaoFerramentaBean implements Serializable {
 	private Cotacoes cotacoes;
 
 	@Inject
-	private Participantes participantes;
-
-	@Inject
 	private Peps peps;
 
 	private CotacaoFerramenta cotacaoFerramenta;
@@ -70,17 +65,6 @@ public class CotacaoFerramentaBean implements Serializable {
 	public CotacaoFerramentaBean() {
 		limpar();
 		compra = new CompraFerramenta();
-
-	}
-
-	public void okPep() {
-		System.out.println("debug: teste executando");
-
-		cotacaoFerramenta
-				.getCompraFerramenta()
-				.getPep()
-				.setId(cotacaoFerramenta.getCompraFerramenta().getPep().getId());
-		System.out.println(cotacaoFerramenta.getCompraFerramenta().getPep().getId());
 
 	}
 
@@ -108,60 +92,6 @@ public class CotacaoFerramentaBean implements Serializable {
 		cotacaoFerramenta.setFerramenta(new Ferramenta());
 
 		indexTab = 0;
-	}
-
-	public void editar(Long id) {
-		System.out.println("DEBUG: Executando editar");
-		// Busca por id para resgatar o objeto com a coleção de fornecedores
-		// evitando uma Lazy exception
-
-		Cotacao c = cotacoes.buscaPorId(id);
-
-		if (c != null) {
-			cotacaoFerramenta = (CotacaoFerramenta) c;
-
-			// faz a busca (o fetch join) da coleção de ferramentas de cada
-			// fornecedor
-			// evitar a Lazy exception
-			List<ParticipanteFerramenta> lista = new ArrayList<ParticipanteFerramenta>();
-			for (ParticipanteFerramenta p : cotacaoFerramenta
-					.getParticipantesFerramentas()) {
-				lista.add(participantes.buscaPorId(p
-						.getIdparticipanteFerramenta()));
-			}
-			cotacaoFerramenta.setParticipantesFerramentas(lista);
-			indexTab = 0;
-		} else {
-			limpar();
-			messages.error("Cotação não encontrada");
-			RequestContext.getCurrentInstance().update(
-					Arrays.asList("frm:messages", "frm"));
-
-		}
-
-	}
-
-	// preenche o auto-completar da PEP
-	public List<Pep> completarPep(String pep) {
-		return peps.buscarPorNumero(pep);
-	}
-
-	// preenche o auto-completar de usuários
-	public List<Usuario> completarUsuario(String nome) {
-		System.out.println("DEBUG: executando CompletarUsuario");
-		return usuarios.buscaPorNome(nome);
-	}
-
-	// preenche o auto-completar de fornecedores
-	public List<FornecedorFerramenta> completarFornecedor(String nome) {
-		System.out.println("DEBUG: executando CompletarFornecedor");
-		return fornecedores.buscaPorFornecedorFerramenta(nome);
-	}
-
-	// referencia a cotação na ferramenta da cotação
-	public void adicionarFerramenta() {
-		System.out.println("DEBUG: executando adcionarFerramenta");
-		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
 	}
 
 	public String salvarCotacao() {
@@ -198,7 +128,64 @@ public class CotacaoFerramentaBean implements Serializable {
 		return null;
 
 	}
+	
+	public void editar(Long id) {
+		System.out.println("DEBUG: Executando editar");
+		// Busca por id para resgatar o objeto com a coleção de fornecedores
+		// evitando uma Lazy exception
 
+		Cotacao c = cotacoes.buscaPorId(id);
+
+		if (c != null) {
+
+			// faz a busca (o fetch join) da coleção de ferramentas de cada
+			// fornecedor
+			// evitar a Lazy exception
+			cotacaoFerramenta = cotacoes
+					.buscaFetchParticipantesCotacaoFerramenta(c.getIdcotacao());
+
+			// Busca pep da cotação se ela já foi comprada
+			if (cotacaoFerramenta.getComprado()) {
+				System.out.println("DEBUG: Executando Fetch Compra Ferramenta");
+				cotacaoFerramenta = cotacoes.buscaFetchCompraFerramenta(cotacaoFerramenta.getIdcotacao());
+			}
+
+			indexTab = 0;
+		} else {
+			limpar();
+			messages.error("Cotação não encontrada");
+			RequestContext.getCurrentInstance().update(
+					Arrays.asList("frm:messages", "frm"));
+
+		}
+
+	}
+	
+	public void comprar() {
+		compra.setCotacaoFerramenta(cotacaoFerramenta);
+		cotacaoFerramenta.setCompraFerramenta(compra);
+
+		// passa o preço do participante para compra da cotação
+		cotacaoFerramenta.getCompraFerramenta().setPreco(
+				compra.getParticipante().getValor());
+
+		// seta a data atual para a aquisição do produto
+		cotacaoFerramenta.getCompraFerramenta().setDataAquisicao(new Date());
+
+		// Faz a ferramenta ficar disponivel
+		cotacaoFerramenta.getFerramenta().setDisponivel(true);
+
+		// redireciona para a aba de compra
+		indexTab = 2;
+	}
+	
+	// referencia a cotação na ferramenta da cotação
+	public void adicionarFerramenta() {
+		System.out.println("DEBUG: executando adcionarFerramenta");
+		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
+	}
+
+	
 	// adiciona o fornecedor na lista da cotação
 	public void adicionarFornecedor() {
 		System.out.println("DEBUG: executando adicionarFornecedor");
@@ -234,21 +221,25 @@ public class CotacaoFerramentaBean implements Serializable {
 				participanteSelecionado);
 		participanteSelecionado = null;
 	}
+	
 
-	// metodo para verificar se o participante já consta na lista
-	public boolean contemParticipante(ParticipanteFerramenta participante,
-			List<ParticipanteFerramenta> lista) {
-		System.out.println("DEBUG: executando contemParticipante");
-		boolean contem = false;
-		for (ParticipanteFerramenta p : lista) {
-			if (p.getFornecedor().getIdfornecedor()
-					.equals(participante.getFornecedor().getIdfornecedor())) {
-				return !contem;
-			}
-
-		}
-		return contem;
+	// preenche o auto-completar da PEP
+	public List<Pep> completarPep(String pep) {
+		return peps.buscarPorNumero(pep);
 	}
+
+	// preenche o auto-completar de usuários
+	public List<Usuario> completarUsuario(String nome) {
+		System.out.println("DEBUG: executando CompletarUsuario");
+		return usuarios.buscaPorNome(nome);
+	}
+
+	// preenche o auto-completar de fornecedores
+	public List<FornecedorFerramenta> completarFornecedor(String nome) {
+		System.out.println("DEBUG: executando CompletarFornecedor");
+		return fornecedores.buscaPorFornecedorFerramenta(nome);
+	}
+
 
 	// conclui a cotação
 	public void concluir() {
@@ -271,28 +262,44 @@ public class CotacaoFerramentaBean implements Serializable {
 		// redireciona para a aba inicial
 		indexTab = 0;
 	}
+	
+	public void okPep() {
+		System.out.println("DEBUG:Executando okPep");
+		Pep pep = cotacaoFerramenta.getCompraFerramenta().getPep();
+		if (pep.getId() != null) {
+			pep.setId(pep.getId());
+		} else {
+			messages.error("Selecione uma PEP");
+		}
+	}
 
 	public boolean isEditando() {
 		return cotacaoFerramenta.getIdcotacao() != null;
 	}
+	
+	// metodo para verificar se o participante já consta na lista
+	public boolean contemParticipante(ParticipanteFerramenta participante,
+			List<ParticipanteFerramenta> lista) {
+		System.out.println("DEBUG: executando contemParticipante");
+		boolean contem = false;
+		for (ParticipanteFerramenta p : lista) {
+			if (p.getFornecedor().getIdfornecedor()
+					.equals(participante.getFornecedor().getIdfornecedor())) {
+				return !contem;
+			}
 
-	public void comprar() {
-		compra.setCotacaoFerramenta(cotacaoFerramenta);
-		cotacaoFerramenta.setCompraFerramenta(compra);
-
-		// passa o preço do participante para compra da cotação
-		cotacaoFerramenta.getCompraFerramenta().setPreco(
-				compra.getParticipante().getValor());
-
-		// seta a data atual para a aquisição do produto
-		cotacaoFerramenta.getCompraFerramenta().setDataAquisicao(new Date());
-
-		// Faz a ferramenta ficar disponivel
-		cotacaoFerramenta.getFerramenta().setDisponivel(true);
-
-		// redireciona para a aba de compra
-		indexTab = 2;
+		}
+		return contem;
 	}
+	
+	public void avaliaCompra(){
+		cotacaoFerramenta.getCompraFerramenta().setOkAssist(cotacaoFerramenta.getCompraFerramenta().getOkAssist());
+		cotacaoFerramenta.getCompraFerramenta().setOkEspec(cotacaoFerramenta.getCompraFerramenta().getOkEspec());
+		cotacaoFerramenta.getCompraFerramenta().setOkPrazo(cotacaoFerramenta.getCompraFerramenta().getOkPrazo());
+		cotacaoFerramenta.getCompraFerramenta().setOkVisita(cotacaoFerramenta.getCompraFerramenta().getOkVisita());
+	
+	}
+	
 
 	// getters e setters
 
