@@ -30,7 +30,8 @@ public class Peca implements java.io.Serializable {
 	private String pn;
 	private String partName;
 	private String descricao;
-	private String upcFna;
+	private String upc;
+	private String fna;
 	private Double valor;
 	private String responsavel;
 	private List<Conjunto> conjuntos = new ArrayList<Conjunto>();
@@ -97,13 +98,13 @@ public class Peca implements java.io.Serializable {
 		this.descricao = descricao;
 	}
 
-	@Column(name = "upc_fna")
-	public String getUpcFna() {
-		return this.upcFna;
+	@Column(name = "upc")
+	public String getUpc() {
+		return this.upc;
 	}
 
-	public void setUpcFna(String upcFna) {
-		this.upcFna = upcFna;
+	public void setUpc(String upc) {
+		this.upc = upc;
 	}
 	
 	@Column(name="valor")
@@ -125,8 +126,15 @@ public class Peca implements java.io.Serializable {
 		this.responsavel = responsavel;
 	}
 	
-	
-	
+	@Column(name="fna")
+	public String getFna() {
+		return fna;
+	}
+
+	public void setFna(String fna) {
+		this.fna = fna;
+	}
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "conjunto_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
 	public List<Conjunto> getConjuntos() {

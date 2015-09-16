@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -44,15 +45,28 @@ public class FornecedorPecaBean implements Serializable {
 	}
 	
 	public void salvar(){
-		cadastroFornecedor.salvar(fornecedorEdicao);
-		consultar();
+		try {
+			cadastroFornecedor.salvar(fornecedorEdicao);
+			consultar();
+			messages.info("Fornecedor salvo com sucesso!");
+			// pega lista de componentes para atualizar
+			// atualizando a tabela e lança a mensagem de sucesso
+			RequestContext.getCurrentInstance().update(
+					Arrays.asList("frm:messages", "frm:fornecedores-table"));
 
-		messages.info("Fornecedor salvo com sucesso!");
-		
-		//pega lista de componentes para atualizar
-		//atualizando a tabela e lança a mensagem de sucesso
-		RequestContext.getCurrentInstance().update(
-				Arrays.asList("frm:messages", "frm:fornecedores-table"));
+		} catch (Exception e) {
+			boolean continuar = true;
+			Throwable rootCause = e.getCause();
+			while(continuar){
+				if(rootCause.getCause()==null)
+					break;
+				rootCause=rootCause.getCause();
+			
+			}
+			messages.error("Não foi possível realizar a alteração:"+rootCause.getMessage());
+			FacesContext.getCurrentInstance().validationFailed();
+			
+		}
 	}
 	
 	public void prepararNovoCadastro(){

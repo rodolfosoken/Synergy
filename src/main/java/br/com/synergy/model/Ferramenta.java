@@ -59,7 +59,7 @@ public class Ferramenta implements java.io.Serializable {
 	public void setIdferramenta(Long idferramenta) {
 		this.idferramenta = idferramenta;
 	}
-	
+
 	@NotNull
 	@OneToOne
 	@JoinColumn(name = "usuario_planejador", nullable = false)
@@ -200,8 +200,8 @@ public class Ferramenta implements java.io.Serializable {
 	public void setDisponivel(Boolean disponivel) {
 		this.disponivel = disponivel;
 	}
-	
-	@OneToOne(mappedBy="ferramenta", cascade=CascadeType.ALL, orphanRemoval=true)
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "ferramenta",cascade = CascadeType.ALL, orphanRemoval = true)
 	public CotacaoFerramenta getCotacao() {
 		return cotacao;
 	}
@@ -218,9 +218,11 @@ public class Ferramenta implements java.io.Serializable {
 	public void setMontagems(List<Montagem> montagems) {
 		this.montagems = montagems;
 	}
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "conjunto_has_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
+	@JoinTable(name = "conjunto_has_ferramenta", catalog = "sistema_gestao", 
+	joinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) }, 
+	inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
 	public List<Conjunto> getConjuntos() {
 		return conjuntos;
 	}
@@ -228,8 +230,5 @@ public class Ferramenta implements java.io.Serializable {
 	public void setConjuntos(List<Conjunto> conjuntos) {
 		this.conjuntos = conjuntos;
 	}
-	
-
-
 
 }

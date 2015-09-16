@@ -62,7 +62,7 @@ public abstract class Fornecedor implements java.io.Serializable {
 	
 	@CNPJ
 	@NotNull
-	@Column(name = "cnpj", nullable = false, length = 18)
+	@Column(name = "cnpj", nullable = false, length = 18, unique=true)
 	public String getCnpj() {
 		return this.cnpj;
 	}

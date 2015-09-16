@@ -11,6 +11,7 @@
 	<ui:define name="body">
 		<h1>Ferramentas</h1>
 		<f:metadata>
+			<f:viewParam name="bug" />
 			<f:viewAction action="#{ferramentaBean.consultar}" />
 		</f:metadata>
 		<h:form id="frm">
@@ -33,13 +34,14 @@
 						class="ui-icon ui-icon-grip-dotted-vertical" />
 					</span>
 
-					<p:commandButton icon="fa fa-trash" title="Excluir"
-						process="@this" update="ferramentas-table messages toolbar"
+					<p:commandButton icon="fa fa-trash" title="Excluir" process="@this"
+						update="ferramentas-table messages toolbar"
 						action="#{ferramentaBean.excluir}"
 						disabled="#{ferramentaBean.ferramentaSelecionado == null}">
-						<p:confirm icon="fa fa-exclamation-triangle fa-2x fa-fw" header="Confirmação de exclusão"
+						<p:confirm icon="fa fa-exclamation-triangle fa-2x fa-fw"
+							header="Confirmação de exclusão"
 							message="Ao excluir esta ferramenta, a cotação referente
-							também será apagada. Deseja continuar?"/>
+							também será apagada. Deseja continuar?" />
 
 					</p:commandButton>
 
@@ -67,7 +69,7 @@
 
 			<p:dataTable value="#{ferramentaBean.todasFerramentas}"
 				var="ferramenta" emptyMessage="Nenhum ferramenta cadastrada."
-				rows="15" id="ferramentas-table" paginator="true"
+				rows="10" id="ferramentas-table" paginator="true"
 				rowStyleClass="#{ferramenta.disponivel ? '' : 'vermelho'}"
 				selection="#{ferramentaBean.ferramentaSelecionado}"
 				selectionMode="single" rowKey="#{ferramenta.idferramenta}">

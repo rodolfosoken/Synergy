@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.Cotacao;
-import br.com.synergy.model.CotacaoFerramenta;
+import br.com.synergy.model.CotacaoMaterial;
 import br.com.synergy.repository.Cotacoes;
-import br.com.synergy.service.CadastroCotacaoFerramentaService;
+import br.com.synergy.service.CadastroCotacaoService;
 import br.com.synergy.util.FacesMessages;
 
 @Named
 @ViewScoped
-public class CotacaoPesquisaBean implements Serializable {
+public class CotacaoPesquisaMaterialBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,15 +30,15 @@ public class CotacaoPesquisaBean implements Serializable {
 	private FacesMessages messages;
 	
 	@Inject
-	private CadastroCotacaoFerramentaService cadastro;
+	private CadastroCotacaoService cadastro;
 
 	private Cotacao cotacaoSelecionada;
 
-	private List<CotacaoFerramenta> todasCotacoes;
+	private List<CotacaoMaterial> todasCotacoes;
 
 
-	public String editarCotacaoFerramenta() {
-		String url = "cotacaoFerramenta?edicao="
+	public String editarCotacaoMaterial() {
+		String url = "cotacaoMaterial?edicao="
 				+ cotacaoSelecionada.getIdcotacao() + "faces-redirect=true";
 
 		return url;
@@ -65,18 +65,12 @@ public class CotacaoPesquisaBean implements Serializable {
 	}
 	
 	public void consultar() {
-		System.out.println("DEBUG: Consultar todas as cotações ferramentas");
-		todasCotacoes = cotacoes.todasCotacoesFerramentas();
+		System.out.println("DEBUG: Consultar todas as cotações materiais");
+		todasCotacoes = cotacoes.todasCotacoesMaterial();
 	}
 
-	public String editarCotacaoMaterial() {
-		String url = "cotacaoMaterial?edicao="
-				+ cotacaoSelecionada.getIdcotacao() + "faces-redirect=true";
 
-		return url;
-	}
-
-	public List<CotacaoFerramenta> getTodasCotacaoesFerramenta() {
+	public List<CotacaoMaterial> getTodasCotacaoesMaterial() {
 		return todasCotacoes;
 	}
 

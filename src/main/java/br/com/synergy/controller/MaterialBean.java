@@ -44,7 +44,9 @@ public class MaterialBean implements Serializable {
 	}
 	
 	public void salvar(){
-
+		if(!isEditando() && materialEdicao.getCotacao()==null)
+			materialEdicao.setDisponivel(true);
+			
 		cadastroMaterial.salvar(materialEdicao); 
 		consultar();
 
@@ -55,6 +57,7 @@ public class MaterialBean implements Serializable {
 		//atualizando a tabela e lança a mensagem de sucesso
 		RequestContext.getCurrentInstance().update(
 				Arrays.asList("frm:messages", "frm:materiais-table"));
+		
 	}
 
 	public void prepararNovoCadastro(){
@@ -75,6 +78,9 @@ public class MaterialBean implements Serializable {
 	}
 
 	
+	public boolean isEditando(){
+		return materialEdicao.getIdmaterial()!=null;
+	}
 	
 	//getters e setters
 	public List<Material> getTodosMateriais() {

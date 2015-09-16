@@ -6,36 +6,36 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Cotação Ferramenta</ui:define>
+<ui:define name="title">Cotação Material</ui:define>
 	<ui:define name="body">
 		<f:metadata>
 			<f:viewParam name="bug" />
-			<f:viewAction action="#{cotacaoPesquisaFerrmanetaBean.consultar}" />
-			<f:event listener="#{cotacaoPesquisaFerrmanetaBean.okMessage}"
+			<f:viewAction action="#{cotacaoPesquisaMaterialBean.consultar}" />
+			<f:event listener="#{cotacaoPesquisaMaterialBean.okMessage}"
 				type="preRenderView" />
 		</f:metadata>
 
-		<h1>Cotações de Ferramentas</h1>
+		<h1>Cotações de Materiais</h1>
 
 		<h:form id="frm">
 
 			<p:messages id="messages" closable="true" />
 
-			<p:hotkey bind="f2" action="cotacaoFerramenta?faces-redirect=true" />
+			<p:hotkey bind="f2" action="cotacaoMaterial?faces-redirect=true" />
 
 			<p:toolbar id="toolbar" style="margin-bottom:20px">
 				<f:facet name="left">
 					<p:commandButton id="novo-button" value="Novo (F2)"
 						icon="fa fa-file" process="@this"
-						action="cotacaoFerramenta?faces-redirect=true" />
+						action="cotacaoMaterial?faces-redirect=true" />
 
 				</f:facet>
 			</p:toolbar>
 
 
-			<p:dataTable id="table-cotacaoFerramenta" paginator="true"
+			<p:dataTable id="table-cotacaoMaterial" paginator="true"
 				emptyMessage="nenhuma cotação encontrada" rows="10"
-				value="#{cotacaoPesquisaFerrmanetaBean.todasCotacaoesFerramenta}"
+				value="#{cotacaoPesquisaMaterialBean.todasCotacaoesMaterial}"
 				var="cotacao" rowKey="#{cotacao.idcotacao}"
 				style="text-align: center"
 				rowStyleClass="#{cotacao.comprado ? 'verde':''} 
@@ -103,19 +103,19 @@
 
 				<p:column headerText="Editar" width="15">
 					<p:commandButton icon="fa fa-pencil-square-o" id="editar-button"
-						action="#{cotacaoPesquisaFerrmanetaBean.editarCotacaoFerramenta}">
+						action="#{cotacaoPesquisaMaterialBean.editarCotacaoMaterial}">
 						<f:setPropertyActionListener value="#{cotacao}"
-							target="#{cotacaoPesquisaFerrmanetaBean.cotacaoSelecionada}" />
+							target="#{cotacaoPesquisaMaterialBean.cotacaoSelecionada}" />
 					</p:commandButton>
 				</p:column>
 
 				<p:column headerText="Excluir" width="15">
 					<p:commandButton icon="fa fa-trash" process="@this" update="frm"
-						action="#{cotacaoPesquisaFerrmanetaBean.excluir}">
+						action="#{cotacaoPesquisaMaterialBean.excluir}">
 						<f:setPropertyActionListener value="#{cotacao}"
-							target="#{cotacaoPesquisaFerrmanetaBean.cotacaoSelecionada}" />
+							target="#{cotacaoPesquisaMaterialBean.cotacaoSelecionada}" />
 						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
-							message="Ao excluir uma cotação a ferramenta também será excluida, 
+							message="Ao excluir uma cotação a material também será excluida, 
 							deseja continuar?" />
 					</p:commandButton>
 

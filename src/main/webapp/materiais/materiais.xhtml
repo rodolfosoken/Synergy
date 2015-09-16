@@ -14,16 +14,24 @@
 			<f:viewAction action="#{materialBean.consultar}" />
 		</f:metadata>
 		<h:form id="frm">
-	
 
+			<p:messages id="messages" />
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
 
-					<p:commandButton value="Editar" icon="ui-icon-folder-open"
-						update="cadastro-material" process="@this"
+					<p:commandButton value="Novo" icon="fa fa-file" process="@this"
+						update="material-dialog" oncomplete="PF('materialDialog').show()">
+						<p:resetInput target="material-dialog" />
+					</p:commandButton>
+
+					<p:commandButton value="Editar" icon="fa fa-folder-open"
+						process="@this" update="material-dialog"
+						oncomplete="PF('materialDialog').show()"
 						disabled="#{materialBean.materialSelecionado==null}">
-						<f:setPropertyActionListener value="#{materialBean.materialSelecionado}"
-							target="#{materialBean.materialEdicao}" />
+						<p:resetInput target="material-dialog" />
+						<f:setPropertyActionListener
+							value="#{materialBean.materialSelecionado}"
+							target="#{cotacaoMaterialBean.cotacaoMaterial.material}" />
 					</p:commandButton>
 
 					<span class="ui-separator"> <span
@@ -50,50 +58,30 @@
 				<f:facet name="right">
 					<p:commandButton icon="ui-icon-arrowthickstop-1-s" value="Exportar"
 						title="Exportar para XLS" ajax="false" immediate="true">
-						<p:dataExporter type="xls" target="materiais-table" fileName="Materiais" />
+						<p:dataExporter type="xls" target="materiais-table"
+							fileName="Materiais" />
 					</p:commandButton>
 
 				</f:facet>
 			</p:toolbar>
 
-			<h:panelGrid columns="2" id="cadastro-material">
-				
-				<p:defaultCommand target="salvar-materialButton" scope="cadastro-material" />
-				<p:messages id="messages" closable="true"/>
-
-
-				<p:outputLabel value="Material Específico" for="materialEspc" />
-				<p:inputText id="materialEspc" size="30"
-					value="#{materialBean.materialEdicao.materialEspc}" />
-
-				<p:outputLabel value="Material" for="material" />
-				<p:inputText id="material" value="#{materialBean.materialEdicao.material}" />
-
-				<p:outputLabel value="Descrição" for="desc" />
-				<p:inputText id="desc" value="#{materialBean.materialEdicao.desc}" />
-
-				<p:commandButton value="Salvar" action="#{materialBean.salvar}"
-					update="cadastro-material" id="salvar-materialButton" />
-
-			</h:panelGrid>
-
-
-
 			<p:dataTable value="#{materialBean.todosMateriais}" var="material"
-				emptyMessage="Nenhum material cadastrada." rows="10" id="materiais-table"
-				paginator="true" paginatorPosition="bottom"
-				selection="#{materialBean.materialSelecionado}" selectionMode="single"
-				rowKey="#{material.idmaterial}">
+				emptyMessage="Nenhum material cadastrada." rows="10"
+				id="materiais-table" paginator="true" paginatorPosition="bottom"
+				rowStyleClass="#{material.disponivel ? '' : 'vermelho'}"
+				selection="#{materialBean.materialSelecionado}"
+				selectionMode="single" rowKey="#{material.idmaterial}">
 
 				<!-- Quando selecionar disparar evento -->
 				<p:ajax event="rowSelect" update=":frm:toolbar" />
 				<p:ajax event="rowUnselect" update=":frm:toolbar" />
 
-				<p:column headerText="ID" sortBy="#{material.idmaterial}">
+				<p:column headerText="ID" sortBy="#{material.idmaterial}" width="30">
 					<h:outputText value="#{material.idmaterial}" />
 				</p:column>
 
-				<p:column headerText="Material Específico" sortBy="#{material.materialEspc}">
+				<p:column headerText="Material Específico"
+					sortBy="#{material.materialEspc}">
 					<h:outputText value="#{material.materialEspc}" />
 				</p:column>
 
@@ -104,9 +92,27 @@
 				<p:column headerText="Descrição" sortBy="#{material.desc}">
 					<h:outputText value="#{material.desc}" />
 				</p:column>
+
+				<p:column headerText="Kardex" sortBy="#{material.kardex}">
+					<h:outputText value="#{material.kardex}" />
+				</p:column>
+
+				<p:column headerText="QK" sortBy="#{material.qk}">
+					<h:outputText value="#{material.qk}" />
+				</p:column>
+
+				<p:column headerText="Cor" sortBy="#{material.cor}">
+					<h:outputText value="#{material.cor}" />
+				</p:column>
+
+
 			</p:dataTable>
 
-
+			<p:dialog header="Cadastro Material" id="material-dialog"
+				widgetVar="materialDialog" resizable="false" modal="true"
+				closeOnEscape="true">
+				<ui:include src="/materiais/templates/adicionarMaterial.xhtml"></ui:include>
+			</p:dialog>
 
 
 		</h:form>

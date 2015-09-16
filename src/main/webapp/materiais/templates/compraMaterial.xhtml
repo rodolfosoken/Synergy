@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<p:panelGrid columns="1">
+		<f:facet name="header">Detalhes da Compra</f:facet>
+		<p:panelGrid columns="3" id="dados-pep">
+			<p:outputLabel value="PEP" for="pep" />
+			<p:autoComplete style="margin-right:30px"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.pep}"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.comprado}"
+				var="pep" converter="pepConverter" dropdown="true"
+				itemLabel="#{pep.numero} #{pep.descricao}" forceSelection="true"
+				itemValue="#{pep}" required="true"
+				completeMethod="#{cotacaoMaterialBean.completarPep}" id="pep">
+				<p:ajax event="itemSelect" action="#{cotacoaMaterialBean.okPep}"
+					update="grid-dados-compra dados-pep :frm:messages" />
+			</p:autoComplete>
+
+		</p:panelGrid>
+		<p:panelGrid columns="2">
+			<p:panelGrid columns="2" id="grid-dados-compra">
+				<f:facet name="header">Dados da Compra</f:facet>
+				<p:outputLabel value="Fornecedor" for="fornecedor-compra" />
+				<p:outputLabel id="fornecedor-compra" readonly="true"
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.participante.fornecedor.nome}" />
+				<p:outputLabel value="Data de Aquisição" for="data" />
+				<h:outputText
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.dataAquisicao}"
+					id="data">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				<p:outputLabel value="Preço" for="preco" />
+				<p:outputLabel id="preco" readonly="true"
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.preco}" />
+				<p:outputLabel value="PEP" />
+				<p:outputLabel
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.pep.numero}" />
+
+			</p:panelGrid>
+
+			<p:panelGrid columns="3">
+				<f:facet name="header">Avaliação de Compra</f:facet>
+				<p:outputLabel value="Prazo" for="prazo" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="prazo" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoMaterialBean.cotacaoMaterial.comprado}"
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.okPrazo}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoMaterialBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
+
+				<p:outputLabel value="Especificações" for="espec" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="espec" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoMaterialBean.cotacaoMaterial.comprado}"
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.okEspec}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoMaterialBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
+
+				<p:outputLabel value="Visita" for="visita" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="visita" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoMaterialBean.cotacaoMaterial.comprado}"
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.okVisita}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoMaterialBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
+
+				<p:outputLabel value="Assistência" for="assist" />
+				<p:outputLabel value="Ok?" />
+				<p:selectBooleanButton id="assist" onLabel="Sim" offLabel="Não"
+					disabled="#{cotacaoMaterialBean.cotacaoMaterial.comprado}"
+					value="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial.okAssist}">
+					<f:ajax event="valueChange"
+						listener="#{cotacaoMaterialBean.avaliaCompra}"></f:ajax>
+				</p:selectBooleanButton>
+			</p:panelGrid>
+		</p:panelGrid>
+	</p:panelGrid>
+
+</h:body>
+
+</html>

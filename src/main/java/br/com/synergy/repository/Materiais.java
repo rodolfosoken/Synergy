@@ -26,6 +26,7 @@ public class Materiais implements Serializable {
 	public void excluir(Material material) {
 		material = buscaPorId(material.getIdmaterial());
 		em.remove(material);
+		em.flush();
 	}
 
 	public Material buscaPorId(Long id) {

@@ -11,7 +11,6 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 import br.com.synergy.model.Ferramenta;
-import br.com.synergy.model.ParticipanteFerramenta;
 import br.com.synergy.repository.Ferramentas;
 import br.com.synergy.service.CadastroFerramentaService;
 import br.com.synergy.util.FacesMessages;
@@ -21,78 +20,75 @@ import br.com.synergy.util.FacesMessages;
 public class FerramentaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private Ferramentas ferramentas;
-	
+
 	@Inject
 	private CadastroFerramentaService cadastroFerramenta;
-	
+
 	@Inject
 	private FacesMessages messages;
-	
+
 	private List<Ferramenta> todasFerramentas;
-	
+
 	private Ferramenta ferramentaEdicao = new Ferramenta();
 	private Ferramenta ferramentaSelecionado;
-	
-	//metodas utilitários
-	
-	//metodo chamado no inicio da pagina em metadata, para popular datatable
-	public void consultar() {
-	todasFerramentas = ferramentas.todas();
-	}
-	
-	public void salvar(){
 
-		cadastroFerramenta.salvar(ferramentaEdicao); 
+	// metodas utilitários
+
+	// metodo chamado no inicio da pagina em metadata, para popular datatable
+	public void consultar() {
+		System.out.println("DEBUG: Executando Consultar em ferramentas");
+		todasFerramentas = ferramentas.todas();
+	}
+
+	public void salvar() {
+
+		cadastroFerramenta.salvar(ferramentaEdicao);
 		consultar();
 
 		messages.info("Ferramenta salvo com sucesso!");
 		prepararNovoCadastro();
-		
-		//pega lista de componentes para atualizar
-		//atualizando a tabela e lança a mensagem de sucesso
+
+		// pega lista de componentes para atualizar
+		// atualizando a tabela e lança a mensagem de sucesso
 		RequestContext.getCurrentInstance().update(
 				Arrays.asList("frm:messages", "frm:ferramentas-table"));
 	}
 
-	public void prepararNovoCadastro(){
+	public void prepararNovoCadastro() {
 		ferramentaEdicao = new Ferramenta();
 	}
-	
-	
-	public void excluir(){
+
+	public void excluir() {
 		cadastroFerramenta.excluir(ferramentaSelecionado);
-		messages.info("Ferramenta: "+ferramentaSelecionado.getNome()+" excluido com sucesso!");
-		ferramentaSelecionado=null;
+		messages.info("Ferramenta: " + ferramentaSelecionado.getNome()
+				+ " excluido com sucesso!");
+		ferramentaSelecionado = null;
 		consultar();
-		
-	}
-	
-	public List<ParticipanteFerramenta> completarParticipante(String nome){
-		return ferramentas.buscaPorParticipante(nome.toString());
+
 	}
 
-	
-	
-	//getters e setters
+	// getters e setters
 	public List<Ferramenta> getTodasFerramentas() {
 		return todasFerramentas;
 	}
+
 	public Ferramenta getFerramentaEdicao() {
 		return ferramentaEdicao;
 	}
+
 	public void setFerramentaEdicao(Ferramenta ferramentaEdicao) {
 		this.ferramentaEdicao = ferramentaEdicao;
 	}
+
 	public Ferramenta getFerramentaSelecionado() {
 		return ferramentaSelecionado;
 	}
+
 	public void setFerramentaSelecionado(Ferramenta ferramentaSelecionado) {
 		this.ferramentaSelecionado = ferramentaSelecionado;
 	}
 
-	
-	
 }

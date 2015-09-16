@@ -9,219 +9,146 @@
 	<ui:define name="title">Contações Materiais</ui:define>
 	<ui:define name="body">
 
+		<f:metadata>
+			<f:viewParam name="bug" />
+			<f:event listener="#{cotacaoMaterialBean.verificaEdicao}"
+				type="preRenderView" />
+		</f:metadata>
+
+
 		<h1>Cotação para Material</h1>
 
 		<h:form id="frm">
-			<p:messages id="messages" />
+
+			<p:messages id="messages" closable="true" />
 			<p:growl id="growl" />
 
-			<p:toolbar id="toolbar">
+			<p:toolbar id="toolbar" style="margin-bottom:20px">
+
+				<f:facet name="left">
+					<p:commandButton icon="fa fa-check-square-o"
+						value="Marcar como Concluída"
+						action="#{cotacaoMaterialBean.concluir}"
+						rendered="#{cotacaoMaterialBean.editando}"
+						disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+						process="@this" update="frm" />
+
+					<p:commandButton icon="fa fa-square-o" value="Não Concluída"
+						action="#{cotacaoMaterialBean.desmarcar}"
+						rendered="#{cotacaoMaterialBean.editando}"
+						disabled="#{!cotacaoMaterialBean.cotacaoMaterial.concluida}"
+						process="@this" update="frm" />
+
+					<p:outputLabel value="Concluído em: " style="margin-left:20px"
+						rendered="#{cotacaoMaterialBean.cotacaoMaterial.concluida}" />
+					<h:outputText
+						rendered="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+						value="#{cotacaoMaterialBean.cotacaoMaterial.dataTermino}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+
+				</f:facet>
+
 				<f:facet name="right">
-				
+
+					<p:commandButton icon="fa fa-eraser" value="Limpar" process="@this"
+						update="frm" action="#{cotacaoMaterialBean.limpar}"
+						rendered="#{!cotacaoMaterialBean.editando}"
+						disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}">
+						<p:confirm icon="ui-icon-alert" header="Limpar Campos"
+							message="Deseja limpar todos os campos?" />
+					</p:commandButton>
+
+					<p:confirmDialog global="true">
+						<p:commandButton value="Ok" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Cancelar" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
 
 					<span class="ui-separator"> <span
 						class="ui-icon ui-icon-grip-dotted-vertical" />
 					</span>
 
+					<p:commandButton value="Cancelar"
+						action="pesquisaCotacaoMaterial?faces-redirect=true"
+						style="margin-right:10px" process="@this" id="cancelar" />
 
-					<p:commandButton value="Salvar Cotação" icon=" ui-icon-disk"
-						action="#{cotacaoMaterialBean.salvarCotacao}" process="@this grid-cotacao"
+					<p:commandButton value="Salvar Cotação" icon="fa fa-floppy-o"
+						action="#{cotacaoMaterialBean.salvarCotacao}"
+						process="dados-cotacao :frm:tabView:tabProduto :frm:tabView:fornecedores-table @this"
 						update="frm">
 					</p:commandButton>
 
 				</f:facet>
 			</p:toolbar>
+			<p:fieldset legend="Dados da Cotação" toggleable="true"
+				toggleSpeed="500" id="dados-cotacao">
+				<p:panelGrid columns="2">
 
-			<p:panelGrid columns="4" style="margin-top:20px" id="grid-cotacao">
+					<p:panelGrid columns="4" style="margin-top:20px" id="cotacao-grid">
+						<p:outputLabel value=" Usuário " for="usuario" />
+						<p:inputText id="usuario" name="usuario" readonly="true"
+							disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+							value="#{cotacaoMaterialBean.cotacaoMaterial.usuario.nome}" />
 
-				<p:outputLabel value=" Responsável " for="responsavel" />
-				<p:inputText id="responsavel" name="responsavel" size="25"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.responsavel}" />
+						<p:outputLabel value=" Data Início: " for="dataInicio" />
+						<h:outputText id="dataInicio" size="15" disabled="true"
+							value="#{cotacaoMaterialBean.cotacaoMaterial.dataInicio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
 
-				<p:outputLabel value=" Data Início: " for="dataInicio" />
-				<p:calendar id="dataInicio" size="15" pattern="dd/MM/yyyy"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.dataInicio}" />
+						<p:outputLabel value="Responsável:" for="responsavel" />
+						<p:autoComplete id="responsavel" style="margin-right:30px"
+							disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+							value="#{cotacaoMaterialBean.cotacaoMaterial.responsavel}"
+							var="usuario" converter="usuarioConverter" dropdown="true"
+							itemLabel="#{usuario.nome}" forceSelection="true"
+							itemValue="#{usuario}" required="true"
+							completeMethod="#{cotacaoMaterialBean.completarUsuario}" />
 
-				<p:outputLabel value=" Descrição do Material " for="descricao" />
-				<p:inputText id="descricao" name="descricao" size="30"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.descricao}" />
 
-				<p:outputLabel value=" Data Término: " for="dataTermino" />
-				<p:calendar id="dataTermino" size="15" pattern="dd/MM/yyyy"
-					value="#{cotacaoMaterialBean.cotacaoMaterial.dataTermino}" />
+						<p:outputLabel value=" Data Prevista: " for="dataPrevisao" />
+						<p:calendar id="dataPrevisao" size="16" pattern="dd/MM/yyyy"
+							disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+							value="#{cotacaoMaterialBean.cotacaoMaterial.dataPrevisao}" />
 
-			</p:panelGrid>
+						<p:outputLabel value="SOR" for="sor" />
+						<p:inputText id="sor"
+							value="#{cotacaoMaterialBean.cotacaoMaterial.sor}" />
 
+						<p:outputLabel value="BDC" for="bdc" />
+						<p:inputText id="bdc"
+							value="#{cotacaoMaterialBean.cotacaoMaterial.bdc}" />
+
+					</p:panelGrid>
+
+					<h:panelGrid columns="2" style="margin-left:10px">
+						<p:outputLabel value=" Descrição da Cotação" for="descricao" />
+						<p:inputTextarea id="descricao" name="descricao" rows="4"
+							cols="40"
+							disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+							value="#{cotacaoMaterialBean.cotacaoMaterial.descricao}" />
+					</h:panelGrid>
+
+				</p:panelGrid>
+			</p:fieldset>
 
 			<p:tabView id="tabView" style="margin-top: 20px" dynamic="true"
-				activeIndex="#{cotacaoMaterialBean.tabIndex}">
-				<p:tab title="1-Fornecedor" id="tabFornecedor">
-					<p:defaultCommand target="adicionar-fornecedor"
-						scope="tabFornecedor" />
-					<h:panelGrid columns="4" style="margin-bottom:10px">
+				activeIndex="#{cotacaoMaterialBean.indexTab}">
 
-						<p:outputLabel value="Fornecedor: " for="pesquisaFornecedor" />
-						<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="50"
-							completeMethod="#{cotacaoMaterialBean.completarFornecedor}"
-							var="fornecedor" itemLabel="#{fornecedor.nome}"
-							itemValue="#{fornecedor}" forceSelection="true"
-							converter="fornecedorConverter" required="true"
-							value="#{cotacaoMaterialBean.participanteMaterial.fornecedor}">
-						</p:autoComplete>
-
-						<p:spacer width="100" height="10" />
-
-
-						<p:commandButton id="adicionar-fornecedor" value="Adicionar"
-							icon="ui-icon-plus"
-							action="#{cotacaoMaterialBean.adicionarFornecedor}"
-							process="tabFornecedor"
-							update="pesquisaFornecedor fornecedores-table  :frm:messages" />
-
-					</h:panelGrid>
-
-					<p:commandButton id="remover-fornecedor" value="Remover"
-						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoMaterialBean.removerFornecedor}"
-						process="@this" update="tabView"
-						disabled="#{cotacaoMaterialBean.participanteSelecionado==null}" />
-					<p:outputLabel />
-
-					<p:dataTable
-						value="#{cotacaoMaterialBean.cotacaoMaterial.participantesMateriais}"
-						var="participante" emptyMessage="Nenhum fornecedor cadastrado."
-						id="fornecedores-table"
-						selection="#{cotacaoMaterialBean.participanteSelecionado}"
-						selectionMode="single"
-						rowKey="#{participante.fornecedor.idfornecedor}">
-
-						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView"
-							listener="#{cotacaoMaterialBean.onRowSelection}" />
-						<p:ajax event="rowUnselect" update=":frm:tabView" />
-
-						<p:column headerText="ID" style="text-align: center; width: 60px">
-							<h:outputText value="#{participante.fornecedor.idfornecedor}" />
-						</p:column>
-
-						<p:column headerText="CNPJ"
-							style="text-align: center; width: 160px">
-							<h:outputText value="#{participante.fornecedor.cnpj}" />
-						</p:column>
-
-						<p:column headerText="Nome da Empresa"
-							style="text-align: center; width: 250px">
-							<h:outputText value="#{participante.fornecedor.nome}" />
-						</p:column>
-
-						<p:column headerText="Contato"
-							style="text-align: center; width: 100px">
-							<h:outputText value="#{participante.fornecedor.contato}" />
-						</p:column>
-
-						<p:column headerText="Telefone"
-							style="text-align: center; width: 100px">
-							<h:outputText value="#{participante.fornecedor.telefone}" />
-						</p:column>
-
-						<p:column headerText="Link"
-							style="text-align: center; width: 100px">
-							<h:outputText value="#{participante.fornecedor.linkSharepoint}" />
-						</p:column>
-
-
-					</p:dataTable>
-
+				<p:tab title="1-Material" id="tabProduto">
+					<ui:include src="/materiais/templates/adicionarMaterial.xhtml" />
 				</p:tab>
-				<p:tab title="2-Produtos do Fornecedor"
-					disabled="#{cotacaoMaterialBean.participanteSelecionado==null}"
-					id="tabProdutos">
 
-
-					<h:panelGrid columns="5" id="cadastro-material"
-						style="margin-bottom: 20px">
-
-						<p:outputLabel />
-						<p:outputLabel />
-						<p:outputLabel />
-						<p:outputLabel />
-						
-						
-						<p:commandButton value="Adicionar"
-							action="#{cotacaoMaterialBean.adicionarMaterial}"
-							update="produtos-table cadastro-material :frm:messages" process="@this tabProdutos"
-							id="salvar-materialButton" />
-
-
-						<p:outputLabel value="Material Específico" for="materialEspc" />
-						<p:inputText id="materialEspc" size="30" required="true"
-							value="#{cotacaoMaterialBean.materialEdicao.materialEspc}" />
-
-
-						<p:outputLabel value="Material" for="material" />
-						<p:inputText id="material"
-							value="#{cotacaoMaterialBean.materialEdicao.material}" />
-						<p:outputLabel />
-						
-
-						<p:outputLabel value="Descrição" for="descricao" />
-						<p:inputText id="descricao"
-							value="#{cotacaoMaterialBean.materialEdicao.desc}" />
-							
-
-						<p:outputLabel value="Valor" for="valor" />
-						<p:inputText id="valor" required="true" styleClass="dinheiro"
-							value="#{cotacaoMaterialBean.materialEdicao.valor}" />
-
-
-					</h:panelGrid>
-
-					<p:commandButton id="remover-material" value="Remover"
-						icon="ui-icon-minus" style="margin-bottom:10px"
-						action="#{cotacaoMaterialBean.removerMaterial}"
-						process="@this" update="@this produtos-table"
-						disabled="#{cotacaoMaterialBean.materialSelecionado==null}" />
-					<p:outputLabel />
-
-
-					<p:dataTable
-						value="#{cotacaoMaterialBean.participanteSelecionado.materiais}"
-						var="material" id="produtos-table"
-						selection="#{cotacaoMaterialBean.materialSelecionado}"
-						selectionMode="single" rowKey="#{material}"
-						emptyMessage="Nenhum produto associado ao fornecedor.">
-
-						<!-- Quando selecionar disparar evento -->
-						<p:ajax event="rowSelect" update=":frm:tabView:remover-material" />
-						<p:ajax event="rowUnselect" update=":frm:tabView:remover-material" />
-
-						<p:column headerText="Valor"
-							style="text-align: center; width: 60px">
-							<h:outputText value="#{material.valor}" />
-						</p:column>
-
-						<p:column headerText="Material Específico"
-							sortBy="#{material.materialEspc}">
-							<h:outputText value="#{material.materialEspc}" />
-						</p:column>
-
-						<p:column headerText="Material" sortBy="#{material.material}">
-							<h:outputText value="#{material.material}" />
-						</p:column>
-
-						<p:column headerText="Descrição" sortBy="#{material.desc}">
-							<h:outputText value="#{material.desc}" />
-						</p:column>
-
-
-					</p:dataTable>
-
-
-
+				<p:tab title="2-Fornecedores" id="tabFornecedor">
+					<ui:include src="/materiais/templates/selecionarFornecedor.xhtml" />
 				</p:tab>
-				<p:tab title="3-Compra do Material" disabled="true">
+
+				<p:tab title="3-Compra da Material"
+					disabled="#{cotacaoMaterialBean.cotacaoMaterial.compraMaterial == null}">
 					<h:panelGrid columns="2" cellpadding="10">
-						<h:outputText value="Recurso ainda não implementado" />
+						<ui:include src="/materiais/templates/compraMaterial.xhtml" />
 					</h:panelGrid>
 				</p:tab>
 			</p:tabView>

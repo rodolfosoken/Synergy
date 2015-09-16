@@ -51,8 +51,8 @@
 
 				<f:facet name="right">
 
-					<p:commandButton icon="fa fa-eraser" value="Limpar" process="@this" update="frm" 
-						action="#{cotacaoFerramentaBean.limpar}"
+					<p:commandButton icon="fa fa-eraser" value="Limpar" process="@this"
+						update="frm" action="#{cotacaoFerramentaBean.limpar}"
 						rendered="#{!cotacaoFerramentaBean.editando}"
 						disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}">
 						<p:confirm icon="ui-icon-alert" header="Limpar Campos"
@@ -108,16 +108,26 @@
 							completeMethod="#{cotacaoFerramentaBean.completarUsuario}" />
 
 
-						<p:outputLabel value=" Data Prevista: " for="dataPrevisao" />
+						<p:outputLabel value=" Data Prevista:" for="dataPrevisao" />
 						<p:calendar id="dataPrevisao" size="16" pattern="dd/MM/yyyy"
 							disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.dataPrevisao}" />
+
+						<p:outputLabel value="SOR" for="sor" />
+						<p:inputText id="sor"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.sor}" />
+
+						<p:outputLabel value="BDC" for="bdc" />
+						<p:inputText id="bdc"
+							value="#{cotacaoFerramentaBean.cotacaoFerramenta.bdc}" />
+
 					</p:panelGrid>
 
 					<h:panelGrid columns="2" style="margin-left:10px">
 						<p:outputLabel value=" Descrição da Cotação" for="descricao" />
 						<p:inputTextarea id="descricao" name="descricao" rows="4"
 							cols="40"
+							disabled="#{cotacaoFerramentaBean.cotacaoFerramenta.concluida}"
 							value="#{cotacaoFerramentaBean.cotacaoFerramenta.descricao}" />
 					</h:panelGrid>
 

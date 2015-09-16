@@ -71,6 +71,36 @@ public class Cotacoes implements Serializable {
 		
 		return result;
 	}
+	
+	
+	public CotacaoMaterial buscaFetchParticipantesCotacaoMaterial(Long id){
+		Query query = (Query) em.createQuery("select c from CotacaoMaterial c join fetch c.participantesMateriais where c.id = :id");
+	    query.setParameter("id", id);
+	 
+	    CotacaoMaterial result = null;
+	    try {
+	        result = (CotacaoMaterial) query.getSingleResult();
+	    } catch (NoResultException e) {
+	        // no result found
+	    }
+		
+		return result;
+	}
+
+	public CotacaoMaterial buscaFetchCompraMaterial(Long id) {
+		Query query = (Query) em.createQuery("select c from CotacaoMaterial c join fetch c.compraMaterial where c.id = :id");
+	    query.setParameter("id", id);
+	 
+	    CotacaoMaterial result = null;
+	    try {
+	        result = (CotacaoMaterial) query.getSingleResult();
+	    } catch (NoResultException e) {
+	        System.out.println("DEBUG:nenhuma pep encontrada");
+	    }
+		
+		return result;
+	}
+	
 
 	
 	public Cotacao buscaPorId(Long id){

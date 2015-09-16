@@ -33,6 +33,7 @@ public class LoginBean implements Serializable{
 	}
 	
 	public void login() throws ServletException, IOException{
+		System.out.println("DEBUG:executando login");
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/login");
         dispatcher.forward((ServletRequest) context.getRequest(), (ServletResponse) context.getResponse());

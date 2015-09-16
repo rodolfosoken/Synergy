@@ -10,8 +10,10 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.synergy.model.FornecedorPeca;
 import br.com.synergy.model.Material;
 import br.com.synergy.model.Peca;
+import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.repository.Materiais;
 import br.com.synergy.repository.Pecas;
 import br.com.synergy.service.CadastroPecaService;
@@ -34,6 +36,9 @@ public class PecaBean implements Serializable {
 	
 	@Inject
 	private FacesMessages messages;
+	
+	@Inject
+	private Fornecedores fornecedores;
 	
 	private List<Peca> todasPecas;
 	
@@ -78,6 +83,9 @@ public class PecaBean implements Serializable {
 		return materiais.buscaPorMaterialEspc(nome.toString());
 	}
 	
+	public List<FornecedorPeca> completarFornecedor(String nome){
+		return fornecedores.buscaPorFornecedorPeca(nome);
+	}
 	
 	//getters e setters
 	public List<Peca> getTodasPecas() {

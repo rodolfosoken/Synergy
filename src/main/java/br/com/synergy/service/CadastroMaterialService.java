@@ -12,18 +12,18 @@ public class CadastroMaterialService implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Inject
-	private Materiais dao;
+	private Materiais materiais;
 
 		
 	
 	@Transacional
 	public void salvar(Material Material){
-		dao.guardar(Material);
+		materiais.guardar(Material);
 	}
 	
 	@Transacional
 	public void excluir(Material Material){
-		dao.excluir(Material);
+		materiais.excluir(Material);
 	}
 
 	

@@ -28,7 +28,7 @@ public class CotacaoMaterial extends Cotacao implements java.io.Serializable {
 	public CotacaoMaterial() {
 	}
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade= CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(name = "material_idmaterial", nullable = false)
 	public Material getMaterial() {
 		return this.material;
@@ -39,7 +39,7 @@ public class CotacaoMaterial extends Cotacao implements java.io.Serializable {
 	}
 
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name = "compra_material_idcompra_material")
 	public CompraMaterial getCompraMaterial() {
 		return this.compraMaterial;
@@ -50,7 +50,7 @@ public class CotacaoMaterial extends Cotacao implements java.io.Serializable {
 	}
 
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoMaterial",cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoMaterial",cascade = CascadeType.ALL, orphanRemoval=true)
 	public List<ParticipanteMaterial> getParticipantesMateriais() {
 		return this.participantesMateriais;
 	}
@@ -60,21 +60,5 @@ public class CotacaoMaterial extends Cotacao implements java.io.Serializable {
 		this.participantesMateriais = participantesMateriais;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CotacaoMaterial other = (CotacaoMaterial) obj;
-		if (this.getIdcotacao() == null) {
-			if (other.getIdcotacao() != null)
-				return false;
-		} else if (!this.getIdcotacao().equals(other.getIdcotacao()))
-			return false;
-		return true;
-	}
 
 }

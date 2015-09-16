@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -24,7 +23,6 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Ferramenta ferramenta;
 	private CompraFerramenta compraFerramenta;
-	private String sor;
 	private List<ParticipanteFerramenta> participantesFerramentas = new ArrayList<ParticipanteFerramenta>(
 			0);
 
@@ -52,7 +50,8 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 		this.compraFerramenta = compraFerramenta;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta", cascade= CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cotacaoFerramenta", 
+			cascade= CascadeType.ALL, orphanRemoval=true)
 	public List<ParticipanteFerramenta> getParticipantesFerramentas() {
 		return this.participantesFerramentas;
 	}
@@ -61,15 +60,6 @@ public class CotacaoFerramenta extends Cotacao implements java.io.Serializable {
 			List<ParticipanteFerramenta> participantesFerramentas) {
 		this.participantesFerramentas = participantesFerramentas;
 	}
-	
-	@Column(name = "SOR")
-	public String getSor() {
-		return this.sor;
-	}
-
-	public void setSor(String sor) {
-		this.sor = sor;
-	}
-	
+		
 
 }

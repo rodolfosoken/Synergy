@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+      
+      
+      	<!-- mensagens de erro -->
+				<p:messages id="msgs-dialog" />
+
+				<p:defaultCommand target="salvar-button" scope="fornecedor-dialog" />
+
+
+				<h:panelGrid columns="4" id="painel-dialog">
+					<p:outputLabel value="CNPJ" for="cnpj" />
+					<p:inputMask id="cnpj" size="18" maxlength="18"
+						value="#{fornecedorPecaBean.fornecedorEdicao.cnpj}"
+						mask="99.999.999/9999-99" required="true" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+					<p:outputLabel value="Fornecedor" for="fornecedor" />
+					<p:inputText id="fornecedor" size="30" required="true"
+						value="#{fornecedorPecaBean.fornecedorEdicao.nome}" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+
+					<p:outputLabel value="Contato" for="contato" />
+					<p:inputText id="contato"
+						value="#{fornecedorPecaBean.fornecedorEdicao.contato}" />
+
+					<p:outputLabel value="Cargo" for="cargo" />
+					<p:inputText id="cargo"
+						value="#{fornecedorPecaBean.fornecedorEdicao.cargo}" />
+
+
+					<p:outputLabel value="Telefone" for="telefone" />
+					<p:inputMask id="telefone" mask="(99) 9999-9999"
+						value="#{fornecedorPecaBean.fornecedorEdicao.telefone}" />
+
+
+					<p:outputLabel value="Celular" for="celular" />
+					<p:inputMask id="celular" mask="(99) 99999-9999"
+						value="#{fornecedorPecaBean.fornecedorEdicao.celular}" />
+
+
+					<p:outputLabel value="E-mail" for="email" />
+					<p:inputText id="email" size="30"
+						value="#{fornecedorPecaBean.fornecedorEdicao.email}" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+
+					<p:outputLabel value="Site" for="site" />
+					<p:inputText id="site" size="30"
+						value="#{fornecedorPecaBean.fornecedorEdicao.site}" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+
+					<p:outputLabel value="Apresentação (Link Sharepoint)"
+						for="linkSharepoint" />
+					<p:inputText id="linkSharepoint" size="30"
+						value="#{fornecedorPecaBean.fornecedorEdicao.linkSharepoint}" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+
+
+					<p:outputLabel value="Endereço" for="logradouro" />
+					<p:inputText id="logradouro" size="30"
+						value="#{fornecedorPecaBean.fornecedorEdicao.logradouro}" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+
+
+					<p:outputLabel value="Numero" for="numero" />
+					<p:inputText id="numero"
+						value="#{fornecedorPecaBean.fornecedorEdicao.numero}" />
+
+
+					<p:outputLabel value="Complemetno" for="complemento" />
+					<p:inputText id="complemento"
+						value="#{fornecedorPecaBean.fornecedorEdicao.complemento}" />
+
+
+					<p:outputLabel value="Bairro" for="bairro" />
+					<p:inputText id="bairro" size="30"
+						value="#{fornecedorPecaBean.fornecedorEdicao.bairro}" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+
+
+					<p:outputLabel value="CEP" for="cep" />
+					<p:inputMask id="cep" mask="99999-999"
+						value="#{fornecedorPecaBean.fornecedorEdicao.cep}" />
+
+					<p:outputLabel value="Estado" for="estado" />
+					<p:inputText id="estado"
+						value="#{fornecedorPecaBean.fornecedorEdicao.estado}" />
+
+					<p:outputLabel value="Observação" for="obs" />
+					<p:inputTextarea id="obs"
+						value="#{fornecedorPecaBean.fornecedorEdicao.obs}" />
+					<p:outputLabel />
+					<p:outputLabel />
+
+
+					<p:commandButton value="Salvar" id="salvar-button"
+						action="#{fornecedorPecaBean.salvar}"
+						process="fornecedor-dialog" update="msgs-dialog painel-dialog"
+						oncomplete="if (!args.validationFailed) PF('edicaoFornecedorDialog').hide()" />
+
+				</h:panelGrid>
+      
+</html>

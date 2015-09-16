@@ -6,6 +6,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +30,16 @@ public class Material implements java.io.Serializable {
 	private String materialEspc;
 	private String material;
 	private String desc;
-	private Boolean disponibilidade;
+	private Boolean disponivel;
 	private Double valor;
+	private String kardex;
+	private String qk;
+	private String cor;
+	private String textura;
+	private Double contracao;
+	private Double matl_recup;
+	private Double espessura;
+	private Double erro_espessura;
 	private CotacaoMaterial cotacao;
 	private List<Peca> pecas = new ArrayList<Peca>(0);
 
@@ -78,15 +87,14 @@ public class Material implements java.io.Serializable {
 	}
 
 	@Column(name = "disponibilidade")
-	public Boolean getDisponibilidade() {
-		return this.disponibilidade;
+	public Boolean getDisponivel() {
+		return this.disponivel;
 	}
 
-	public void setDisponibilidade(Boolean disponibilidade) {
-		this.disponibilidade = disponibilidade;
+	public void setDisponivel(Boolean disponibilidade) {
+		this.disponivel = disponibilidade;
 	}
-	
-	
+		
 	@Column(name="valor")
 	public Double getValor() {
 		return valor;
@@ -96,7 +104,79 @@ public class Material implements java.io.Serializable {
 		this.valor = valor;
 	}
 	
-	@OneToOne(mappedBy="material")
+	@Column(name="kardex")	
+	public String getKardex() {
+		return kardex;
+	}
+
+	public void setKardex(String kardex) {
+		this.kardex = kardex;
+	}
+	
+	@Column(name="qk")
+	public String getQk() {
+		return qk;
+	}
+
+	public void setQk(String qk) {
+		this.qk = qk;
+	}
+	
+	@Column(name="cor")
+	public String getCor() {
+		return cor;
+	}
+
+	public void setCor(String cor) {
+		this.cor = cor;
+	}
+	
+	@Column(name="textura")
+	public String getTextura() {
+		return textura;
+	}
+
+	public void setTextura(String textura) {
+		this.textura = textura;
+	}
+	
+	@Column(name="contracao")
+	public Double getContracao() {
+		return contracao;
+	}
+
+	public void setContracao(Double contracao) {
+		this.contracao = contracao;
+	}
+	
+	@Column(name="matl_recup")
+	public Double getMatl_recup() {
+		return matl_recup;
+	}
+	
+	public void setMatl_recup(Double matl_recup) {
+		this.matl_recup = matl_recup;
+	}
+
+	@Column(name="espessura")
+	public Double getEspessura() {
+		return espessura;
+	}
+
+	public void setEspessura(Double espessura) {
+		this.espessura = espessura;
+	}
+
+	@Column(name="erro_espessura")
+	public Double getErro_espessura() {
+		return erro_espessura;
+	}
+
+	public void setErro_espessura(Double erro_espessura) {
+		this.erro_espessura = erro_espessura;
+	}
+
+	@OneToOne(fetch=FetchType.LAZY , mappedBy="material",cascade=CascadeType.ALL,orphanRemoval=true)
 	public CotacaoMaterial getCotacao() {
 		return cotacao;
 	}

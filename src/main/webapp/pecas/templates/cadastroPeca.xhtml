@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:panelGrid columns="2" id="cadastro-peca">
+
+
+	<p:defaultCommand target="salvar-pecaButton" scope="cadastro-peca" />
+	<p:messages id="messages" />
+
+	<p:outputLabel value="Fornecedor: " for="pesquisaFornecedor" />
+	<h:panelGrid columns="2">
+		<p:autoComplete id="pesquisaFornecedor" dropdown="true" size="40"
+			completeMethod="#{pecaBean.completarFornecedor}" var="fornecedor"
+			itemLabel="#{fornecedor.idfornecedor} #{fornecedor.nome}"
+			itemValue="#{fornecedor}" forceSelection="true" required="true"
+			converter="fornecedorConverter" style="margin-right:50px"
+			value="#{pecaBean.pecaEdicao.fornecedor}">
+		</p:autoComplete>
+
+		<p:commandButton value="Novo" id="novo" icon="fa fa-user"
+			onclick="novoFornecedor()">
+		</p:commandButton>
+	</h:panelGrid>
+
+	<p:outputLabel value="Material" for="material" />
+	<h:panelGrid columns="2">
+	<p:autoComplete id="material" style="margin-right:50px"
+		required="true" value="#{pecaBean.pecaEdicao.material}"
+		dropdown="true" size="40"
+		completeMethod="#{pecaBean.completarMaterial}" var="material"
+		itemLabel="#{material.materialEspc}" itemValue="#{material}"
+		forceSelection="true">
+	</p:autoComplete>
+	<p:commandButton value="Novo" icon="fa fa-file"
+		onclick="novoMaterial()" />
+	</h:panelGrid>
+
+	<p:outputLabel value="Pn Less" for="pn" />
+	<p:inputText id="pn" size="30" value="#{pecaBean.pecaEdicao.pn}" />
+
+	<p:outputLabel value="Part Name" for="partName" />
+	<p:inputText id="partName" value="#{pecaBean.pecaEdicao.partName}" />
+
+	<p:outputLabel value="Descrição" for="descricao" />
+	<p:inputText id="descricao" value="#{pecaBean.pecaEdicao.descricao}" />
+
+
+	<p:outputLabel value="UPC" for="upc" />
+	<p:inputText id="upc" value="#{pecaBean.pecaEdicao.upc}" />
+
+	<p:outputLabel value="FNA" for="fna" />
+	<p:inputText id="fna" value="#{pecaBean.pecaEdicao.fna}" />
+
+	<p:outputLabel />
+	<p:commandButton value="Salvar" action="#{pecaBean.salvar}"
+		update="cadastro-peca frm" id="salvar-pecaButton" style="float:right"
+		oncomplete="if (!args.validationFailed) PF('cadastroPeca').hide()" />
+
+</h:panelGrid>
+
+</html>

@@ -26,7 +26,7 @@ import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.repository.Peps;
 import br.com.synergy.repository.Usuarios;
 import br.com.synergy.security.UsuarioPrincipal;
-import br.com.synergy.service.CadastroCotacaoFerramentaService;
+import br.com.synergy.service.CadastroCotacaoService;
 import br.com.synergy.util.FacesMessages;
 
 @Named
@@ -47,7 +47,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	private Fornecedores fornecedores;
 
 	@Inject
-	private CadastroCotacaoFerramentaService cadastro;
+	private CadastroCotacaoService cadastro;
 
 	@Inject
 	private Cotacoes cotacoes;

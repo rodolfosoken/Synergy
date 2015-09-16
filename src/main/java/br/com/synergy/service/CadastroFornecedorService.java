@@ -15,17 +15,17 @@ public class CadastroFornecedorService implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private Fornecedores dao;
+	private Fornecedores fornecedores;
 		
 	
 	@Transacional
 	public void salvar(Fornecedor fornecedor){
-		dao.guardar(fornecedor);
+		fornecedores.guardar(fornecedor);
 	}
 	
 	@Transacional
 	public void excluir(Fornecedor fornecedor){
-		dao.excluir(fornecedor);
+		fornecedores.excluir(fornecedor);
 	}
 	
 

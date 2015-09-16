@@ -13,14 +13,22 @@
 		<f:metadata>
 			<f:viewAction action="#{pecaBean.consultar}" />
 		</f:metadata>
-		
+
 		<h:form id="frm">
-		
+
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					
+
+					<p:commandButton value="Novo" icon="fa fa-file"
+						action="#{pecaBean.prepararNovoCadastro}"
+						oncomplete="PF('cadastroPeca').show()" process="@this"
+						update="frm">
+						<p:resetInput target="peca-dialog" />
+					</p:commandButton>
+
 					<p:commandButton value="Editar" icon="ui-icon-folder-open"
 						update="cadastro-peca" process="@this"
+						oncomplete="PF('cadastroPeca').show()"
 						disabled="#{pecaBean.pecaSelecionado==null}">
 						<f:setPropertyActionListener value="#{pecaBean.pecaSelecionado}"
 							target="#{pecaBean.pecaEdicao}" />
@@ -56,42 +64,11 @@
 				</f:facet>
 			</p:toolbar>
 
-			<h:panelGrid columns="2" id="cadastro-peca">
-				
-				
-				<p:defaultCommand target="salvar-pecaButton" scope="cadastro-peca" />
-				<p:messages id="messages"/>
+			<p:remoteCommand name="novoFornecedor"
+				oncomplete="PF('edicaoFornecedorDialog').show()" />
 
-				<p:outputLabel value="Material" for="material" />
-				<f:attribute name="collectionType" value="java.util.ArrayList" />
-				<p:autoComplete id="material"
-					value="#{pecaBean.pecaEdicao.material}" dropdown="true" size="40"
-					completeMethod="#{pecaBean.completarMaterial}" var="material"
-					itemLabel="#{material.materialEspc}" itemValue="#{material}"
-					forceSelection="true">
-				</p:autoComplete>
-
-				<p:outputLabel value="Pn Less" for="pn" />
-				<p:inputText id="pn" size="30"
-					value="#{pecaBean.pecaEdicao.pn}" />
-
-				<p:outputLabel value="Part Name" for="partName" />
-				<p:inputText id="partName" value="#{pecaBean.pecaEdicao.partName}" />
-
-				<p:outputLabel value="Descrição" for="descricao" />
-				<p:inputText id="descricao" value="#{pecaBean.pecaEdicao.descricao}" />
-
-
-				<p:outputLabel value="upcFna" for="upcFna" />
-				<p:inputText id="upcFna" value="#{pecaBean.pecaEdicao.upcFna}" />
-
-
-				<p:commandButton value="Salvar" action="#{pecaBean.salvar}" 
-					update="cadastro-peca"  id="salvar-pecaButton"/>
-
-			</h:panelGrid>
-
-
+			<p:remoteCommand name="novoMaterial"
+				oncomplete="PF('materialDialog').show()" />
 
 			<p:dataTable value="#{pecaBean.todasPecas}" var="peca"
 				emptyMessage="Nenhum peca cadastrada." rows="10" id="pecas-table"
@@ -119,18 +96,35 @@
 					<h:outputText value="#{peca.descricao}" />
 				</p:column>
 
-				<p:column headerText="upcFna" sortBy="#{peca.upcFna}">
-					<h:outputText value="#{peca.upcFna}" />
+				<p:column headerText="upcFna" sortBy="#{peca.upc}">
+					<h:outputText value="#{peca.upc}" />
 				</p:column>
 
-				<p:column headerText="Material" sortBy="#{peca.material.materialEspc}">
+				<p:column headerText="Material"
+					sortBy="#{peca.material.materialEspc}">
 					<h:outputText value="#{peca.material.materialEspc}" />
 				</p:column>
 
 			</p:dataTable>
 
 
+			<p:dialog header="Cadastro Peça" id="peca-dialog"
+				widgetVar="cadastroPeca" modal="true" draggable="true"
+				closeOnEscape="true" resizable="false">
+				<ui:include src="/pecas/templates/cadastroPeca.xhtml" />
+			</p:dialog>
 
+			<p:dialog header="Novo Fornecedor" widgetVar="edicaoFornecedorDialog"
+				id="fornecedor-dialog" resizable="false" modal="true"
+				closeOnEscape="true">
+				<ui:include src="/pecas/templates/cadastroFornecedorPeca.xhtml" />
+			</p:dialog>
+
+			<p:dialog header="Cadastro Material" id="material-dialog"
+				widgetVar="materialDialog" resizable="false" modal="true"
+				closeOnEscape="true">
+				<ui:include src="/materiais/templates/adicionarMaterial.xhtml"></ui:include>
+			</p:dialog>
 
 
 		</h:form>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,72 +22,86 @@ import br.com.synergy.util.FacesMessages;
 public class FornecedorFerramentaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
-	private Fornecedores dao;
-	
+	private Fornecedores fornecedores;
+
 	@Inject
 	private CadastroFornecedorService cadastroFornecedor;
-	
+
 	@Inject
 	private FacesMessages messages;
-	
+
 	private List<Fornecedor> todosFornecedores;
-	
+
 	private FornecedorFerramenta fornecedorEdicao = new FornecedorFerramenta();
 	private FornecedorFerramenta fornecedorSelecionado;
-	
-	//metodos utilitários
-	
-	//metodo chamado no inicio da pagina em metadata, para popular datatable
-	public void consultar() {
-	todosFornecedores = dao.todos("Ferramenta");
-	}
-	
-	public void salvar(){
-		cadastroFornecedor.salvar(fornecedorEdicao);
-		consultar();
 
-		messages.info("Fornecedor salvo com sucesso!");
-		
-		//pega lista de componentes para atualizar
-		//atualizando a tabela e lança a mensagem de sucesso
-		RequestContext.getCurrentInstance().update(
-				Arrays.asList("frm:messages", "frm:fornecedores-table"));
+	// metodos utilitários
+
+	// metodo chamado no inicio da pagina em metadata, para popular datatable
+	public void consultar() {
+		todosFornecedores = fornecedores.todos("Ferramenta");
 	}
-	
-	public void prepararNovoCadastro(){
+
+	public void salvar() {
+		try {
+			cadastroFornecedor.salvar(fornecedorEdicao);
+			consultar();
+			messages.info("Fornecedor salvo com sucesso!");
+			// pega lista de componentes para atualizar
+			// atualizando a tabela e lança a mensagem de sucesso
+			RequestContext.getCurrentInstance().update(
+					Arrays.asList("frm:messages", "frm:fornecedores-table"));
+
+		} catch (Exception e) {
+			boolean continuar = true;
+			Throwable rootCause = e.getCause();
+			while(continuar){
+				if(rootCause.getCause()==null)
+					break;
+				rootCause=rootCause.getCause();
+			
+			}
+			messages.error("Não foi possível realizar a alteração:"+rootCause.getMessage());
+			FacesContext.getCurrentInstance().validationFailed();
+			
+		}
+	}
+
+	public void prepararNovoCadastro() {
 		fornecedorEdicao = new FornecedorFerramenta();
 	}
-	
-	
-	public void excluir(){
+
+	public void excluir() {
 		cadastroFornecedor.excluir(fornecedorSelecionado);
-		messages.info("Fornecedor: "+fornecedorSelecionado.getNome()+" excluido com sucesso!");
-		fornecedorSelecionado=null;
+		messages.info("Fornecedor: " + fornecedorSelecionado.getNome()
+				+ " excluido com sucesso!");
+		fornecedorSelecionado = null;
 		consultar();
-		
+
 	}
-	
-	//getters e setters
+
+	// getters e setters
 	public List<Fornecedor> getTodosFornecedores() {
 		return todosFornecedores;
 	}
+
 	public FornecedorFerramenta getFornecedorEdicao() {
 		return fornecedorEdicao;
 	}
+
 	public void setFornecedorEdicao(FornecedorFerramenta fornecedorEdicao) {
 		this.fornecedorEdicao = fornecedorEdicao;
 	}
+
 	public FornecedorFerramenta getFornecedorSelecionado() {
 		return fornecedorSelecionado;
 	}
-	public void setFornecedorSelecionado(FornecedorFerramenta fornecedorSelecionado) {
+
+	public void setFornecedorSelecionado(
+			FornecedorFerramenta fornecedorSelecionado) {
 		this.fornecedorSelecionado = fornecedorSelecionado;
 	}
 
-	
-
-	
-	
 }

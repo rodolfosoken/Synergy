@@ -39,6 +39,8 @@ public abstract class Cotacao implements java.io.Serializable {
 	private Boolean comprado;
 	private Usuario usuario;
 	private Usuario responsavel;
+	private String sor;
+	private String bdc;
 
 	public Cotacao() {
 	}
@@ -118,6 +120,24 @@ public abstract class Cotacao implements java.io.Serializable {
 
 	public void setComprado(Boolean comprado) {
 		this.comprado = comprado;
+	}
+	
+	@Column(name = "sor")
+	public String getSor() {
+		return this.sor;
+	}
+
+	public void setSor(String sor) {
+		this.sor = sor;
+	}
+	
+	@Column(name="bdc")
+	public String getBdc() {
+		return bdc;
+	}
+
+	public void setBdc(String bdc) {
+		this.bdc = bdc;
 	}
 
 	@OneToOne(fetch = FetchType.LAZY)

@@ -8,7 +8,7 @@ import br.com.synergy.model.Cotacao;
 import br.com.synergy.repository.Cotacoes;
 import br.com.synergy.util.Transacional;
 
-public class CadastroCotacaoFerramentaService implements Serializable{
+public class CadastroCotacaoService implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	

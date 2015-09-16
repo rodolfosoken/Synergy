@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:panelGrid columns="2">
+	<p:messages id="msgs-dialogMaterial" />
+	<p:outputLabel />
+	<p:defaultCommand target="salvar-material"
+		scope="material-dialog" />
+
+	<h:panelGrid columns="1" style="text-align:left">
+		<h:panelGrid columns="4" id="cadastro-material">
+
+			<p:outputLabel value="Material Específico" for="materialEspc" />
+			<p:inputText id="materialEspc" style="margin-right:20px"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.materialEspc}" />
+
+			<p:outputLabel value="Material" for="materialNome" />
+			<p:inputText id="materialNome"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.material}" />
+
+			<p:outputLabel value="Kardex" for="kardex" />
+			<p:inputText id="kardex" size="15"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.kardex}" />
+
+			<p:outputLabel value="Material QK" for="qk" />
+			<p:inputText id="qk" size="15"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.qk}" />
+
+			<p:outputLabel value="Cor" for="cor" />
+			<p:inputText id="cor" size="15"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.cor}" />
+
+			<p:outputLabel value="Textura" for="textura" />
+			<p:inputText id="textura" size="15"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.textura}" />
+
+			<p:outputLabel value="Contração" for="contracao" />
+			<p:inputText id="contracao" size="15"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.contracao}" />
+
+			<p:outputLabel value="Matl Recup" for="matl_recup" />
+			<p:inputText id="matl_recup" size="15"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.matl_recup}" />
+
+		</h:panelGrid>
+
+		<h:panelGrid columns="4">
+			<p:outputLabel value="Espessura" for="espessura"
+				style="margin-right:67px" />
+			<p:inputText id="espessura" size="15"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.espessura}" />
+			<p:outputLabel value="±" for="erro_espessura" />
+			<p:inputText id="erro_espessura" size="5"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.erro_espessura}" />
+		</h:panelGrid>
+
+		<h:panelGrid columns="2">
+			<p:outputLabel value="Descrição" for="descricaoMaterial"
+				style="margin-right:67px" />
+			<p:inputTextarea id="descricaoMaterial" cols="50"
+				disabled="#{cotacaoMaterialBean.cotacaoMaterial.concluida}"
+				value="#{cotacaoMaterialBean.cotacaoMaterial.material.desc}" />
+		</h:panelGrid>
+	</h:panelGrid>
+
+<p:outputLabel value=""/>
+	<p:commandButton value="Salvar" action="#{materialBean.salvar}"
+		process="material-dialog" id="salvar-material"
+		update="msgs-dialogMaterial material-dialog" style="float:right"
+		oncomplete="if(!args.validationFailed) PF('materialDialog').hide()">
+		<f:setPropertyActionListener target="#{materialBean.materialEdicao}"
+			value="#{cotacaoMaterialBean.cotacaoMaterial.material}" />
+	</p:commandButton>
+</h:panelGrid>
+
+
+</html>
