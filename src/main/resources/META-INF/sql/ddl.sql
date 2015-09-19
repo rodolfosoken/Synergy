@@ -74,6 +74,8 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`cotacao` (
   `concluida` TINYINT(1) NULL COMMENT '',
   `comprado` TINYINT(1) NULL COMMENT '',
   `usuario_responsavel` BIGINT NOT NULL COMMENT '',
+  `sor` VARCHAR(255) NULL COMMENT '',
+  `bdc` VARCHAR(255) NULL COMMENT '',
   PRIMARY KEY (`idcotacao`)  COMMENT '',
   INDEX `fk_cotacao_usuario1_idx` (`usuario_idusuario` ASC)  COMMENT '',
   INDEX `fk_cotacao_usuario2_idx` (`usuario_responsavel` ASC)  COMMENT '',
@@ -142,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`fornecedor` (
   `cep` VARCHAR(10) NULL COMMENT '',
   `estado` VARCHAR(45) NULL COMMENT '',
   `TIPO_FORNECEDOR` VARCHAR(45) NOT NULL COMMENT '',
+  `nota` INT(11) NULL COMMENT '',
   PRIMARY KEY (`idfornecedor`)  COMMENT '')
 ENGINE = InnoDB;
 
@@ -182,17 +185,17 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_ferramenta` (
   `data_aquisicao` DATE NULL COMMENT '',
   `preco` DOUBLE NULL COMMENT '',
   `pep_idpep` BIGINT NOT NULL COMMENT '',
-  `idfornecedor` BIGINT NOT NULL COMMENT '',
+  `idparticipante` BIGINT NOT NULL COMMENT '',
   PRIMARY KEY (`idcompra_ferramenta`)  COMMENT '',
   INDEX `fk_fornecimento_ferramenta_pep1_idx` (`pep_idpep` ASC)  COMMENT '',
-  INDEX `fk_compra_ferramenta_participante_ferramenta1_idx` (`idfornecedor` ASC)  COMMENT '',
+  INDEX `fk_compra_ferramenta_participante_ferramenta1_idx` (`idparticipante` ASC)  COMMENT '',
   CONSTRAINT `fk_fornecimento_ferramenta_pep1`
     FOREIGN KEY (`pep_idpep`)
     REFERENCES `sistema_gestao`.`pep` (`idpep`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_compra_ferramenta_participante_ferramenta1`
-    FOREIGN KEY (`idfornecedor`)
+    FOREIGN KEY (`idparticipante`)
     REFERENCES `sistema_gestao`.`participante_ferramenta` (`idparticipante_ferramenta`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -238,6 +241,14 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`material` (
   `descricao` VARCHAR(255) NULL COMMENT '',
   `disponibilidade` TINYINT(1) NULL COMMENT '',
   `valor` DOUBLE NULL COMMENT '',
+  `kardex` VARCHAR(45) NULL COMMENT '',
+  `qk` VARCHAR(45) NULL COMMENT '',
+  `cor` VARCHAR(45) NULL COMMENT '',
+  `textura` VARCHAR(45) NULL COMMENT '',
+  `contracao` DOUBLE NULL COMMENT '',
+  `matl_recup` DOUBLE NULL COMMENT '',
+  `espessura` DOUBLE NULL COMMENT '',
+  `erro_espessura` DOUBLE NULL COMMENT '',
   PRIMARY KEY (`idmaterial`)  COMMENT '')
 ENGINE = InnoDB;
 
@@ -298,7 +309,7 @@ ENGINE = InnoDB;
 -- Table `sistema_gestao`.`compra_material`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_material` (
-  `idcompra_material` BIGINT NOT NULL COMMENT '',
+  `idcompra_material` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
   `ok_prazo` TINYINT(1) NULL COMMENT '',
   `ok_espec` TINYINT(1) NULL COMMENT '',
   `ok_visita` TINYINT(1) NULL COMMENT '',
@@ -306,48 +317,18 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`compra_material` (
   `data_aquisicao` DATE NULL COMMENT '',
   `preco` DOUBLE NULL COMMENT '',
   `pep_idpep` BIGINT NOT NULL COMMENT '',
-  `idfornecedor` BIGINT NOT NULL COMMENT '',
+  `idparticipante` BIGINT NOT NULL COMMENT '',
   PRIMARY KEY (`idcompra_material`)  COMMENT '',
   INDEX `fk_fornecimento_material_pep1_idx` (`pep_idpep` ASC)  COMMENT '',
-  INDEX `fk_compra_material_participante_material1_idx` (`idfornecedor` ASC)  COMMENT '',
+  INDEX `fk_compra_material_participante_material1_idx` (`idparticipante` ASC)  COMMENT '',
   CONSTRAINT `fk_fornecimento_material_pep1`
     FOREIGN KEY (`pep_idpep`)
     REFERENCES `sistema_gestao`.`pep` (`idpep`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_compra_material_participante_material1`
-    FOREIGN KEY (`idfornecedor`)
+    FOREIGN KEY (`idparticipante`)
     REFERENCES `sistema_gestao`.`participante_material` (`idparticipante`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sistema_gestao`.`peca`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_gestao`.`peca` (
-  `idpeca` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
-  `fornecedor_idfornecedor` BIGINT NOT NULL COMMENT '',
-  `material_idmaterial` BIGINT NOT NULL COMMENT '',
-  `pn` VARCHAR(255) NULL COMMENT '',
-  `part_name` VARCHAR(255) NULL COMMENT '',
-  `descricao` VARCHAR(255) NULL COMMENT '',
-  `upc_fna` VARCHAR(255) NULL COMMENT '',
-  `disponibilidade` TINYINT(1) NULL COMMENT '',
-  `valor` DOUBLE NULL COMMENT '',
-  `responsavel` VARCHAR(255) NULL COMMENT '',
-  PRIMARY KEY (`idpeca`)  COMMENT '',
-  INDEX `fk_peca_material1_idx` (`material_idmaterial` ASC)  COMMENT '',
-  INDEX `fk_peca_fornecedor1_idx` (`fornecedor_idfornecedor` ASC)  COMMENT '',
-  CONSTRAINT `fk_peca_material1`
-    FOREIGN KEY (`material_idmaterial`)
-    REFERENCES `sistema_gestao`.`material` (`idmaterial`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_peca_fornecedor1`
-    FOREIGN KEY (`fornecedor_idfornecedor`)
-    REFERENCES `sistema_gestao`.`fornecedor` (`idfornecedor`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -357,11 +338,11 @@ ENGINE = InnoDB;
 -- Table `sistema_gestao`.`conjunto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`conjunto` (
+  `idconjunto` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
   `pn` VARCHAR(255) NOT NULL COMMENT '',
   `descricao` VARCHAR(255) NULL COMMENT '',
   `upc_fna` VARCHAR(255) NULL COMMENT '',
   `fna_descricao` VARCHAR(255) NULL COMMENT '',
-  `idconjunto` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
   PRIMARY KEY (`idconjunto`)  COMMENT '')
 ENGINE = InnoDB;
 
@@ -371,23 +352,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`montagem` (
   `idmontagem` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
-  `peca_idpeca` BIGINT NOT NULL COMMENT '',
-  `ferramenta_idferramenta` BIGINT NOT NULL COMMENT '',
   `conjunto_idconjunto` BIGINT NOT NULL COMMENT '',
   PRIMARY KEY (`idmontagem`)  COMMENT '',
-  INDEX `fk_montagem_peca1_idx` (`peca_idpeca` ASC)  COMMENT '',
-  INDEX `fk_montagem_ferramenta1_idx` (`ferramenta_idferramenta` ASC)  COMMENT '',
   INDEX `fk_montagem_conjunto1_idx` (`conjunto_idconjunto` ASC)  COMMENT '',
-  CONSTRAINT `fk_montagem_peca1`
-    FOREIGN KEY (`peca_idpeca`)
-    REFERENCES `sistema_gestao`.`peca` (`idpeca`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_montagem_ferramenta1`
-    FOREIGN KEY (`ferramenta_idferramenta`)
-    REFERENCES `sistema_gestao`.`ferramenta` (`idferramenta`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_montagem_conjunto1`
     FOREIGN KEY (`conjunto_idconjunto`)
     REFERENCES `sistema_gestao`.`conjunto` (`idconjunto`)
@@ -427,7 +394,7 @@ ENGINE = InnoDB;
 -- Table `sistema_gestao`.`pfmea`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_gestao`.`pfmea` (
-  `id_pfmea` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_pfmea` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
   `responsavel` VARCHAR(255) NULL COMMENT '',
   `link` VARCHAR(255) NULL COMMENT '',
   `risk_assesment_id_risk_assesment` BIGINT NOT NULL COMMENT '',
@@ -436,6 +403,37 @@ CREATE TABLE IF NOT EXISTS `sistema_gestao`.`pfmea` (
   CONSTRAINT `fk_pfmea_risk_assesment1`
     FOREIGN KEY (`risk_assesment_id_risk_assesment`)
     REFERENCES `sistema_gestao`.`risk_assesment` (`id_risk_assesment`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sistema_gestao`.`peca`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`peca` (
+  `idpeca` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
+  `fornecedor_idfornecedor` BIGINT NOT NULL COMMENT '',
+  `material_idmaterial` BIGINT NOT NULL COMMENT '',
+  `pn` VARCHAR(255) NULL COMMENT '',
+  `part_name` VARCHAR(255) NULL COMMENT '',
+  `descricao` VARCHAR(255) NULL COMMENT '',
+  `upc` VARCHAR(255) NULL COMMENT '',
+  `disponibilidade` TINYINT(1) NULL COMMENT '',
+  `valor` DOUBLE NULL COMMENT '',
+  `responsavel` VARCHAR(255) NULL COMMENT '',
+  `fna` VARCHAR(255) NULL COMMENT '',
+  PRIMARY KEY (`idpeca`)  COMMENT '',
+  INDEX `fk_peca_material1_idx` (`material_idmaterial` ASC)  COMMENT '',
+  INDEX `fk_peca_fornecedor1_idx` (`fornecedor_idfornecedor` ASC)  COMMENT '',
+  CONSTRAINT `fk_peca_material1`
+    FOREIGN KEY (`material_idmaterial`)
+    REFERENCES `sistema_gestao`.`material` (`idmaterial`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_peca_fornecedor1`
+    FOREIGN KEY (`fornecedor_idfornecedor`)
+    REFERENCES `sistema_gestao`.`fornecedor` (`idfornecedor`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -497,44 +495,92 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sistema_gestao`.`conjunto_has_ferramenta`
+-- Table `sistema_gestao`.`componente_peca`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_gestao`.`conjunto_has_ferramenta` (
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`componente_peca` (
+  `idcomponente_peca` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
+  `quantidade` INT(11) NULL COMMENT '',
+  `peca_idpeca` BIGINT NOT NULL COMMENT '',
   `conjunto_idconjunto` BIGINT NOT NULL COMMENT '',
-  `ferramenta_idferramenta` BIGINT NOT NULL COMMENT '',
-  PRIMARY KEY (`conjunto_idconjunto`, `ferramenta_idferramenta`)  COMMENT '',
-  INDEX `fk_conjunto_has_ferramenta_ferramenta1_idx` (`ferramenta_idferramenta` ASC)  COMMENT '',
-  INDEX `fk_conjunto_has_ferramenta_conjunto1_idx` (`conjunto_idconjunto` ASC)  COMMENT '',
-  CONSTRAINT `fk_conjunto_has_ferramenta_conjunto1`
-    FOREIGN KEY (`conjunto_idconjunto`)
-    REFERENCES `sistema_gestao`.`conjunto` (`idconjunto`)
+  PRIMARY KEY (`idcomponente_peca`)  COMMENT '',
+  INDEX `fk_componente_peca_peca1_idx` (`peca_idpeca` ASC)  COMMENT '',
+  INDEX `fk_componente_peca_conjunto1_idx` (`conjunto_idconjunto` ASC)  COMMENT '',
+  CONSTRAINT `fk_componente_peca_peca1`
+    FOREIGN KEY (`peca_idpeca`)
+    REFERENCES `sistema_gestao`.`peca` (`idpeca`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_conjunto_has_ferramenta_ferramenta1`
-    FOREIGN KEY (`ferramenta_idferramenta`)
-    REFERENCES `sistema_gestao`.`ferramenta` (`idferramenta`)
+  CONSTRAINT `fk_componente_peca_conjunto1`
+    FOREIGN KEY (`conjunto_idconjunto`)
+    REFERENCES `sistema_gestao`.`conjunto` (`idconjunto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sistema_gestao`.`conjunto_has_peca`
+-- Table `sistema_gestao`.`componente_ferramenta`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_gestao`.`conjunto_has_peca` (
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`componente_ferramenta` (
+  `idcomponente_ferramenta` BIGINT NOT NULL AUTO_INCREMENT COMMENT '',
+  `quantidade` INT(11) NULL COMMENT '',
+  `ferramenta_idferramenta` BIGINT NOT NULL COMMENT '',
   `conjunto_idconjunto` BIGINT NOT NULL COMMENT '',
-  `peca_idpeca` BIGINT NOT NULL COMMENT '',
-  PRIMARY KEY (`conjunto_idconjunto`, `peca_idpeca`)  COMMENT '',
-  INDEX `fk_conjunto_has_peca_peca1_idx` (`peca_idpeca` ASC)  COMMENT '',
-  INDEX `fk_conjunto_has_peca_conjunto1_idx` (`conjunto_idconjunto` ASC)  COMMENT '',
-  CONSTRAINT `fk_conjunto_has_peca_conjunto1`
+  PRIMARY KEY (`idcomponente_ferramenta`)  COMMENT '',
+  INDEX `fk_componente_ferramenta_ferramenta1_idx` (`ferramenta_idferramenta` ASC)  COMMENT '',
+  INDEX `fk_componente_ferramenta_conjunto1_idx` (`conjunto_idconjunto` ASC)  COMMENT '',
+  CONSTRAINT `fk_componente_ferramenta_ferramenta1`
+    FOREIGN KEY (`ferramenta_idferramenta`)
+    REFERENCES `sistema_gestao`.`ferramenta` (`idferramenta`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_componente_ferramenta_conjunto1`
     FOREIGN KEY (`conjunto_idconjunto`)
     REFERENCES `sistema_gestao`.`conjunto` (`idconjunto`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sistema_gestao`.`montagem_has_componente_ferramenta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`montagem_has_componente_ferramenta` (
+  `montagem_idmontagem` BIGINT NOT NULL COMMENT '',
+  `componente_ferramenta_idcomponente_ferramenta` BIGINT NOT NULL COMMENT '',
+  PRIMARY KEY (`montagem_idmontagem`, `componente_ferramenta_idcomponente_ferramenta`)  COMMENT '',
+  INDEX `fk_montagem_has_componente_ferramenta_componente_ferramenta_idx` (`componente_ferramenta_idcomponente_ferramenta` ASC)  COMMENT '',
+  INDEX `fk_montagem_has_componente_ferramenta_montagem1_idx` (`montagem_idmontagem` ASC)  COMMENT '',
+  CONSTRAINT `fk_montagem_has_componente_ferramenta_montagem1`
+    FOREIGN KEY (`montagem_idmontagem`)
+    REFERENCES `sistema_gestao`.`montagem` (`idmontagem`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_conjunto_has_peca_peca1`
-    FOREIGN KEY (`peca_idpeca`)
-    REFERENCES `sistema_gestao`.`peca` (`idpeca`)
+  CONSTRAINT `fk_montagem_has_componente_ferramenta_componente_ferramenta1`
+    FOREIGN KEY (`componente_ferramenta_idcomponente_ferramenta`)
+    REFERENCES `sistema_gestao`.`componente_ferramenta` (`idcomponente_ferramenta`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sistema_gestao`.`montagem_has_componente_peca`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sistema_gestao`.`montagem_has_componente_peca` (
+  `montagem_idmontagem` BIGINT NOT NULL COMMENT '',
+  `componente_peca_idcomponente_peca` BIGINT NOT NULL COMMENT '',
+  PRIMARY KEY (`montagem_idmontagem`, `componente_peca_idcomponente_peca`)  COMMENT '',
+  INDEX `fk_montagem_has_componente_peca_componente_peca1_idx` (`componente_peca_idcomponente_peca` ASC)  COMMENT '',
+  INDEX `fk_montagem_has_componente_peca_montagem1_idx` (`montagem_idmontagem` ASC)  COMMENT '',
+  CONSTRAINT `fk_montagem_has_componente_peca_montagem1`
+    FOREIGN KEY (`montagem_idmontagem`)
+    REFERENCES `sistema_gestao`.`montagem` (`idmontagem`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_montagem_has_componente_peca_componente_peca1`
+    FOREIGN KEY (`componente_peca_idcomponente_peca`)
+    REFERENCES `sistema_gestao`.`componente_peca` (`idcomponente_peca`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

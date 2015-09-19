@@ -9,9 +9,10 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.synergy.model.ComponenteFerramenta;
+import br.com.synergy.model.ComponentePeca;
 import br.com.synergy.model.Conjunto;
 import br.com.synergy.model.Ferramenta;
-import br.com.synergy.model.Montagem;
 import br.com.synergy.model.Peca;
 import br.com.synergy.repository.Conjuntos;
 import br.com.synergy.repository.Ferramentas;
@@ -41,86 +42,82 @@ public class ConjuntoBean implements Serializable {
 
 	private Conjunto conjuntoEdicao;
 	private Conjunto conjuntoSelecionado;
-	private Montagem montagem;
-	private Montagem montagemSelecionada;
 	private List<Conjunto> todos;
 	private Ferramenta ferramentaEdicao;
 	private Ferramenta ferramentaSelecionada;
 	private Peca pecaEdicao;
 	private Peca pecaSelecionada;
-	
-	
+	private ComponenteFerramenta componenteFerramenta;
+	private ComponenteFerramenta componenteFerramentaSelecionado;
+	private ComponentePeca componentePeca;
+	private ComponentePeca componentePecaSelecionado;
+
 	private int quantidadePeca;
 	private int quantidadeFerramenta;
 
-	
-	public void consultar(){
+	public void consultar() {
 		this.todos = conjuntos.todos();
 	}
-	
+
 	public ConjuntoBean() {
 		limpar();
 	}
 
 	private void limpar() {
 		conjuntoEdicao = new Conjunto();
-		ferramentaEdicao=new Ferramenta();
+		ferramentaEdicao = new Ferramenta();
 		pecaEdicao = new Peca();
-		montagem = new Montagem();
-		montagemSelecionada = null;
+		componenteFerramenta = new ComponenteFerramenta();
+		componentePeca = new ComponentePeca();
 		quantidadePeca = 1;
-		quantidadeFerramenta=1;
+		quantidadeFerramenta = 1;
+
+		conjuntoSelecionado = null;
+		ferramentaSelecionada = null;
+		pecaSelecionada = null;
+		componenteFerramentaSelecionado = null;
+		componentePecaSelecionado = null;
+
 	}
-	
-	public void adicionarPeca(){
-		for (int i = 0; i < quantidadePeca; i++) {
-		conjuntoEdicao.getPecas().add(pecaEdicao);		
-		pecaEdicao.getConjuntos().add(conjuntoEdicao);
-		}
-		pecaEdicao = new Peca();
+
+	public void adicionarPeca() {
+		pecaEdicao.getComponentePecas().add(componentePeca);
+		componentePeca.setPeca(pecaEdicao);
+		componentePeca.setQuantidade(quantidadePeca);
+
+		componentePeca.setConjunto(conjuntoEdicao);
+		conjuntoEdicao.getComponentePecas().add(componentePeca);
+		
+		pecaEdicao=new Peca();
+		componentePeca=new ComponentePeca();
 		quantidadePeca=1;
-	}
-	
-	public void removerPeca(){
-		pecaSelecionada.getConjuntos().remove(conjuntoEdicao);
-		conjuntoEdicao.getPecas().remove(pecaSelecionada);
-	}
-	
-	public void adicionarFerramenta(){
-		for (int i = 0; i < quantidadeFerramenta; i++) {
-		ferramentaEdicao.getConjuntos().add(conjuntoEdicao);
-		conjuntoEdicao.getFerramentas().add(ferramentaEdicao);
-		}
-		ferramentaEdicao=new Ferramenta();
-		quantidadeFerramenta=1; 
-	}
-	
-	public void removerFerramenta(){
-		ferramentaSelecionada.getConjuntos().remove(conjuntoEdicao);
-		conjuntoEdicao.getFerramentas().remove(ferramentaSelecionada);
+		
 	}
 
-	public void adicionarMontagem() {
-		montagem.getPeca().getMontagems().add(montagem);
-		montagem.getFerramenta().getMontagems().add(montagem);
-		montagem.setConjunto(conjuntoEdicao);
-		conjuntoEdicao.getMontagems().add(montagem);
-		montagem = new Montagem();
+	public void removerPeca() {
+		conjuntoEdicao.getComponentePecas().remove(componentePecaSelecionado);
+		componentePecaSelecionado.setConjunto(null);
+		componentePecaSelecionado = null;
 	}
 
-	public void removerMontagem() {
-		if (montagemSelecionada != null) {
-			montagemSelecionada.getPeca().getMontagems()
-					.remove(montagemSelecionada);
-			montagemSelecionada.getFerramenta().getMontagems()
-					.remove(montagemSelecionada);
-			conjuntoEdicao.getMontagems().remove(montagemSelecionada);
+	public void adicionarFerramenta() {
+		ferramentaEdicao.getComponenteFerramentas().add(componenteFerramenta);
+		componenteFerramenta.setFerramenta(ferramentaEdicao);
+		componenteFerramenta.setQuantidade(quantidadeFerramenta);
 
-			montagemSelecionada = null;
-		} else {
-			messages.error("Selecione uma montagem para remover.");
-			RequestContext.getCurrentInstance().update(":frm:messages");
-		}
+		componenteFerramenta.setConjunto(conjuntoEdicao);
+		conjuntoEdicao.getComponenteFerramentas().add(componenteFerramenta);
+
+		ferramentaEdicao = new Ferramenta();
+		componenteFerramenta = new ComponenteFerramenta();
+		quantidadeFerramenta = 1;
+	}
+
+	public void removerFerramenta() {
+		conjuntoEdicao.getComponenteFerramentas().remove(
+				componenteFerramentaSelecionado);
+		componenteFerramentaSelecionado.setConjunto(null);
+		componenteFerramentaSelecionado = null;
 	}
 
 	public void salvarConjunto() {
@@ -131,10 +128,10 @@ public class ConjuntoBean implements Serializable {
 	}
 
 	public void editarConjunto() {
-			conjuntoEdicao = conjuntoSelecionado;
-	
+		conjuntoEdicao = conjuntoSelecionado;
+
 	}
-	
+
 	public List<Ferramenta> completarFerramenta(String nome) {
 		return ferramentas.buscaPorFerramentaNome(nome);
 	}
@@ -143,11 +140,45 @@ public class ConjuntoBean implements Serializable {
 		return pecas.buscaPorPecaNome(nome);
 	}
 
-
 	// getters e setters
-		
+
 	public List<Conjunto> getTodos() {
 		return this.todos;
+	}
+
+	public ComponenteFerramenta getComponenteFerramentaSelecionado() {
+		return componenteFerramentaSelecionado;
+	}
+
+	public void setComponenteFerramentaSelecionado(
+			ComponenteFerramenta componenteFerramentaSelecionado) {
+		this.componenteFerramentaSelecionado = componenteFerramentaSelecionado;
+	}
+
+	public ComponentePeca getComponentePecaSelecionado() {
+		return componentePecaSelecionado;
+	}
+
+	public void setComponentePecaSelecionado(
+			ComponentePeca componentePecaSelecionado) {
+		this.componentePecaSelecionado = componentePecaSelecionado;
+	}
+
+	public ComponenteFerramenta getComponenteFerramenta() {
+		return componenteFerramenta;
+	}
+
+	public void setComponenteFerramenta(
+			ComponenteFerramenta componenteFerramenta) {
+		this.componenteFerramenta = componenteFerramenta;
+	}
+
+	public ComponentePeca getComponentePeca() {
+		return componentePeca;
+	}
+
+	public void setComponentePeca(ComponentePeca componentePeca) {
+		this.componentePeca = componentePeca;
 	}
 
 	public Ferramenta getFerramentaSelecionada() {
@@ -204,22 +235,6 @@ public class ConjuntoBean implements Serializable {
 
 	public void setConjuntoEdicao(Conjunto conjuntoEdicao) {
 		this.conjuntoEdicao = conjuntoEdicao;
-	}
-
-	public Montagem getMontagem() {
-		return montagem;
-	}
-
-	public void setMontagem(Montagem montagem) {
-		this.montagem = montagem;
-	}
-
-	public Montagem getMontagemSelecionada() {
-		return montagemSelecionada;
-	}
-
-	public void setMontagemSelecionada(Montagem montagemSelecionada) {
-		this.montagemSelecionada = montagemSelecionada;
 	}
 
 	public Conjunto getConjuntoSelecionado() {

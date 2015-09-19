@@ -18,7 +18,7 @@ public class Pfmea implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = 1L;
-	private Integer idPfmea;
+	private Long idPfmea;
 	private RiskAssesment riskAssesment;
 	private String responsavel;
 	private String link;
@@ -39,11 +39,11 @@ public class Pfmea implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_pfmea", unique = true, nullable = false)
-	public Integer getIdPfmea() {
+	public Long getIdPfmea() {
 		return this.idPfmea;
 	}
 
-	public void setIdPfmea(Integer idPfmea) {
+	public void setIdPfmea(Long idPfmea) {
 		this.idPfmea = idPfmea;
 	}
 

@@ -34,8 +34,8 @@ public class Conjunto implements java.io.Serializable {
 	private String fnaDesc;
 	private List<Montagem> montagems = new ArrayList<Montagem>(0);
 	private List<Projeto> projetos = new ArrayList<Projeto>(0);
-	private List<Ferramenta> ferramentas = new ArrayList<Ferramenta>();
-	private List<Peca> pecas = new ArrayList<Peca>();
+	private List<ComponenteFerramenta> componenteFerramentas = new ArrayList<ComponenteFerramenta>();
+	private List<ComponentePeca> componentePecas = new ArrayList<ComponentePeca>();
 	private List<RiskAssesment> riskAssesments = new ArrayList<RiskAssesment>(0);
 
 	public Conjunto() {
@@ -121,26 +121,23 @@ public class Conjunto implements java.io.Serializable {
 		this.riskAssesments = riskAssesments;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "conjunto_has_ferramenta", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) })
-	public List<Ferramenta> getFerramentas() {
-		return ferramentas;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade=CascadeType.ALL,orphanRemoval=true)
+	public List<ComponenteFerramenta> getComponenteFerramentas() {
+		return this.componenteFerramentas;
 	}
 
-
-	public void setFerramentas(List<Ferramenta> ferramentas) {
-		this.ferramentas = ferramentas;
+	public void setComponenteFerramentas(
+			List<ComponenteFerramenta> componenteFerramentas) {
+		this.componenteFerramentas = componenteFerramentas;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade=CascadeType.ALL,orphanRemoval=true)
+	public List<ComponentePeca> getComponentePecas() {
+		return this.componentePecas;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "conjunto_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) })
-	public List<Peca> getPecas() {
-		return pecas;
-	}
-
-
-	public void setPecas(List<Peca> pecas) {
-		this.pecas = pecas;
+	public void setComponentePecas(List<ComponentePeca> componentePecas) {
+		this.componentePecas = componentePecas;
 	}
 	
 	

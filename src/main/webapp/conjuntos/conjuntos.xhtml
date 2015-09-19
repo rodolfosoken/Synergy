@@ -8,7 +8,7 @@
 
 	<ui:define name="title">Montagem</ui:define>
 	<ui:define name="body">
-		<h1>Conjuntos</h1>
+		<h1>Conjunto</h1>
 		<h:form id="frm">
 			<p:messages id="messages" />
 			<p:growl id="growl" />
@@ -66,7 +66,7 @@
 
 
 						<h:panelGrid columns="6" id="panel-peca">
-						<p:defaultCommand target="adicionar-peca" scope="panel-peca"/>
+							<p:defaultCommand target="adicionar-peca" scope="panel-peca" />
 							<p:outputLabel value="Peça: " for="peca" />
 							<p:autoComplete id="peca" dropdown="true"
 								completeMethod="#{conjuntoBean.completarPeca}" var="peca"
@@ -86,7 +86,8 @@
 						</h:panelGrid>
 
 						<h:panelGrid columns="6" id="panel-ferramenta">
-						<p:defaultCommand target="adicionar-ferramenta" scope="panel-ferramenta"/>
+							<p:defaultCommand target="adicionar-ferramenta"
+								scope="panel-ferramenta" />
 							<p:outputLabel value="Ferramenta: " for="ferramenta" />
 							<p:autoComplete id="ferramenta" dropdown="true"
 								completeMethod="#{conjuntoBean.completarFerramenta}"
@@ -111,32 +112,35 @@
 
 						<p:dataList id="lista-pecas" paginator="true" rows="10"
 							paginatorPosition="bottom"
-							value="#{conjuntoBean.conjuntoEdicao.pecas}" var="peca"
-							type="ordered" emptyMessage="Nenhuma peça adicionada.">
+							value="#{conjuntoBean.conjuntoEdicao.componentePecas}"
+							var="componente" type="ordered"
+							emptyMessage="Nenhuma peça adicionada.">
 
 							<f:facet name="header">Peças</f:facet>
-							
-							#{peca.partName}
+							#{componente.quantidade}x #{componente.peca.partName}
 							<p:commandButton icon="fa fa-trash" process="@this lista-pecas"
 								update="lista-pecas" action="#{conjuntoBean.removerPeca}">
-								<f:setPropertyActionListener value="#{peca}"
-									target="#{conjuntoBean.pecaSelecionada}" />
+								<f:setPropertyActionListener value="#{componente}"
+									target="#{conjuntoBean.componentePecaSelecionado}" />
 							</p:commandButton>
 
 						</p:dataList>
 
-						<p:dataList id="lista-ferramentas" paginator="true" rows="10" paginatorPosition="bottom"
-							value="#{conjuntoBean.conjuntoEdicao.ferramentas}" type="ordered"
-							var="ferramenta" emptyMessage="Nenhuma ferramenta adicionada.">
+						<p:dataList id="lista-ferramentas" paginator="true" rows="10"
+							paginatorPosition="bottom"
+							value="#{conjuntoBean.conjuntoEdicao.componenteFerramentas}"
+							type="ordered" var="componente"
+							emptyMessage="Nenhuma ferramenta adicionada.">
 							<f:facet name="header">Ferramentas</f:facet>
+							#{componente.quantidade}x #{componente.ferramenta.nome} 
 							
-							#{ferramenta.nome}
 							<p:commandButton icon="fa fa-trash"
 								process="@this lista-ferramentas" update="lista-ferramentas"
 								action="#{conjuntoBean.removerFerramenta}">
-								<f:setPropertyActionListener value="#{ferramenta}"
-									target="#{conjuntoBean.ferramentaSelecionada}" />
+								<f:setPropertyActionListener value="#{componente}"
+									target="#{conjuntoBean.componenteFerramentaSelecionado}" />
 							</p:commandButton>
+						
 						</p:dataList>
 
 					</p:panelGrid>
@@ -144,32 +148,6 @@
 				</p:panelGrid>
 
 			</p:fieldset>
-
-			<p:fieldset id="field-montagem" legend="Montagem" toggleable="true">
-
-				<p:dataTable id="montagem-table"
-					value="#{conjuntoBean.conjuntoEdicao.montagems}" var="montagem"
-					emptyMessage="Nenhuma montagem adicionada"
-					selection="#{conjuntoBean.montagemSelecionada}"
-					selectionMode="single" rowKey="#{montagem}">
-
-					<!-- Quando selecionar disparar evento -->
-					<p:ajax event="rowSelect" update=":frm:field-montagem" />
-					<p:ajax event="rowUnselect" update=":frm:field-montagem" />
-
-					<p:column headerText="Peça">
-						<h:outputText value="#{montagem.peca.partName}" />
-					</p:column>
-
-					<p:column headerText="Ferramenta">
-						<h:outputText value="#{montagem.ferramenta.nome}" />
-					</p:column>
-
-				</p:dataTable>
-
-
-			</p:fieldset>
-
 
 		</h:form>
 	</ui:define>

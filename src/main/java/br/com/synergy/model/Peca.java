@@ -12,12 +12,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "peca", catalog = "sistema_gestao")
@@ -34,8 +35,7 @@ public class Peca implements java.io.Serializable {
 	private String fna;
 	private Double valor;
 	private String responsavel;
-	private List<Conjunto> conjuntos = new ArrayList<Conjunto>();
-	private List<Montagem> montagems = new ArrayList<Montagem>(0);
+	private List<ComponentePeca> componentes = new ArrayList<ComponentePeca>(0);
 
 	public Peca() {
 	}
@@ -80,6 +80,8 @@ public class Peca implements java.io.Serializable {
 		this.pn = pn;
 	}
 
+	@NotNull
+	@NotBlank
 	@Column(name = "part_name")
 	public String getPartName() {
 		return this.partName;
@@ -135,23 +137,13 @@ public class Peca implements java.io.Serializable {
 		this.fna = fna;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "conjunto_has_peca", catalog = "sistema_gestao", joinColumns = { @JoinColumn(name = "peca_idpeca", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
-	public List<Conjunto> getConjuntos() {
-		return conjuntos;
-	}
-
-	public void setConjuntos(List<Conjunto> conjuntos) {
-		this.conjuntos = conjuntos;
-	}
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "peca")
-	public List<Montagem> getMontagems() {
-		return this.montagems;
+	public List<ComponentePeca> getComponentePecas() {
+		return this.componentes;
 	}
 
-	public void setMontagems(List<Montagem> montagems) {
-		this.montagems = montagems;
+	public void setComponentePecas(List<ComponentePeca> componentes) {
+		this.componentes = componentes;
 	}
 
 }

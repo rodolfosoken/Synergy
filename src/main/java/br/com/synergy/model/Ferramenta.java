@@ -12,8 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -43,8 +41,7 @@ public class Ferramenta implements java.io.Serializable {
 	private String descricao;
 	private Double valor;
 	private CotacaoFerramenta cotacao;
-	private List<Montagem> montagems = new ArrayList<Montagem>(0);
-	private List<Conjunto> conjuntos = new ArrayList<Conjunto>();
+	private List<ComponenteFerramenta> componentes = new ArrayList<ComponenteFerramenta>(0);
 
 	public Ferramenta() {
 	}
@@ -209,26 +206,16 @@ public class Ferramenta implements java.io.Serializable {
 	public void setCotacao(CotacaoFerramenta cotacao) {
 		this.cotacao = cotacao;
 	}
-
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ferramenta")
-	public List<Montagem> getMontagems() {
-		return this.montagems;
+	public List<ComponenteFerramenta> getComponenteFerramentas() {
+		return this.componentes;
 	}
 
-	public void setMontagems(List<Montagem> montagems) {
-		this.montagems = montagems;
+	public void setComponenteFerramentas(
+			List<ComponenteFerramenta> componenteFerramentas) {
+		this.componentes = componenteFerramentas;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "conjunto_has_ferramenta", catalog = "sistema_gestao", 
-	joinColumns = { @JoinColumn(name = "ferramenta_idferramenta", nullable = false, updatable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "conjunto_idconjunto", nullable = false, updatable = false) })
-	public List<Conjunto> getConjuntos() {
-		return conjuntos;
-	}
-
-	public void setConjuntos(List<Conjunto> conjuntos) {
-		this.conjuntos = conjuntos;
-	}
 
 }
