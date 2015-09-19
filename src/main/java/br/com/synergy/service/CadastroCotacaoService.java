@@ -16,12 +16,12 @@ public class CadastroCotacaoService implements Serializable{
 	private Cotacoes cotacoes;
 
 	@Transacional
-	public void salvar(Cotacao cotacao){
+	public void salvar(Cotacao cotacao)throws Exception{
 		cotacoes.guardar(cotacao);
 	}
 	
 	@Transacional
-	public void excluir(Cotacao cotacao){
+	public void excluir(Cotacao cotacao)throws Exception{
 		cotacoes.excluir(cotacao);
 	}
 	

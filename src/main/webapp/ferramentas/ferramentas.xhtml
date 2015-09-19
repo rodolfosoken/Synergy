@@ -15,7 +15,8 @@
 			<f:viewAction action="#{ferramentaBean.consultar}" />
 		</f:metadata>
 		<h:form id="frm">
-			<p:messages id="messages" closable="true" />
+				<p:messages id="messages" severity="error" showDetail="true" closable="true"/>
+			<p:growl autoUpdate="true"/>
 
 			<p:toolbar id="toolbar" style="margin-bottom:10px; font-size:15px">
 				<f:facet name="left">

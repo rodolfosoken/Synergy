@@ -19,12 +19,12 @@ public class CadastroFornecedorService implements Serializable {
 		
 	
 	@Transacional
-	public void salvar(Fornecedor fornecedor){
+	public void salvar(Fornecedor fornecedor)throws Exception{
 		fornecedores.guardar(fornecedor);
 	}
 	
 	@Transacional
-	public void excluir(Fornecedor fornecedor){
+	public void excluir(Fornecedor fornecedor)throws Exception{
 		fornecedores.excluir(fornecedor);
 	}
 	

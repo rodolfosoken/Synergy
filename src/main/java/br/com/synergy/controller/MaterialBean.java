@@ -61,6 +61,7 @@ public class MaterialBean implements Serializable {
 	}
 
 	public void prepararNovoCadastro(){
+		System.out.println("DEBUG: Executando prepararNovoCadastro Material");
 		materialEdicao = new Material();
 	}
 	

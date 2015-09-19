@@ -43,23 +43,61 @@ public class ConjuntoBean implements Serializable {
 	private Conjunto conjuntoSelecionado;
 	private Montagem montagem;
 	private Montagem montagemSelecionada;
+	private List<Conjunto> todos;
+	private Ferramenta ferramentaEdicao;
+	private Ferramenta ferramentaSelecionada;
+	private Peca pecaEdicao;
+	private Peca pecaSelecionada;
+	
+	
+	private int quantidadePeca;
+	private int quantidadeFerramenta;
 
+	
+	public void consultar(){
+		this.todos = conjuntos.todos();
+	}
+	
 	public ConjuntoBean() {
 		limpar();
 	}
 
 	private void limpar() {
 		conjuntoEdicao = new Conjunto();
+		ferramentaEdicao=new Ferramenta();
+		pecaEdicao = new Peca();
 		montagem = new Montagem();
 		montagemSelecionada = null;
+		quantidadePeca = 1;
+		quantidadeFerramenta=1;
 	}
-
-	public List<Ferramenta> completarFerramenta(String nome) {
-		return ferramentas.buscaPorFerramentaNome(nome);
+	
+	public void adicionarPeca(){
+		for (int i = 0; i < quantidadePeca; i++) {
+		conjuntoEdicao.getPecas().add(pecaEdicao);		
+		pecaEdicao.getConjuntos().add(conjuntoEdicao);
+		}
+		pecaEdicao = new Peca();
+		quantidadePeca=1;
 	}
-
-	public List<Peca> completarPeca(String nome) {
-		return pecas.buscaPorPecaNome(nome);
+	
+	public void removerPeca(){
+		pecaSelecionada.getConjuntos().remove(conjuntoEdicao);
+		conjuntoEdicao.getPecas().remove(pecaSelecionada);
+	}
+	
+	public void adicionarFerramenta(){
+		for (int i = 0; i < quantidadeFerramenta; i++) {
+		ferramentaEdicao.getConjuntos().add(conjuntoEdicao);
+		conjuntoEdicao.getFerramentas().add(ferramentaEdicao);
+		}
+		ferramentaEdicao=new Ferramenta();
+		quantidadeFerramenta=1; 
+	}
+	
+	public void removerFerramenta(){
+		ferramentaSelecionada.getConjuntos().remove(conjuntoEdicao);
+		conjuntoEdicao.getFerramentas().remove(ferramentaSelecionada);
 	}
 
 	public void adicionarMontagem() {
@@ -96,12 +134,69 @@ public class ConjuntoBean implements Serializable {
 			conjuntoEdicao = conjuntoSelecionado;
 	
 	}
-
-	public List<Conjunto> getTodos() {
-		return conjuntos.todos();
+	
+	public List<Ferramenta> completarFerramenta(String nome) {
+		return ferramentas.buscaPorFerramentaNome(nome);
 	}
 
+	public List<Peca> completarPeca(String nome) {
+		return pecas.buscaPorPecaNome(nome);
+	}
+
+
 	// getters e setters
+		
+	public List<Conjunto> getTodos() {
+		return this.todos;
+	}
+
+	public Ferramenta getFerramentaSelecionada() {
+		return ferramentaSelecionada;
+	}
+
+	public void setFerramentaSelecionada(Ferramenta ferramentaSelecionada) {
+		this.ferramentaSelecionada = ferramentaSelecionada;
+	}
+
+	public int getQuantidadePeca() {
+		return quantidadePeca;
+	}
+
+	public void setQuantidadePeca(int quantidadePeca) {
+		this.quantidadePeca = quantidadePeca;
+	}
+
+	public int getQuantidadeFerramenta() {
+		return quantidadeFerramenta;
+	}
+
+	public void setQuantidadeFerramenta(int quantidadeFerramenta) {
+		this.quantidadeFerramenta = quantidadeFerramenta;
+	}
+
+	public Peca getPecaSelecionada() {
+		return pecaSelecionada;
+	}
+
+	public void setPecaSelecionada(Peca pecaSelecionada) {
+		this.pecaSelecionada = pecaSelecionada;
+	}
+
+	public Ferramenta getFerramentaEdicao() {
+		return ferramentaEdicao;
+	}
+
+	public void setFerramentaEdicao(Ferramenta ferramentaEdicao) {
+		this.ferramentaEdicao = ferramentaEdicao;
+	}
+
+	public Peca getPecaEdicao() {
+		return pecaEdicao;
+	}
+
+	public void setPecaEdicao(Peca pecaEdicao) {
+		this.pecaEdicao = pecaEdicao;
+	}
 
 	public Conjunto getConjuntoEdicao() {
 		return conjuntoEdicao;

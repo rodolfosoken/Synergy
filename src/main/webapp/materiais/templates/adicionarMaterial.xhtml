@@ -8,11 +8,10 @@
 <h:panelGrid columns="2">
 	<p:messages id="msgs-dialogMaterial" />
 	<p:outputLabel />
-	<p:defaultCommand target="salvar-material"
-		scope="material-dialog" />
 
-	<h:panelGrid columns="1" style="text-align:left">
-		<h:panelGrid columns="4" id="cadastro-material">
+
+	<h:panelGrid columns="1" style="text-align:left" id="cadastro-material">
+		<h:panelGrid columns="4">
 
 			<p:outputLabel value="Material Específico" for="materialEspc" />
 			<p:inputText id="materialEspc" style="margin-right:20px"
@@ -77,14 +76,8 @@
 		</h:panelGrid>
 	</h:panelGrid>
 
-<p:outputLabel value=""/>
-	<p:commandButton value="Salvar" action="#{materialBean.salvar}"
-		process="material-dialog" id="salvar-material"
-		update="msgs-dialogMaterial material-dialog" style="float:right"
-		oncomplete="if(!args.validationFailed) PF('materialDialog').hide()">
-		<f:setPropertyActionListener target="#{materialBean.materialEdicao}"
-			value="#{cotacaoMaterialBean.cotacaoMaterial.material}" />
-	</p:commandButton>
+	<p:outputLabel value="" />
+
 </h:panelGrid>
 
 

@@ -10,12 +10,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RateEvent;
 
 import br.com.synergy.model.Fornecedor;
 import br.com.synergy.model.FornecedorFerramenta;
 import br.com.synergy.repository.Fornecedores;
 import br.com.synergy.service.CadastroFornecedorService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -55,17 +57,10 @@ public class FornecedorFerramentaBean implements Serializable {
 					Arrays.asList("frm:messages", "frm:fornecedores-table"));
 
 		} catch (Exception e) {
-			boolean continuar = true;
-			Throwable rootCause = e.getCause();
-			while(continuar){
-				if(rootCause.getCause()==null)
-					break;
-				rootCause=rootCause.getCause();
-			
-			}
-			messages.error("Não foi possível realizar a alteração:"+rootCause.getMessage());
+			messages.error("Não foi possível realizar a alteração:"
+					+ RootCauseExctractor.extractRootCauseMessage(e));
 			FacesContext.getCurrentInstance().validationFailed();
-			
+
 		}
 	}
 
@@ -74,13 +69,29 @@ public class FornecedorFerramentaBean implements Serializable {
 	}
 
 	public void excluir() {
-		cadastroFornecedor.excluir(fornecedorSelecionado);
-		messages.info("Fornecedor: " + fornecedorSelecionado.getNome()
-				+ " excluido com sucesso!");
-		fornecedorSelecionado = null;
+		try {
+			cadastroFornecedor.excluir(fornecedorSelecionado);
+			messages.info("Fornecedor: " + fornecedorSelecionado.getNome()
+					+ " excluido com sucesso!");
+			fornecedorSelecionado = null;
+		} catch (Exception e) {
+			messages.error("Não foi possível excluir!",RootCauseExctractor.extractRootCauseMessage(e));
+		}
 		consultar();
+		RequestContext.getCurrentInstance().update(
+				Arrays.asList("frm", "frm:fornecedores-table"));
+		
 
 	}
+
+	public void onrate(RateEvent rate) {
+		long id = Long.parseLong(FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap().get("selected"));
+		fornecedorEdicao = (FornecedorFerramenta) fornecedores.buscaPorId(id);
+		fornecedorEdicao.setNota((Integer) rate.getRating());
+		salvar();
+	}
+	
 
 	// getters e setters
 	public List<Fornecedor> getTodosFornecedores() {

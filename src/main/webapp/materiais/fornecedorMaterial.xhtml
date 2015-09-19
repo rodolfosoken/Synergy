@@ -14,7 +14,8 @@
 			<f:viewAction action="#{fornecedorMaterialBean.consultar}" />
 		</f:metadata>
 		<h:form id="frm">
-			<p:messages id="messages" />
+			<p:messages id="messages" severity="error" showDetail="true" closable="true"/>
+			<p:growl autoUpdate="true"/>
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
@@ -99,11 +100,18 @@
 					<h:outputText value="#{fornecedor.telefone}" />
 				</p:column>
 
-				<p:column headerText="Link" sortBy="#{fornecedor.linkSharepoint}">
-					<h:outputText value="#{fornecedor.linkSharepoint}" />
+				<p:column headerText="Nota" sortBy="#{fornecedor.nota}"
+					style="text-align: center; width: 160px">
+
+					<p:rating id="rate" value="#{fornecedor.nota}" cancel="false">
+						<f:param name="selected" value="#{fornecedor.idfornecedor}" />
+						<p:ajax event="rate" partialSubmit="true" process="rate"
+							listener="#{fornecedorMaterialBean.onrate}" />
+					</p:rating>
+
 				</p:column>
 
-				<p:column headerText="Link" sortBy="#{fornecedor.logradouro}">
+				<p:column headerText="Endereço" sortBy="#{fornecedor.logradouro}">
 					<h:outputText value="#{fornecedor.logradouro}" />
 				</p:column>
 

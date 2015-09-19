@@ -28,6 +28,7 @@ import br.com.synergy.repository.Usuarios;
 import br.com.synergy.security.UsuarioPrincipal;
 import br.com.synergy.service.CadastroCotacaoService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -111,32 +112,24 @@ public class CotacaoMaterialBean implements Serializable {
 			// faz as referências da material para a cotação
 			adicionarMaterial();
 			try {
-				
+
 				cadastro.salvar(cotacaoMaterial);
 				messages.info("Cotação salva com sucesso!");
 
 				limpar();
 
-				RequestContext.getCurrentInstance().update(
-						Arrays.asList("frm:messages", "frm"));
+				// se estiver editando, voltar para a tela pesquisa de cotações
+				if (!isEditando())
+					return "pesquisaCotacaoMaterial?ok=true faces-redirect=true";
 			} catch (Exception e) {
-				//caso tenha uma exceção exibe a root cause
-				boolean continuar = true;
-				Throwable rootCause = e.getCause();
-				while(continuar){
-					if(rootCause.getCause()==null)
-						break;
-					rootCause=rootCause.getCause();
-				
-				}
-				messages.error("Não foi possível realizar a alteração:"+rootCause.getMessage());
+				messages.error("Não foi possível realizar a alteração:",
+						RootCauseExctractor.extractRootCauseMessage(e));
 				FacesContext.getCurrentInstance().validationFailed();
-				
-			}
 
-			// se estiver editando, voltar para a tela pesquisa de cotações
-			if (!isEditando())
-				return "pesquisaCotacaoMaterial?ok=true faces-redirect=true";
+			}
+			RequestContext.getCurrentInstance().update(
+					Arrays.asList("frm:messages", "frm"));
+
 		} else {
 			messages.error("Fornecedor Vazio");
 			indexTab = 1;

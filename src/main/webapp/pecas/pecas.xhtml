@@ -16,6 +16,10 @@
 
 		<h:form id="frm">
 
+			<p:messages id="messages" severity="error" showDetail="true"
+				closable="true" />
+			<p:growl autoUpdate="true" />
+
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
 
@@ -47,7 +51,8 @@
 
 					</p:commandButton>
 
-					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:confirmDialog global="true" showEffect="bounce"
+						hideEffect="fade">
 						<p:commandButton value="Ok" type="button"
 							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 						<p:commandButton value="Cancelar" type="button"
@@ -65,10 +70,10 @@
 			</p:toolbar>
 
 			<p:remoteCommand name="novoFornecedor"
-				oncomplete="PF('edicaoFornecedorDialog').show()" />
+				oncomplete="PF('edicaoFornecedorDialog').show()" process="@this"/>
 
 			<p:remoteCommand name="novoMaterial"
-				oncomplete="PF('materialDialog').show()" />
+				oncomplete="PF('materialDialog').show()" process="@this" resetValues="material-dialog"/>
 
 			<p:dataTable value="#{pecaBean.todasPecas}" var="peca"
 				emptyMessage="Nenhum peca cadastrada." rows="10" id="pecas-table"
@@ -82,6 +87,10 @@
 
 				<p:column headerText="ID" sortBy="#{peca.idpeca}">
 					<h:outputText value="#{peca.idpeca}" />
+				</p:column>
+
+				<p:column headerText="Fornecedor" sortBy="#{peca.fornecedor.nome}">
+					<h:outputText value="#{peca.fornecedor.nome}" />
 				</p:column>
 
 				<p:column headerText="Part Name" sortBy="#{peca.partName}">
@@ -124,6 +133,14 @@
 				widgetVar="materialDialog" resizable="false" modal="true"
 				closeOnEscape="true">
 				<ui:include src="/materiais/templates/adicionarMaterial.xhtml"></ui:include>
+				<p:commandButton value="Salvar" action="#{materialBean.salvar}"
+					process="material-dialog" id="salvar-material"
+					update="msgs-dialogMaterial cadastro-material" style="float:right"
+					oncomplete="if(!args.validationFailed) PF('materialDialog').hide()">
+					<f:setPropertyActionListener
+						target="#{materialBean.materialEdicao}"
+						value="#{cotacaoMaterialBean.cotacaoMaterial.material}" />
+				</p:commandButton>
 			</p:dialog>
 
 

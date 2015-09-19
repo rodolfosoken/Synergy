@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/templates/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Peças</ui:define>
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:viewAction action="#{conjuntoBean.consultar}" />
+		</f:metadata>
+		<h:form id="frm">
+
+			<p:toolbar>
+				<f:facet name="left">
+					<p:commandButton value="Novo" icon="fa fa-file"
+						action="conjuntos?faces-redirect=true" />
+
+
+				</f:facet>
+			</p:toolbar>
+
+
+			<p:dataTable id="conjuntos-table" value="#{conjuntoBean.todos}"
+				var="conjunto" emptyMessage="Nenhum conjunto encontrado"
+				rowKey="#{conjunto}">
+
+				<p:column headerText="ID">
+					<h:outputText value="#{conjunto.idconjunto}" />
+				</p:column>
+
+				<p:column headerText="Pn Less">
+					<h:outputText value="#{conjunto.pnLess}" />
+				</p:column>
+
+				<p:column headerText="Descrição">
+					<h:outputText value="#{conjunto.desc}" />
+				</p:column>
+
+				<p:column headerText="UPC FNA">
+					<h:outputText value="#{conjunto.upcFna}" />
+				</p:column>
+
+				<p:column headerText="FNA Descricao">
+					<h:outputText value="#{conjunto.fnaDesc}" />
+				</p:column>
+
+			</p:dataTable>
+
+
+		</h:form>
+
+
+
+
+	</ui:define>
+</ui:composition>

@@ -42,10 +42,12 @@ public abstract class Fornecedor implements java.io.Serializable {
 	private String bairro;
 	private String cep;
 	private String estado;
+	private Integer nota;
 	private String tipoFornecedor;
 
 
 	public Fornecedor() {
+		nota=1;
 	}
 
 
@@ -206,11 +208,24 @@ public abstract class Fornecedor implements java.io.Serializable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	
+	@Column(name="nota")
+	public Integer getNota() {
+		return nota;
+	}
+	
+	
+	public void setNota(Integer nota) {
+		this.nota = nota;
+	}
+	
 
 	@Column(name = "TIPO_FORNECEDOR", nullable = false, length = 45, insertable=false, updatable=false)
 	public String getTipoFornecedor() {
 		return this.tipoFornecedor;
 	}
+
+
 
 	public void setTipoFornecedor(String tipoFornecedor) {
 		this.tipoFornecedor = tipoFornecedor;

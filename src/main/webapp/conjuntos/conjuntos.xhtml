@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/templates/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Montagem</ui:define>
+	<ui:define name="body">
+		<h1>Conjuntos</h1>
+		<h:form id="frm">
+			<p:messages id="messages" />
+			<p:growl id="growl" />
+
+			<p:toolbar id="toolbar" style="margin-bottom:5px">
+
+				<f:facet name="right">
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" />
+					</span>
+
+					<p:commandButton value="Salvar Conjunto" icon="fa fa-floppy-o"
+						action="#{conjuntoBean.salvarConjunto}"
+						process="@this cadastro-conjuntos" update="frm">
+					</p:commandButton>
+
+				</f:facet>
+			</p:toolbar>
+
+
+			<p:fieldset legend="Conjunto" toggleable="true" toggleSpeed="500">
+
+
+				<p:panelGrid id="cadastro-conjuntos" columns="4"
+					style="margin-bottom:5px">
+
+
+					<p:outputLabel value="PN Less: " for="pn" />
+					<p:inputText id="pn" value="#{conjuntoBean.conjuntoEdicao.pnLess}" />
+
+					<p:outputLabel value="Descrição" for="descricao" />
+					<p:inputText id="descricao" size="45"
+						value="#{conjuntoBean.conjuntoEdicao.desc}" />
+
+					<p:outputLabel value="UPC FNA " for="upcFna" />
+					<p:inputText id="upcFna"
+						value="#{conjuntoBean.conjuntoEdicao.upcFna}" />
+
+					<p:outputLabel value="FNA Descrição" for="fnaDesc" />
+					<p:inputText id="fnaDesc" size="45"
+						value="#{conjuntoBean.conjuntoEdicao.fnaDesc}" />
+
+				</p:panelGrid>
+
+			</p:fieldset>
+
+			<p:fieldset legend="Componentes do conjunto" toggleable="true"
+				toggleSpeed="500" id="field-componentes">
+
+				<p:panelGrid columns="1">
+					<f:facet name="header">Seleção de componentes</f:facet>
+
+					<p:panelGrid id="cadastro-componentes" columns="2"
+						style="margin-bottom:5px">
+
+
+						<h:panelGrid columns="6" id="panel-peca">
+						<p:defaultCommand target="adicionar-peca" scope="panel-peca"/>
+							<p:outputLabel value="Peça: " for="peca" />
+							<p:autoComplete id="peca" dropdown="true"
+								completeMethod="#{conjuntoBean.completarPeca}" var="peca"
+								itemLabel="#{peca.partName}" itemValue="#{peca}"
+								forceSelection="true" converter="pecaConverter" required="true"
+								value="#{conjuntoBean.pecaEdicao}" style="margin-right:50px">
+							</p:autoComplete>
+
+							<p:outputLabel value="Qtd.:" />
+							<p:inputText value="#{conjuntoBean.quantidadePeca}" size="2" />
+
+							<p:commandButton id="adicionar-peca" value="Adicionar"
+								icon="fa fa-plus" action="#{conjuntoBean.adicionarPeca}"
+								process="@this panel-peca" update="panel-peca lista-pecas">
+							</p:commandButton>
+
+						</h:panelGrid>
+
+						<h:panelGrid columns="6" id="panel-ferramenta">
+						<p:defaultCommand target="adicionar-ferramenta" scope="panel-ferramenta"/>
+							<p:outputLabel value="Ferramenta: " for="ferramenta" />
+							<p:autoComplete id="ferramenta" dropdown="true"
+								completeMethod="#{conjuntoBean.completarFerramenta}"
+								var="ferramenta" itemLabel="#{ferramenta.nome}"
+								itemValue="#{ferramenta}" forceSelection="true"
+								converter="ferramentaConverter" required="true"
+								value="#{conjuntoBean.ferramentaEdicao}"
+								style="margin-right:50px">
+							</p:autoComplete>
+
+							<p:outputLabel value="Qtd.:" />
+							<p:inputText value="#{conjuntoBean.quantidadeFerramenta}"
+								size="2" />
+
+							<p:commandButton id="adicionar-ferramenta" value="Adicionar"
+								update="field-componentes :frm:messages"
+								action="#{conjuntoBean.adicionarFerramenta}"
+								process="@this panel-ferramenta" icon="fa fa-plus">
+							</p:commandButton>
+						</h:panelGrid>
+
+
+						<p:dataList id="lista-pecas" paginator="true" rows="10"
+							paginatorPosition="bottom"
+							value="#{conjuntoBean.conjuntoEdicao.pecas}" var="peca"
+							type="ordered" emptyMessage="Nenhuma peça adicionada.">
+
+							<f:facet name="header">Peças</f:facet>
+							
+							#{peca.partName}
+							<p:commandButton icon="fa fa-trash" process="@this lista-pecas"
+								update="lista-pecas" action="#{conjuntoBean.removerPeca}">
+								<f:setPropertyActionListener value="#{peca}"
+									target="#{conjuntoBean.pecaSelecionada}" />
+							</p:commandButton>
+
+						</p:dataList>
+
+						<p:dataList id="lista-ferramentas" paginator="true" rows="10" paginatorPosition="bottom"
+							value="#{conjuntoBean.conjuntoEdicao.ferramentas}" type="ordered"
+							var="ferramenta" emptyMessage="Nenhuma ferramenta adicionada.">
+							<f:facet name="header">Ferramentas</f:facet>
+							
+							#{ferramenta.nome}
+							<p:commandButton icon="fa fa-trash"
+								process="@this lista-ferramentas" update="lista-ferramentas"
+								action="#{conjuntoBean.removerFerramenta}">
+								<f:setPropertyActionListener value="#{ferramenta}"
+									target="#{conjuntoBean.ferramentaSelecionada}" />
+							</p:commandButton>
+						</p:dataList>
+
+					</p:panelGrid>
+
+				</p:panelGrid>
+
+			</p:fieldset>
+
+			<p:fieldset id="field-montagem" legend="Montagem" toggleable="true">
+
+				<p:dataTable id="montagem-table"
+					value="#{conjuntoBean.conjuntoEdicao.montagems}" var="montagem"
+					emptyMessage="Nenhuma montagem adicionada"
+					selection="#{conjuntoBean.montagemSelecionada}"
+					selectionMode="single" rowKey="#{montagem}">
+
+					<!-- Quando selecionar disparar evento -->
+					<p:ajax event="rowSelect" update=":frm:field-montagem" />
+					<p:ajax event="rowUnselect" update=":frm:field-montagem" />
+
+					<p:column headerText="Peça">
+						<h:outputText value="#{montagem.peca.partName}" />
+					</p:column>
+
+					<p:column headerText="Ferramenta">
+						<h:outputText value="#{montagem.ferramenta.nome}" />
+					</p:column>
+
+				</p:dataTable>
+
+
+			</p:fieldset>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

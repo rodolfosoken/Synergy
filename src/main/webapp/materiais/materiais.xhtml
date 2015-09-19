@@ -15,12 +15,16 @@
 		</f:metadata>
 		<h:form id="frm">
 
-			<p:messages id="messages" />
+			<p:messages id="messages" severity="error" showDetail="true"
+				closable="true" />
+			<p:growl autoUpdate="true" />
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
 
 					<p:commandButton value="Novo" icon="fa fa-file" process="@this"
-						update="material-dialog" oncomplete="PF('materialDialog').show()">
+						update="cadastro-material material-dialog"
+						oncomplete="PF('materialDialog').show()"
+						action="#{cotacaoMaterialBean.limpar}">
 						<p:resetInput target="material-dialog" />
 					</p:commandButton>
 
@@ -112,6 +116,14 @@
 				widgetVar="materialDialog" resizable="false" modal="true"
 				closeOnEscape="true">
 				<ui:include src="/materiais/templates/adicionarMaterial.xhtml"></ui:include>
+				<p:commandButton value="Salvar" action="#{materialBean.salvar}"
+					process="material-dialog" id="salvar-material"
+					update="msgs-dialogMaterial cadastro-material" style="float:right"
+					oncomplete="if(!args.validationFailed) PF('materialDialog').hide()">
+					<f:setPropertyActionListener
+						target="#{materialBean.materialEdicao}"
+						value="#{cotacaoMaterialBean.cotacaoMaterial.material}" />
+				</p:commandButton>
 			</p:dialog>
 
 

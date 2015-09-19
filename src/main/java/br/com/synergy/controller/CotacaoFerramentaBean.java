@@ -28,6 +28,7 @@ import br.com.synergy.repository.Usuarios;
 import br.com.synergy.security.UsuarioPrincipal;
 import br.com.synergy.service.CadastroCotacaoService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -110,17 +111,21 @@ public class CotacaoFerramentaBean implements Serializable {
 
 			// faz as referências da ferramenta para a cotação
 			adicionarFerramenta();
-			cadastro.salvar(cotacaoFerramenta);
-			messages.info("Cotação salva com sucesso!");
+			try {
+				cadastro.salvar(cotacaoFerramenta);
+				messages.info("Cotação salva com sucesso!");
 
-			limpar();
+				limpar();
 
+				// se estiver editando, voltar para a tela pesquisa de cotações
+				if (!isEditando())
+					return "pesquisaCotacaoFerramenta?ok=true faces-redirect=true";
+			} catch (Exception e) {
+				messages.error("Não foi possível salvar:",
+						RootCauseExctractor.extractRootCauseMessage(e));
+			}
 			RequestContext.getCurrentInstance().update(
 					Arrays.asList("frm:messages", "frm"));
-
-			// se estiver editando, voltar para a tela pesquisa de cotações
-			if (!isEditando())
-				return "pesquisaCotacaoFerramenta?ok=true faces-redirect=true";
 		} else {
 			messages.error("Fornecedor Vazio");
 			indexTab = 1;
@@ -128,7 +133,7 @@ public class CotacaoFerramentaBean implements Serializable {
 		return null;
 
 	}
-	
+
 	public void editar(Long id) {
 		System.out.println("DEBUG: Executando editar");
 		// Busca por id para resgatar o objeto com a coleção de fornecedores
@@ -147,7 +152,9 @@ public class CotacaoFerramentaBean implements Serializable {
 			// Busca pep da cotação se ela já foi comprada
 			if (cotacaoFerramenta.getComprado()) {
 				System.out.println("DEBUG: Executando Fetch Compra Ferramenta");
-				cotacaoFerramenta = cotacoes.buscaFetchCompraFerramenta(cotacaoFerramenta.getIdcotacao());
+				cotacaoFerramenta = cotacoes
+						.buscaFetchCompraFerramenta(cotacaoFerramenta
+								.getIdcotacao());
 			}
 
 			indexTab = 0;
@@ -160,7 +167,7 @@ public class CotacaoFerramentaBean implements Serializable {
 		}
 
 	}
-	
+
 	public void comprar() {
 		compra.setCotacaoFerramenta(cotacaoFerramenta);
 		cotacaoFerramenta.setCompraFerramenta(compra);
@@ -178,14 +185,13 @@ public class CotacaoFerramentaBean implements Serializable {
 		// redireciona para a aba de compra
 		indexTab = 2;
 	}
-	
+
 	// referencia a cotação na ferramenta da cotação
 	public void adicionarFerramenta() {
 		System.out.println("DEBUG: executando adcionarFerramenta");
 		cotacaoFerramenta.getFerramenta().setCotacao(cotacaoFerramenta);
 	}
 
-	
 	// adiciona o fornecedor na lista da cotação
 	public void adicionarFornecedor() {
 		System.out.println("DEBUG: executando adicionarFornecedor");
@@ -221,7 +227,6 @@ public class CotacaoFerramentaBean implements Serializable {
 				participanteSelecionado);
 		participanteSelecionado = null;
 	}
-	
 
 	// preenche o auto-completar da PEP
 	public List<Pep> completarPep(String pep) {
@@ -239,7 +244,6 @@ public class CotacaoFerramentaBean implements Serializable {
 		System.out.println("DEBUG: executando CompletarFornecedor");
 		return fornecedores.buscaPorFornecedorFerramenta(nome);
 	}
-
 
 	// conclui a cotação
 	public void concluir() {
@@ -262,7 +266,7 @@ public class CotacaoFerramentaBean implements Serializable {
 		// redireciona para a aba inicial
 		indexTab = 0;
 	}
-	
+
 	public void okPep() {
 		System.out.println("DEBUG:Executando okPep");
 		Pep pep = cotacaoFerramenta.getCompraFerramenta().getPep();
@@ -276,7 +280,7 @@ public class CotacaoFerramentaBean implements Serializable {
 	public boolean isEditando() {
 		return cotacaoFerramenta.getIdcotacao() != null;
 	}
-	
+
 	// metodo para verificar se o participante já consta na lista
 	public boolean contemParticipante(ParticipanteFerramenta participante,
 			List<ParticipanteFerramenta> lista) {
@@ -291,15 +295,18 @@ public class CotacaoFerramentaBean implements Serializable {
 		}
 		return contem;
 	}
-	
-	public void avaliaCompra(){
-		cotacaoFerramenta.getCompraFerramenta().setOkAssist(cotacaoFerramenta.getCompraFerramenta().getOkAssist());
-		cotacaoFerramenta.getCompraFerramenta().setOkEspec(cotacaoFerramenta.getCompraFerramenta().getOkEspec());
-		cotacaoFerramenta.getCompraFerramenta().setOkPrazo(cotacaoFerramenta.getCompraFerramenta().getOkPrazo());
-		cotacaoFerramenta.getCompraFerramenta().setOkVisita(cotacaoFerramenta.getCompraFerramenta().getOkVisita());
-	
+
+	public void avaliaCompra() {
+		cotacaoFerramenta.getCompraFerramenta().setOkAssist(
+				cotacaoFerramenta.getCompraFerramenta().getOkAssist());
+		cotacaoFerramenta.getCompraFerramenta().setOkEspec(
+				cotacaoFerramenta.getCompraFerramenta().getOkEspec());
+		cotacaoFerramenta.getCompraFerramenta().setOkPrazo(
+				cotacaoFerramenta.getCompraFerramenta().getOkPrazo());
+		cotacaoFerramenta.getCompraFerramenta().setOkVisita(
+				cotacaoFerramenta.getCompraFerramenta().getOkVisita());
+
 	}
-	
 
 	// getters e setters
 
