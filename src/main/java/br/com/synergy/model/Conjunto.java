@@ -93,7 +93,7 @@ public class Conjunto implements java.io.Serializable {
 		this.fnaDesc = fnaDesc;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade = CascadeType.ALL,orphanRemoval=true)
 	public List<Montagem> getMontagems() {
 		return this.montagems;
 	}

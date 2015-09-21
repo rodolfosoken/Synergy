@@ -10,8 +10,9 @@
 	<ui:define name="body">
 		<h1>Conjunto</h1>
 		<h:form id="frm">
-			<p:messages id="messages" />
-			<p:growl id="growl" />
+			<p:messages id="messages" severity="error" showDetail="true"
+				closable="true" />
+			<p:growl autoUpdate="true" />
 
 			<p:toolbar id="toolbar" style="margin-bottom:5px">
 
@@ -29,7 +30,8 @@
 			</p:toolbar>
 
 
-			<p:fieldset legend="Conjunto" toggleable="true" toggleSpeed="500">
+			<p:fieldset legend="Conjunto" toggleable="true" toggleSpeed="500"
+				style="margin-bottom:10px ">
 
 
 				<p:panelGrid id="cadastro-conjuntos" columns="4"
@@ -56,7 +58,7 @@
 			</p:fieldset>
 
 			<p:fieldset legend="Componentes do conjunto" toggleable="true"
-				toggleSpeed="500" id="field-componentes">
+				style="margin-bottom:10px" toggleSpeed="500" id="field-componentes">
 
 				<p:panelGrid columns="1">
 					<f:facet name="header">Seleção de componentes</f:facet>
@@ -80,7 +82,8 @@
 
 							<p:commandButton id="adicionar-peca" value="Adicionar"
 								icon="fa fa-plus" action="#{conjuntoBean.adicionarPeca}"
-								process="@this panel-peca" update="panel-peca lista-pecas">
+								process="@this panel-peca"
+								update="panel-peca lista-pecas field-montagem">
 							</p:commandButton>
 
 						</h:panelGrid>
@@ -103,7 +106,7 @@
 								size="2" />
 
 							<p:commandButton id="adicionar-ferramenta" value="Adicionar"
-								update="field-componentes :frm:messages"
+								update="field-componentes :frm:messages field-montagem"
 								action="#{conjuntoBean.adicionarFerramenta}"
 								process="@this panel-ferramenta" icon="fa fa-plus">
 							</p:commandButton>
@@ -119,7 +122,8 @@
 							<f:facet name="header">Peças</f:facet>
 							#{componente.quantidade}x #{componente.peca.partName}
 							<p:commandButton icon="fa fa-trash" process="@this lista-pecas"
-								update="lista-pecas" action="#{conjuntoBean.removerPeca}">
+								update="lista-pecas :frm:field-montagem"
+								action="#{conjuntoBean.removerPeca}">
 								<f:setPropertyActionListener value="#{componente}"
 									target="#{conjuntoBean.componentePecaSelecionado}" />
 							</p:commandButton>
@@ -135,12 +139,13 @@
 							#{componente.quantidade}x #{componente.ferramenta.nome} 
 							
 							<p:commandButton icon="fa fa-trash"
-								process="@this lista-ferramentas" update="lista-ferramentas"
+								process="@this lista-ferramentas"
+								update="lista-ferramentas :frm:field-montagem"
 								action="#{conjuntoBean.removerFerramenta}">
 								<f:setPropertyActionListener value="#{componente}"
 									target="#{conjuntoBean.componenteFerramentaSelecionado}" />
 							</p:commandButton>
-						
+
 						</p:dataList>
 
 					</p:panelGrid>
@@ -149,6 +154,55 @@
 
 			</p:fieldset>
 
+			<p:fieldset id="field-montagem" toggleable="true" legend="Montagens"
+				collapsed="false">
+
+				<p:panelGrid columns="2" id="dados-montagem" style="margin-bottom:20px">
+					<f:facet name="header">Dados da Montagem</f:facet>
+					<p:pickList value="#{conjuntoBean.dualListPeca}" id="pick-pecas"
+						var="componentePeca" itemValue="#{componentePeca}"
+						itemLabel="#{componentePeca.peca.partName}"
+						converter="pickListConverter">
+						<f:facet name="sourceCaption">Peças Disponíveis</f:facet>
+						<f:facet name="targetCaption">Peças Selecionadas</f:facet>
+
+					</p:pickList>
+
+					<p:pickList id="pick-ferramenta"
+						value="#{conjuntoBean.dualListFerramenta}"
+						var="componenteFerramenta" itemValue="#{componenteFerramenta}"
+						itemLabel="#{componenteFerramenta.ferramenta.nome}"
+						converter="pickListConverter">
+						<f:facet name="sourceCaption">Ferramentas Disponíveis</f:facet>
+						<f:facet name="targetCaption">Ferramentas Selecionadas</f:facet>
+
+					</p:pickList>
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Descrição da montagem"
+							for="descricao-montagem" />
+						<p:inputTextarea title="Descrição da Montagem"
+							value="#{conjuntoBean.montagemEdicao.descricao}"
+							id="descricao-montagem" />
+					</h:panelGrid>
+					<p:commandButton value="Adicionar" icon="fa fa-plus"
+						action="#{conjuntoBean.adicionarMontagem}"
+						process="@this dados-montagem" update="field-montagem messages"
+						style="float:right">
+					</p:commandButton>
+				</p:panelGrid>
+
+				<p:dataList value="#{conjuntoBean.conjuntoEdicao.montagems}"
+					id="list-montagem" var="montagem"
+					emptyMessage="Nenhuma montagem adicionada ainda." paginator="true"
+					rows="10" paginatorPosition="bottom">
+					<f:facet name="header">Montagens</f:facet>
+					#{montagem.descricao}
+					<p:commandButton icon="fa fa-trash" process="@this list-montagem"
+						update="list-montagem" />
+				</p:dataList>
+
+
+			</p:fieldset>
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -1,6 +1,7 @@
 package br.com.synergy.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
@@ -8,11 +9,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DualListModel;
 
 import br.com.synergy.model.ComponenteFerramenta;
 import br.com.synergy.model.ComponentePeca;
 import br.com.synergy.model.Conjunto;
 import br.com.synergy.model.Ferramenta;
+import br.com.synergy.model.Montagem;
 import br.com.synergy.model.Peca;
 import br.com.synergy.repository.Conjuntos;
 import br.com.synergy.repository.Ferramentas;
@@ -51,6 +54,12 @@ public class ConjuntoBean implements Serializable {
 	private ComponenteFerramenta componenteFerramentaSelecionado;
 	private ComponentePeca componentePeca;
 	private ComponentePeca componentePecaSelecionado;
+	private Montagem montagemEdicao;
+	private Montagem montagemSelecionada;
+	private List<ComponentePeca> sourcePeca;
+	private List<ComponenteFerramenta> sourceFerramenta;
+	private DualListModel<ComponentePeca> dualListPeca;
+	private DualListModel<ComponenteFerramenta> dualListFerramenta;
 
 	private int quantidadePeca;
 	private int quantidadeFerramenta;
@@ -69,6 +78,9 @@ public class ConjuntoBean implements Serializable {
 		pecaEdicao = new Peca();
 		componenteFerramenta = new ComponenteFerramenta();
 		componentePeca = new ComponentePeca();
+		montagemEdicao = new Montagem();
+		sourcePeca = new ArrayList<ComponentePeca>();
+		sourceFerramenta = new ArrayList<ComponenteFerramenta>();
 		quantidadePeca = 1;
 		quantidadeFerramenta = 1;
 
@@ -77,6 +89,16 @@ public class ConjuntoBean implements Serializable {
 		pecaSelecionada = null;
 		componenteFerramentaSelecionado = null;
 		componentePecaSelecionado = null;
+		montagemSelecionada = null;
+		initMontagem();
+
+	}
+
+	public void initMontagem() {
+		dualListPeca = new DualListModel<>(sourcePeca,
+				montagemEdicao.getComponentePecas());
+		dualListFerramenta = new DualListModel<>(sourceFerramenta,
+				montagemEdicao.getComponenteFerramentas());
 
 	}
 
@@ -87,17 +109,21 @@ public class ConjuntoBean implements Serializable {
 
 		componentePeca.setConjunto(conjuntoEdicao);
 		conjuntoEdicao.getComponentePecas().add(componentePeca);
-		
-		pecaEdicao=new Peca();
-		componentePeca=new ComponentePeca();
-		quantidadePeca=1;
-		
+		sourcePeca.add(componentePeca);
+
+		pecaEdicao = new Peca();
+		componentePeca = new ComponentePeca();
+		quantidadePeca = 1;
+		initMontagem();
+
 	}
 
 	public void removerPeca() {
 		conjuntoEdicao.getComponentePecas().remove(componentePecaSelecionado);
+		sourcePeca.remove(componentePecaSelecionado);
 		componentePecaSelecionado.setConjunto(null);
 		componentePecaSelecionado = null;
+		initMontagem();
 	}
 
 	public void adicionarFerramenta() {
@@ -107,17 +133,28 @@ public class ConjuntoBean implements Serializable {
 
 		componenteFerramenta.setConjunto(conjuntoEdicao);
 		conjuntoEdicao.getComponenteFerramentas().add(componenteFerramenta);
+		sourceFerramenta.add(componenteFerramenta);
 
 		ferramentaEdicao = new Ferramenta();
 		componenteFerramenta = new ComponenteFerramenta();
 		quantidadeFerramenta = 1;
+		initMontagem();
 	}
 
 	public void removerFerramenta() {
 		conjuntoEdicao.getComponenteFerramentas().remove(
 				componenteFerramentaSelecionado);
+		sourceFerramenta.remove(componenteFerramentaSelecionado);
 		componenteFerramentaSelecionado.setConjunto(null);
 		componenteFerramentaSelecionado = null;
+		initMontagem();
+	}
+	
+	public void adicionarMontagem(){
+		montagemEdicao.setConjunto(conjuntoEdicao);
+		conjuntoEdicao.getMontagems().add(montagemEdicao);
+		montagemEdicao = new Montagem();
+		montagemSelecionada=null;
 	}
 
 	public void salvarConjunto() {
@@ -144,6 +181,40 @@ public class ConjuntoBean implements Serializable {
 
 	public List<Conjunto> getTodos() {
 		return this.todos;
+	}
+	
+
+	public Montagem getMontagemEdicao() {
+		return montagemEdicao;
+	}
+
+	public void setMontagemEdicao(Montagem montagemEdicao) {
+		this.montagemEdicao = montagemEdicao;
+	}
+
+	public Montagem getMontagemSelecionada() {
+		return montagemSelecionada;
+	}
+
+	public void setMontagemSelecionada(Montagem montagemSelecionada) {
+		this.montagemSelecionada = montagemSelecionada;
+	}
+
+	public DualListModel<ComponentePeca> getDualListPeca() {
+		return dualListPeca;
+	}
+
+	public void setDualListPeca(DualListModel<ComponentePeca> dualListPeca) {
+		this.dualListPeca = dualListPeca;
+	}
+
+	public DualListModel<ComponenteFerramenta> getDualListFerramenta() {
+		return dualListFerramenta;
+	}
+
+	public void setDualListFerramenta(
+			DualListModel<ComponenteFerramenta> dualListFerramenta) {
+		this.dualListFerramenta = dualListFerramenta;
 	}
 
 	public ComponenteFerramenta getComponenteFerramentaSelecionado() {

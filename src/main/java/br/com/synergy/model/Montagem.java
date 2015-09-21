@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "montagem", catalog = "sistema_gestao")
@@ -23,6 +26,7 @@ public class Montagem implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long idmontagem;
 	private Conjunto conjunto;
+	private String descricao;
 	private List<ComponenteFerramenta> componenteFerramentas = new ArrayList<ComponenteFerramenta>(
 			0);
 	private List<ComponentePeca> componentePecas = new ArrayList<ComponentePeca>(0);
@@ -40,7 +44,16 @@ public class Montagem implements java.io.Serializable {
 	public void setIdmontagem(Long idmontagem) {
 		this.idmontagem = idmontagem;
 	}
+	@NotNull
+	@NotBlank
+	@Column(name="descricao")
+	public String getDescricao() {
+		return descricao;
+	}
 
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "conjunto_idconjunto", nullable = false)
