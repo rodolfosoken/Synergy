@@ -15,6 +15,15 @@ public class Usuarios implements Serializable {
 
 	@Inject
 	private EntityManager em;
+	
+	public void salvar(Usuario usuario){
+		em.merge(usuario);
+	}
+	
+	public void excluir(Usuario usuario){
+		em.remove(usuario);
+		em.flush();
+	}
 
 	public Usuario buscaPorId(Long id) {
 		return this.em.find(Usuario.class, id);

@@ -2,11 +2,14 @@ package br.com.synergy.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
@@ -22,6 +25,7 @@ import br.com.synergy.repository.Ferramentas;
 import br.com.synergy.repository.Pecas;
 import br.com.synergy.service.CadastroConjuntoService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -72,6 +76,52 @@ public class ConjuntoBean implements Serializable {
 		limpar();
 	}
 
+	public void verificaEdicao() {
+
+		// recebe a Id da cotação a ser editada pela url
+		HttpServletRequest request = (HttpServletRequest) FacesContext
+				.getCurrentInstance().getExternalContext().getRequest();
+		if (request.getParameter("edicao") != null) {
+			Long id = Long.parseLong(request.getParameter("edicao"));
+			editar(id);
+		}
+	}
+
+	public void editar(Long id) {
+		conjuntoEdicao = conjuntos.buscaPorId(id);
+		if (conjuntoEdicao != null) {
+			System.out.println("DEBUG: Executando editar ConjuntoBean");
+
+			// faz a busca com fetch pelas coleções do conjunto, evitando lazy
+			// exception
+			Conjunto c;
+			c = conjuntos.buscaFetchComponentesFerramentas(id);
+			if (c != null)
+				conjuntoEdicao = c;
+			c = conjuntos.buscaFetchComponentesPecas(id);
+			if (c != null)
+				c = conjuntoEdicao;
+			c = conjuntos.buscaFetchMontagens(id);
+			if (c != null)
+				conjuntoEdicao = c;
+
+			for (ComponenteFerramenta componenteFerramenta : conjuntoEdicao
+					.getComponentesFerramentas()) {
+				sourceFerramenta.add(componenteFerramenta);
+			}
+			for (ComponentePeca componentePeca : conjuntoEdicao
+					.getComponentesPecas()) {
+				sourcePeca.add(componentePeca);
+			}
+
+		} else {
+			messages.error("Conjunto não encontrado.");
+			RequestContext.getCurrentInstance().update(
+					Arrays.asList("frm:messages", "frm"));
+		}
+
+	}
+
 	private void limpar() {
 		conjuntoEdicao = new Conjunto();
 		ferramentaEdicao = new Ferramenta();
@@ -108,22 +158,20 @@ public class ConjuntoBean implements Serializable {
 		componentePeca.setQuantidade(quantidadePeca);
 
 		componentePeca.setConjunto(conjuntoEdicao);
-		conjuntoEdicao.getComponentePecas().add(componentePeca);
-		sourcePeca.add(componentePeca);
+		conjuntoEdicao.getComponentesPecas().add(componentePeca);
+		dualListPeca.getSource().add(componentePeca);
 
 		pecaEdicao = new Peca();
-		componentePeca = new ComponentePeca();
+		componentePeca = new ComponentePeca(); 
 		quantidadePeca = 1;
-		initMontagem();
 
 	}
 
 	public void removerPeca() {
-		conjuntoEdicao.getComponentePecas().remove(componentePecaSelecionado);
-		sourcePeca.remove(componentePecaSelecionado);
+		conjuntoEdicao.getComponentesPecas().remove(componentePecaSelecionado);
+		dualListPeca.getSource().remove(componentePecaSelecionado);
 		componentePecaSelecionado.setConjunto(null);
 		componentePecaSelecionado = null;
-		initMontagem();
 	}
 
 	public void adicionarFerramenta() {
@@ -132,41 +180,66 @@ public class ConjuntoBean implements Serializable {
 		componenteFerramenta.setQuantidade(quantidadeFerramenta);
 
 		componenteFerramenta.setConjunto(conjuntoEdicao);
-		conjuntoEdicao.getComponenteFerramentas().add(componenteFerramenta);
-		sourceFerramenta.add(componenteFerramenta);
+		conjuntoEdicao.getComponentesFerramentas().add(componenteFerramenta);
+		dualListFerramenta.getSource().add(componenteFerramenta);
 
 		ferramentaEdicao = new Ferramenta();
 		componenteFerramenta = new ComponenteFerramenta();
 		quantidadeFerramenta = 1;
-		initMontagem();
 	}
 
 	public void removerFerramenta() {
-		conjuntoEdicao.getComponenteFerramentas().remove(
+		conjuntoEdicao.getComponentesFerramentas().remove(
 				componenteFerramentaSelecionado);
-		sourceFerramenta.remove(componenteFerramentaSelecionado);
+		dualListFerramenta.getSource().remove(componenteFerramentaSelecionado);
 		componenteFerramentaSelecionado.setConjunto(null);
 		componenteFerramentaSelecionado = null;
+		
+	}
+
+	public void adicionarMontagem() {
+		montagemEdicao.setConjunto(conjuntoEdicao);
+		conjuntoEdicao.getMontagens().add(montagemEdicao);
+		montagemEdicao = new Montagem();
+		montagemSelecionada = null;
 		initMontagem();
 	}
-	
-	public void adicionarMontagem(){
-		montagemEdicao.setConjunto(conjuntoEdicao);
-		conjuntoEdicao.getMontagems().add(montagemEdicao);
-		montagemEdicao = new Montagem();
-		montagemSelecionada=null;
+
+	public void removerMontagem() {
+		montagemSelecionada.setConjunto(null);
+		conjuntoEdicao.getMontagens().remove(montagemSelecionada);
+		montagemSelecionada = null;
 	}
 
-	public void salvarConjunto() {
-		cadastro.guardar(conjuntoEdicao);
+	public String salvarConjunto() {
+		try{
+		cadastro.salvar(conjuntoEdicao);
 		limpar();
+		if(isEditando())
+			return "tabelaConjuntos?ok=true faces-redirect=true";
 		messages.info("Conjunto cadastrado com sucesso!");
 		RequestContext.getCurrentInstance().update("frm");
+		} catch (Exception e) {
+			messages.error("Não foi possível salvar:",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
+		RequestContext.getCurrentInstance().update(
+				Arrays.asList("frm:messages", "frm"));
+		return null;
 	}
 
-	public void editarConjunto() {
-		conjuntoEdicao = conjuntoSelecionado;
+	public String editarConjunto() {
+		return "conjunto?edicao=" + conjuntoSelecionado.getIdconjunto()
+				+ "faces-redirect=true";
 
+	}
+	
+	public void okMessage() {
+		HttpServletRequest request = (HttpServletRequest) FacesContext
+				.getCurrentInstance().getExternalContext().getRequest();
+		if ("true".equals(request.getParameter("ok"))) {
+			messages.info("Salvo com sucesso!");
+		}
 	}
 
 	public List<Ferramenta> completarFerramenta(String nome) {
@@ -176,13 +249,16 @@ public class ConjuntoBean implements Serializable {
 	public List<Peca> completarPeca(String nome) {
 		return pecas.buscaPorPecaNome(nome);
 	}
+	
+	public boolean isEditando(){
+	 return (conjuntoEdicao.getIdconjunto()==null);
+	}
 
 	// getters e setters
 
 	public List<Conjunto> getTodos() {
 		return this.todos;
 	}
-	
 
 	public Montagem getMontagemEdicao() {
 		return montagemEdicao;

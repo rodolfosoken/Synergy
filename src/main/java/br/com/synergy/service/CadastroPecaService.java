@@ -6,9 +6,8 @@ import javax.inject.Inject;
 
 import br.com.synergy.model.Peca;
 import br.com.synergy.repository.Pecas;
-import br.com.synergy.util.Transacional;
 
-public class CadastroPecaService implements Serializable{
+public class CadastroPecaService implements Serializable, CadastroService<Peca>{
 
 	private static final long serialVersionUID = 1L;
 	@Inject
@@ -16,13 +15,13 @@ public class CadastroPecaService implements Serializable{
 
 		
 	
-	@Transacional
-	public void salvar(Peca peca){
+	@Override
+	public void salvar(Peca peca)throws Exception{
 		dao.guardar(peca);
 	}
 	
-	@Transacional
-	public void excluir(Peca peca){
+	@Override
+	public void excluir(Peca peca)throws Exception{
 		dao.excluir(peca);
 	}
 

@@ -14,6 +14,7 @@ import br.com.synergy.model.Ferramenta;
 import br.com.synergy.repository.Ferramentas;
 import br.com.synergy.service.CadastroFerramentaService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -44,12 +45,17 @@ public class FerramentaBean implements Serializable {
 	}
 
 	public void salvar() {
-
+		try{
 		cadastroFerramenta.salvar(ferramentaEdicao);
 		consultar();
 
 		messages.info("Ferramenta salvo com sucesso!");
 		prepararNovoCadastro();
+		
+		} catch (Exception e) {
+			messages.error("Não foi possível salvar:",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
 
 		// pega lista de componentes para atualizar
 		// atualizando a tabela e lança a mensagem de sucesso
@@ -62,10 +68,15 @@ public class FerramentaBean implements Serializable {
 	}
 
 	public void excluir() {
+		try{
 		cadastroFerramenta.excluir(ferramentaSelecionado);
 		messages.info("Ferramenta: " + ferramentaSelecionado.getNome()
 				+ " excluido com sucesso!");
 		ferramentaSelecionado = null;
+		} catch (Exception e) {
+			messages.error("Não foi possível realizar a operação.",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
 		consultar();
 
 	}

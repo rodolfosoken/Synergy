@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:form id="frm">
+
+	<p:messages id="msgs-dialog" />
+
+	<p:messages id="messages" severity="error" showDetail="true"
+		closable="true" />
+	<p:growl autoUpdate="true" />
+
+	<h:panelGrid columns="4">
+
+		<p:outputLabel value="Nome" for="nome" />
+		<p:inputText id="nome" value="#{usuariosBean.usuarioEdicao.nome}" />
+
+		<p:outputLabel value="Sobrenome" for="sobrenome" />
+		<p:inputText id="sobrenome"
+			value="#{usuariosBean.usuarioEdicao.sobrenome}" />
+
+		<p:outputLabel value="E-mail" for="email" />
+		<p:inputText id="email" value="#{usuariosBean.usuarioEdicao.email}" />
+
+		<p:outputLabel value="" />
+		<p:outputLabel value="" />
+
+		<p:outputLabel value="Senha" for="senha" />
+		<p:password id="senha" value="#{usuariosBean.usuarioEdicao.senha}" />
+
+		<p:outputLabel value="Confirmar Senha" for="confirmarSenha" />
+		<p:password id="confirmarSenha" value="#{usuariosBean.confirmarSenha}" />
+
+
+		<p:outputLabel value="Registro" for="registro" />
+		<p:inputText id="registro"
+			value="#{usuariosBean.usuarioEdicao.registro}" />
+
+		<p:outputLabel value="Id GM" for="idGm" />
+		<p:inputText id="idGm" value="#{usuarioBean.usuarioEdicao.idGm}" />
+
+		<p:outputLabel value="Cargo" for="cargo" />
+		<p:selectOneMenu id="cargo" value="#{usuarioBean.cargo}">
+			<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
+			<f:selectItem itemLabel="Administrador" itemValue="ADMINISTRADOR" />
+			<f:selectItem itemLabel="Estagiário" itemValue="ESTAGIARIO" />
+			<f:selectItem itemLabel="" />
+		</p:selectOneMenu>
+
+	</h:panelGrid>
+
+
+
+
+
+</h:form>
+</html>

@@ -32,10 +32,10 @@ public class Conjunto implements java.io.Serializable {
 	private String desc;
 	private String upcFna;
 	private String fnaDesc;
-	private List<Montagem> montagems = new ArrayList<Montagem>(0);
+	private List<Montagem> montagens = new ArrayList<Montagem>(0);
 	private List<Projeto> projetos = new ArrayList<Projeto>(0);
-	private List<ComponenteFerramenta> componenteFerramentas = new ArrayList<ComponenteFerramenta>();
-	private List<ComponentePeca> componentePecas = new ArrayList<ComponentePeca>();
+	private List<ComponenteFerramenta> componentesFerramentas = new ArrayList<ComponenteFerramenta>();
+	private List<ComponentePeca> componentesPecas = new ArrayList<ComponentePeca>();
 	private List<RiskAssesment> riskAssesments = new ArrayList<RiskAssesment>(0);
 
 	public Conjunto() {
@@ -94,12 +94,12 @@ public class Conjunto implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade = CascadeType.ALL,orphanRemoval=true)
-	public List<Montagem> getMontagems() {
-		return this.montagems;
+	public List<Montagem> getMontagens() {
+		return this.montagens;
 	}
 
-	public void setMontagems(List<Montagem> montagems) {
-		this.montagems = montagems;
+	public void setMontagens(List<Montagem> montagens) {
+		this.montagens = montagens;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -122,22 +122,22 @@ public class Conjunto implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade=CascadeType.ALL,orphanRemoval=true)
-	public List<ComponenteFerramenta> getComponenteFerramentas() {
-		return this.componenteFerramentas;
+	public List<ComponenteFerramenta> getComponentesFerramentas() {
+		return this.componentesFerramentas;
 	}
 
-	public void setComponenteFerramentas(
-			List<ComponenteFerramenta> componenteFerramentas) {
-		this.componenteFerramentas = componenteFerramentas;
+	public void setComponentesFerramentas(
+			List<ComponenteFerramenta> componentesFerramentas) {
+		this.componentesFerramentas = componentesFerramentas;
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conjunto", cascade=CascadeType.ALL,orphanRemoval=true)
-	public List<ComponentePeca> getComponentePecas() {
-		return this.componentePecas;
+	public List<ComponentePeca> getComponentesPecas() {
+		return this.componentesPecas;
 	}
 
-	public void setComponentePecas(List<ComponentePeca> componentePecas) {
-		this.componentePecas = componentePecas;
+	public void setComponentesPecas(List<ComponentePeca> componentesPecas) {
+		this.componentesPecas = componentesPecas;
 	}
 	
 	

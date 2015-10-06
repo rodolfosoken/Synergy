@@ -6,26 +6,22 @@ import javax.inject.Inject;
 
 import br.com.synergy.model.Ferramenta;
 import br.com.synergy.repository.Ferramentas;
-import br.com.synergy.util.Transacional;
 
-public class CadastroFerramentaService implements Serializable{
+public class CadastroFerramentaService implements Serializable, CadastroService<Ferramenta>{
 
 	private static final long serialVersionUID = 1L;
 	@Inject
-	private Ferramentas dao;
+	private Ferramentas ferramentas;
 
-		
-	
-	@Transacional
-	public void salvar(Ferramenta Ferramenta){
-		dao.guardar(Ferramenta);
+	@Override
+	public void salvar(Ferramenta Ferramenta)throws Exception{
+		ferramentas.guardar(Ferramenta);
 	}
 	
-	@Transacional
-	public void excluir(Ferramenta Ferramenta){
-		dao.excluir(Ferramenta);
+	@Override
+	public void excluir(Ferramenta Ferramenta)throws Exception{
+		ferramentas.excluir(Ferramenta);
 	}
-
 	
 
 }

@@ -24,5 +24,10 @@ public class Contas implements Serializable{
 	public void salvar(Conta conta){
 		em.merge(conta);
 	}
+	
+	public void excluir(Conta conta){
+		em.remove(conta);
+		em.flush();
+	}
 
 }

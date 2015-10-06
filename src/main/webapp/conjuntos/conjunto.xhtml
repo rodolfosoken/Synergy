@@ -8,6 +8,14 @@
 
 	<ui:define name="title">Montagem</ui:define>
 	<ui:define name="body">
+
+		<f:metadata>
+			<f:viewParam name="bug" />
+			<f:event listener="#{conjuntoBean.verificaEdicao}"
+				type="preRenderView" />
+		</f:metadata>
+
+
 		<h1>Conjunto</h1>
 		<h:form id="frm">
 			<p:messages id="messages" severity="error" showDetail="true"
@@ -115,7 +123,7 @@
 
 						<p:dataList id="lista-pecas" paginator="true" rows="10"
 							paginatorPosition="bottom"
-							value="#{conjuntoBean.conjuntoEdicao.componentePecas}"
+							value="#{conjuntoBean.conjuntoEdicao.componentesPecas}"
 							var="componente" type="ordered"
 							emptyMessage="Nenhuma peça adicionada.">
 
@@ -132,7 +140,7 @@
 
 						<p:dataList id="lista-ferramentas" paginator="true" rows="10"
 							paginatorPosition="bottom"
-							value="#{conjuntoBean.conjuntoEdicao.componenteFerramentas}"
+							value="#{conjuntoBean.conjuntoEdicao.componentesFerramentas}"
 							type="ordered" var="componente"
 							emptyMessage="Nenhuma ferramenta adicionada.">
 							<f:facet name="header">Ferramentas</f:facet>
@@ -157,7 +165,8 @@
 			<p:fieldset id="field-montagem" toggleable="true" legend="Montagens"
 				collapsed="false">
 
-				<p:panelGrid columns="2" id="dados-montagem" style="margin-bottom:20px">
+				<p:panelGrid columns="2" id="dados-montagem"
+					style="margin-bottom:20px">
 					<f:facet name="header">Dados da Montagem</f:facet>
 					<p:pickList value="#{conjuntoBean.dualListPeca}" id="pick-pecas"
 						var="componentePeca" itemValue="#{componentePeca}"
@@ -168,7 +177,7 @@
 
 					</p:pickList>
 
-					<p:pickList id="pick-ferramenta"
+					<p:pickList id="pick-ferramentas" required="true"
 						value="#{conjuntoBean.dualListFerramenta}"
 						var="componenteFerramenta" itemValue="#{componenteFerramenta}"
 						itemLabel="#{componenteFerramenta.ferramenta.nome}"
@@ -191,14 +200,16 @@
 					</p:commandButton>
 				</p:panelGrid>
 
-				<p:dataList value="#{conjuntoBean.conjuntoEdicao.montagems}"
+				<p:dataList value="#{conjuntoBean.conjuntoEdicao.montagens}"
 					id="list-montagem" var="montagem"
 					emptyMessage="Nenhuma montagem adicionada ainda." paginator="true"
 					rows="10" paginatorPosition="bottom">
 					<f:facet name="header">Montagens</f:facet>
 					#{montagem.descricao}
 					<p:commandButton icon="fa fa-trash" process="@this list-montagem"
-						update="list-montagem" />
+						update="list-montagem" action="#{conjuntoBean.removerMontagem}">
+						<f:setPropertyActionListener value="#{montagem}" target="#{conjuntoBean.montagemSelecionada}"/>
+						</p:commandButton>
 				</p:dataList>
 
 

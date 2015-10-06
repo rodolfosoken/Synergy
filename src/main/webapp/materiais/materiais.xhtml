@@ -115,6 +115,7 @@
 			<p:dialog header="Cadastro Material" id="material-dialog"
 				widgetVar="materialDialog" resizable="false" modal="true"
 				closeOnEscape="true">
+				<p:defaultCommand target="salvar-material" scope="material-dialog"></p:defaultCommand>
 				<ui:include src="/materiais/templates/adicionarMaterial.xhtml"></ui:include>
 				<p:commandButton value="Salvar" action="#{materialBean.salvar}"
 					process="material-dialog" id="salvar-material"

@@ -18,6 +18,7 @@ import br.com.synergy.repository.Materiais;
 import br.com.synergy.repository.Pecas;
 import br.com.synergy.service.CadastroPecaService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -53,12 +54,16 @@ public class PecaBean implements Serializable {
 	}
 	
 	public void salvar(){
+		try{
 		cadastroPeca.salvar(pecaEdicao); 
 		consultar();
 
 		messages.info("Peça salva com sucesso!");
 		prepararNovoCadastro();
-		
+		} catch (Exception e) {
+			messages.error("Não foi possível salvar:",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
 		//pega lista de componentes para atualizar
 		//atualizando a tabela e lança a mensagem de sucesso
 		RequestContext.getCurrentInstance().update(
@@ -71,9 +76,14 @@ public class PecaBean implements Serializable {
 	
 	
 	public void excluir(){
+		try{
 		cadastroPeca.excluir(pecaSelecionado);
 		messages.info("Peca: "+pecaSelecionado.getPartName()+" excluido com sucesso!");
 		pecaSelecionado=null;
+		} catch (Exception e) {
+			messages.error("Não foi possível excluir:",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
 		consultar();
 		
 	}

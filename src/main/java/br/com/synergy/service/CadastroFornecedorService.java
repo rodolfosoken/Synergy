@@ -6,9 +6,8 @@ import javax.inject.Inject;
 
 import br.com.synergy.model.Fornecedor;
 import br.com.synergy.repository.Fornecedores;
-import br.com.synergy.util.Transacional;
 
-public class CadastroFornecedorService implements Serializable {
+public class CadastroFornecedorService implements Serializable, CadastroService<Fornecedor> {
 	/**
 	 * 
 	 */
@@ -18,12 +17,12 @@ public class CadastroFornecedorService implements Serializable {
 	private Fornecedores fornecedores;
 		
 	
-	@Transacional
+	@Override
 	public void salvar(Fornecedor fornecedor)throws Exception{
 		fornecedores.guardar(fornecedor);
 	}
 	
-	@Transacional
+	@Override
 	public void excluir(Fornecedor fornecedor)throws Exception{
 		fornecedores.excluir(fornecedor);
 	}

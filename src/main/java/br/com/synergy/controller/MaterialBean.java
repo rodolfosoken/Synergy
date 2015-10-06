@@ -15,6 +15,7 @@ import br.com.synergy.model.ParticipanteMaterial;
 import br.com.synergy.repository.Materiais;
 import br.com.synergy.service.CadastroMaterialService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -47,12 +48,16 @@ public class MaterialBean implements Serializable {
 		if(!isEditando() && materialEdicao.getCotacao()==null)
 			materialEdicao.setDisponivel(true);
 			
+		try{
 		cadastroMaterial.salvar(materialEdicao); 
 		consultar();
 
 		messages.info("Material salvo com sucesso!");
 		prepararNovoCadastro();
-		
+		} catch (Exception e) {
+			messages.error("Não foi possível salvar:",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
 		//pega lista de componentes para atualizar
 		//atualizando a tabela e lança a mensagem de sucesso
 		RequestContext.getCurrentInstance().update(
@@ -67,9 +72,14 @@ public class MaterialBean implements Serializable {
 	
 	
 	public void excluir(){
+		try{
 		cadastroMaterial.excluir(materialSelecionado);
 		messages.info("Material: "+materialSelecionado.getMaterial()+" excluido com sucesso!");
 		materialSelecionado=null;
+		} catch (Exception e) {
+			messages.error("Não foi possível realizar a operação.",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
 		consultar();
 		
 	}

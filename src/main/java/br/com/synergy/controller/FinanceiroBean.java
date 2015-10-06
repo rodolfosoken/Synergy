@@ -14,6 +14,7 @@ import br.com.synergy.model.Pep;
 import br.com.synergy.repository.Contas;
 import br.com.synergy.service.CadastroContaService;
 import br.com.synergy.util.FacesMessages;
+import br.com.synergy.util.RootCauseExctractor;
 
 @Named
 @ViewScoped
@@ -59,9 +60,14 @@ public class FinanceiroBean implements Serializable {
 	}
 
 	public void salvarConta() {
+		try{
 		cadastro.salvar(contaEdicao);
 		prepararNovoCadastro();
 		messages.info("Conta salva com sucesso!");
+		} catch (Exception e) {
+			messages.error("Não foi possível salvar:",
+					RootCauseExctractor.extractRootCauseMessage(e));
+		}
 		RequestContext.getCurrentInstance().update("frm");
 	}
 	

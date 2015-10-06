@@ -16,7 +16,14 @@
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:commandButton value="Novo" />
+					<p:commandButton value="Novo" process="@this" update="@this"
+						oncomplete="PF('usuarioDialog').show()" />
+					<p:dialog widgetVar="usuarioDialog" closeOnEscape="true"
+						modal="true" closable="true" resizable="false">
+						
+						<ui:include src="/seguranca/cadastroUsuario.xhtml" />
+
+					</p:dialog>
 
 					<!-- 
 				 <p:commandButton value="Editar" icon="ui-icon-folder-open"
@@ -74,7 +81,7 @@
 
 				<p:column headerText="Cargos">
 					<p:dataList var="cargo" value="#{usuario.cargos}" rows="5">
-					<p:outputLabel value="#{cargo.nome}"/>
+						<p:outputLabel value="#{cargo.nome}" />
 					</p:dataList>
 				</p:column>
 

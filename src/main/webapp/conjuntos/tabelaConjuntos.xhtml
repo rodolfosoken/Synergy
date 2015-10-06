@@ -10,6 +10,9 @@
 
 	<ui:define name="body">
 		<f:metadata>
+			<f:viewParam name="bug" />
+			<f:event listener="#{conjuntoBean.okMessage}"
+				type="preRenderView" />
 			<f:viewAction action="#{conjuntoBean.consultar}" />
 		</f:metadata>
 		<h:form id="frm">
@@ -18,8 +21,6 @@
 				<f:facet name="left">
 					<p:commandButton value="Novo" icon="fa fa-file"
 						action="conjunto?faces-redirect=true" />
-
-
 				</f:facet>
 			</p:toolbar>
 
@@ -46,6 +47,13 @@
 
 				<p:column headerText="FNA Descricao">
 					<h:outputText value="#{conjunto.fnaDesc}" />
+				</p:column>
+				<p:column headerText="Editar" width="50">
+					<p:commandButton icon="fa fa-edit"
+						action="#{conjuntoBean.editarConjunto}">
+						<f:setPropertyActionListener value="#{conjunto}"
+							target="#{conjuntoBean.conjuntoSelecionado}" />
+					</p:commandButton>
 				</p:column>
 
 			</p:dataTable>
